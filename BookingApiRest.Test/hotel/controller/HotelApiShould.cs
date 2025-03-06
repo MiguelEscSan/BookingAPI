@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using BookingApiRest.Core.BookingApp.Hotel.Domain;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using Shouldly;
@@ -29,7 +30,7 @@ public class HotelApiShould
     public async Task create_a_hotel()
     {
         var hotelName = "Gloria Palace";
-        var uid = Guid.NewGuid();
+        var uid = Guid.NewGuid().ToString();
         var body = JsonContent.Create(new { 
             UID = uid, 
             Name = hotelName 
@@ -40,12 +41,6 @@ public class HotelApiShould
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var createdHotel = await response.Content.ReadFromJsonAsync<Hotel>();
         createdHotel.Name.ShouldBe(hotelName);
-        createdHotel.Uid.ShouldBe(uid);
+        createdHotel.Id.ShouldBe(uid);
     }
-}
-
-internal class Hotel
-{
-    public object Uid { get; internal set; }
-    public object Name { get; internal set; }
 }
