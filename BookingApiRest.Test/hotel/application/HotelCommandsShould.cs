@@ -1,3 +1,4 @@
+using BookingApp.Hotel.Application.DTO;
 using NUnit.Framework;
 using Shouldly;
 
@@ -9,7 +10,14 @@ public class HotelCommandShould {
     public void create_a_hotel() {
         var hotelName = "Gloria Palace";
         var uid = Guid.NewGuid();
-        
+        CreateHotelDTO createEventDTO = new CreateHotelDTO {
+            UID = uid.ToString(), 
+            HotelName = hotelName
+        };
+        var command = new CreateHotelCommand();
 
+        var result = command.run(createEventDTO);
+        
+        result.isSuccess.ShouldBeTrue();
     }
 }
