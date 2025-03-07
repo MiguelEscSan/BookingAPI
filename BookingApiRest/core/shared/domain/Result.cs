@@ -1,5 +1,3 @@
-using BookingApp.Hotel.Application.DTO;
-
 namespace BookingApiRest;
 public class Result<T> where T : class {
     public T Value { get; }

@@ -5,15 +5,17 @@ using BookingApp.Hotel.Application.Ports;
 
 namespace BookingApiRest.Infrastructure.Repositories;
 public class InMemoryHotelRepository : HotelRepository {
-    private readonly List<Hotel> _hotels = new List<Hotel>();
+    internal readonly List<Hotel> _hotels = new List<Hotel>();
 
-    public void Create(Hotel hotel)
-    {
-        throw new NotImplementedException();
+    public void Create(Hotel hotel) {
+        try {
+            _hotels.Add(hotel);
+        } catch (Exception e) {
+            throw new Exception("Error adding hotel", e);
+        }
     }
 
-    public Hotel GetById(string id)
-    {
+    public Hotel GetById(string id) {
         throw new NotImplementedException();
     }
 }

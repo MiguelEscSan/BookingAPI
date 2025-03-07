@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using Shouldly;
 
-namespace BookingApiRest.Test;
+namespace BookingApiRest.Test.hotel.controller;
 
 public class HotelApiShould
 {

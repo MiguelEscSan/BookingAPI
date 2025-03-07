@@ -1,4 +1,3 @@
-using BookingApp.Hotel.Application.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingApp.Hotel.Controllers;
