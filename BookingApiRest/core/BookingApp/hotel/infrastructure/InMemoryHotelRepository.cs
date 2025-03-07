@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
 using BookingApp.Hotel.Application.Ports;
 
@@ -10,7 +11,9 @@ public class InMemoryHotelRepository : HotelRepository {
 
     public void Create(Hotel hotel) {
         try {
+
             _hotels.Add(hotel);
+
         } catch (Exception e) {
             throw new Exception("Error adding hotel", e);
         }
@@ -18,5 +21,9 @@ public class InMemoryHotelRepository : HotelRepository {
 
     public Hotel GetById(string id) {
         throw new NotImplementedException();
+    }
+
+    public bool Exists(string id) {
+        return _hotels.Any(hotel => hotel.Id == id);
     }
 }

@@ -4,7 +4,7 @@ using BookingApiRest.core.BookingApp.hotel.application;
 using BookingApiRest.core.BookingApp.hotel.controller.DTO;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
 using BookingApiRest.Infrastructure.Repositories;
-using BookingAppRest.Hotel.Application.Ports;
+using BookingApp.Hotel.Application.Ports;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingApiRest.Controllers;

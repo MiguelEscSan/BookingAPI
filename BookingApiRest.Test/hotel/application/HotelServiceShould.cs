@@ -1,4 +1,5 @@
 using BookingApiRest.core.BookingApp.hotel.application;
+using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
 using BookingApp.Hotel.Application.Ports;
 using NSubstitute;
@@ -25,4 +26,17 @@ public class HotelServiceShould {
 
         _hotelRepository.Received().Create(validation);
     }
+
+    [Test]
+    public void not_allow_when_hotel_id_is_already_used()
+    {
+        var hotel = new Hotel("1", "Hotel One");
+
+        _hotelRepository.Exists("1").Returns(true);
+        var exception = Should.Throw<ConflictException>(() => _hotelService.AddHotel("1", "Hotel One"));
+        
+        exception.Message.ShouldBe("Hotel ID already exists");
+        _hotelRepository.DidNotReceive().Create(Arg.Any<Hotel>());
+    }
+
 }

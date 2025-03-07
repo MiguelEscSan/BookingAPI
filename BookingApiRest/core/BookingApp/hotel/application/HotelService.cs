@@ -1,3 +1,4 @@
+using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
 using BookingApp.Hotel.Application.Ports;
 
@@ -13,11 +14,16 @@ public class HotelService {
 
     public void AddHotel(string HotelId, string HotelName) {
         try {
+
+            if (_hotelRepository.Exists(HotelId)) {
+                throw new ConflictException("Hotel ID already exists");
+            }
+
             var newHotel = new Hotel(HotelId, HotelName);
 
             _hotelRepository.Create(newHotel);
-        } catch (Exception e) {
-            throw new Exception("Error adding hotel", e);
+        } catch (Exception error) {
+            throw new Exception("Cannot create a hotel", error);
         }
     }
 }
