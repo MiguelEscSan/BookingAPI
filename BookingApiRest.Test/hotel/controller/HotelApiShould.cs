@@ -47,4 +47,25 @@ public class HotelApiShould
         createdHotel.Name.ShouldBe(hotelName);
         createdHotel.Id.ShouldBe(uid);
     }
+
+    [Test]
+    public async Task not_allow_when_hotel_id_is_already_used() {
+        var uid = Guid.NewGuid().ToString();
+        var body = new CreateHotelDTO
+        {
+            Id = uid,
+            Name = "Gloria Palace"
+        };
+        var body2 = new CreateHotelDTO
+        {
+            Id = uid,
+            Name = "Gloria Palace"
+        };
+
+        var response = await client.PostAsJsonAsync("/api/hotel", body);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        response = await client.PostAsJsonAsync("/api/hotel", body);
+        response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
+    }
 }
