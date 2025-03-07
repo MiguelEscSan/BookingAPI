@@ -1,5 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using BookingApiRest.core.BookingApp.hotel.controller.DTO;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
@@ -31,12 +34,13 @@ public class HotelApiShould
     {
         var hotelName = "Gloria Palace";
         var uid = Guid.NewGuid().ToString();
-        var body = JsonContent.Create(new { 
-            UID = uid, 
-            Name = hotelName 
-        });
+        var body = new CreateHotelDTO
+        {
+            Id = uid,
+            Name = hotelName
+        };
 
-        var response = await client.PostAsync("/api/hotels", body);
+        var response = await client.PostAsJsonAsync("/api/hotel", body);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var createdHotel = await response.Content.ReadFromJsonAsync<Hotel>();
