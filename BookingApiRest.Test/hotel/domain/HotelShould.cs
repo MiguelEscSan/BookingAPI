@@ -22,9 +22,7 @@ public class HotelShould {
 
         hotel.SetRoom(1, RoomType.Standard);
 
-        hotel.Rooms.Count.ShouldBe(1);
-        hotel.Rooms[0].Number.ShouldBe(1);
-        hotel.Rooms[0].RoomType.ShouldBe(RoomType.Standard);
+        hotel.Rooms[RoomType.Standard].ShouldBe(1);
     }
 
     [Test]
@@ -32,12 +30,10 @@ public class HotelShould {
     {
         var hotel = new Hotel("1", "Gloria Palace");
         hotel.SetRoom(1, RoomType.Standard);
-        hotel.Rooms[0].RoomType.ShouldBe(RoomType.Standard);
+        hotel.Rooms[RoomType.Standard].ShouldBe(1);
 
-        hotel.SetRoom(1, RoomType.Suite);
-
-        hotel.Rooms.Count.ShouldBe(1);
-        hotel.Rooms[0].RoomType.ShouldBe(RoomType.Suite);
+        hotel.SetRoom(3, RoomType.Standard);
+        hotel.Rooms[RoomType.Standard].ShouldBe(3);
     }
 
 }
