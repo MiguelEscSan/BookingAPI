@@ -42,6 +42,7 @@ public class HotelApiShould
     {
         var hotelName = "Gloria Palace";
         var uid = Guid.NewGuid().ToString();
+        var hotel = new Hotel(uid, hotelName);
         var body = new CreateHotelDTO
         {
             Id = uid,
@@ -51,9 +52,7 @@ public class HotelApiShould
         var response = await client.PostAsJsonAsync("/api/hotel", body);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        //var createdHotel = await response.Content.ReadFromJsonAsync<Hotel>();
-        //createdHotel.Name.ShouldBe(hotelName);
-        //createdHotel.Id.ShouldBe(uid);
+        
     }
 
     [Test]

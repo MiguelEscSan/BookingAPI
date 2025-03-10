@@ -14,51 +14,31 @@ public class HotelService {
 
 
     public void AddHotel(string HotelId, string HotelName) {
-        try
+        if (_hotelRepository.Exists(HotelId))
         {
-            if (_hotelRepository.Exists(HotelId))
-            {
-                throw new ConflictException("Hotel ID already exists");
-            }
-
-            var newHotel = new Hotel(HotelId, HotelName);
-
-            _hotelRepository.Create(newHotel);
+            throw new ConflictException("Hotel ID already exists");
         }
-        catch (ConflictException e)
-        {
-            throw e;
-        }
+
+        var newHotel = new Hotel(HotelId, HotelName);
+
+        _hotelRepository.Create(newHotel);
     }
 
     public Hotel findHotelBy(string id)
     {
-        try
+        var hotel = _hotelRepository.GetById(id);
+        if (hotel == null)
         {
-            var hotel = _hotelRepository.GetById(id);
-            if (hotel == null)
-            {
-                throw new NotFoundException($"Hotel with id {id} not found");
-            }
-            return hotel;
+            throw new NotFoundException($"Hotel with id {id} not found");
         }
-        catch (NotFoundException e)
-        {
-            throw e;
-        }
+        return hotel;
+
     }
 
     public void setRoom(string hotelId, int roomNumber, RoomType roomType)
     {
-        try
-        {
-            var hotel = findHotelBy(hotelId);
-            hotel.SetRoom(roomNumber, roomType);
-            _hotelRepository.Update(hotel);
-        }
-        catch (NotFoundException e)
-        {
-            throw e;
-        }
+        var hotel = findHotelBy(hotelId);
+        hotel.SetRoom(roomNumber, roomType);
+        _hotelRepository.Update(hotel);
     }
 }

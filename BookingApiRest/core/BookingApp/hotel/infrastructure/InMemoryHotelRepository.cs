@@ -10,27 +10,13 @@ public class InMemoryHotelRepository : HotelRepository {
     internal readonly List<Hotel> _hotels = new List<Hotel>();
 
     public void Create(Hotel hotel) {
-        try {
-
-            _hotels.Add(hotel);
-            Console.WriteLine($"Hoteles {_hotels.ToString()}");
-
-        } catch (Exception e) {
-            throw new Exception("Error adding hotel", e);
-        }
+         _hotels.Add(hotel);
     }
 
     public void Update(Hotel updatableHotel)
     {
-        try
-        {
-            var index = _hotels.FindIndex(hotel => hotel.Id == updatableHotel.Id);
-            _hotels[index] = updatableHotel;
-        }
-        catch (NotFoundException e)
-        {
-            throw new NotFoundException(e.Message, e);
-        }
+        var index = _hotels.FindIndex(hotel => hotel.Id == updatableHotel.Id);
+        _hotels[index] = updatableHotel;
     }
 
     public Hotel? GetById(string id) {

@@ -7,11 +7,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="core\BookingApp\policy\application\**" />
+    <Compile Remove="core\BookingApp\policy\domain\**" />
+    <Compile Remove="core\BookingApp\policy\infrastructure\**" />
+    <Content Remove="core\BookingApp\policy\application\**" />
+    <Content Remove="core\BookingApp\policy\domain\**" />
+    <Content Remove="core\BookingApp\policy\infrastructure\**" />
+    <EmbeddedResource Remove="core\BookingApp\policy\application\**" />
+    <EmbeddedResource Remove="core\BookingApp\policy\domain\**" />
+    <EmbeddedResource Remove="core\BookingApp\policy\infrastructure\**" />
+    <None Remove="core\BookingApp\policy\application\**" />
+    <None Remove="core\BookingApp\policy\domain\**" />
+    <None Remove="core\BookingApp\policy\infrastructure\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="BookingApiRest.Test" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="core\BookingApp\booking\controller\" />
+    <Folder Include="core\BookingApp\company\controller\" />
+    <Folder Include="core\BookingApp\policy\controller\" />
   </ItemGroup>
 
 </Project>

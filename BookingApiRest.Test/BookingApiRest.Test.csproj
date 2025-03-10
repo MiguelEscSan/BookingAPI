@@ -28,4 +28,8 @@
     <ProjectReference Include="..\BookingApiRest\BookingApiRest.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="booking\controller\" />
+  </ItemGroup>
+
 </Project>

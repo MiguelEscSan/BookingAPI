@@ -84,8 +84,8 @@ public class HotelServiceShould {
     {
         var hotel = new Hotel("1", "Hotel One");
         _hotelRepository.GetById("1").Returns(hotel);
-        _hotelService.setRoom("1", 1, RoomType.Standard);
 
+        _hotelService.setRoom("1", 1, RoomType.Standard);
         var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Rooms.Count == 1);
 
         _hotelRepository.Received().Update(validation);
