@@ -20,12 +20,12 @@ public class InMemoryHotelRepository : HotelRepository {
         }
     }
 
-    public void Update(Hotel hotel)
+    public void Update(Hotel updatableHotel)
     {
         try
         {
-            var index = _hotels.FindIndex(h => h.Id == hotel.Id);
-            _hotels[index] = hotel;
+            var index = _hotels.FindIndex(hotel => hotel.Id == updatableHotel.Id);
+            _hotels[index] = updatableHotel;
         }
         catch (NotFoundException e)
         {
