@@ -70,34 +70,14 @@ public class HotelServiceShould {
     }
 
     [Test]
-    public void create_a_room()
+    public void set_a_room()
     {
         var hotel = new Hotel("1", "Hotel One");
-        _hotelService.AddHotel(hotel.Id, hotel.Name);
-        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Name == "Hotel One");
-
-        _hotelRepository.Received().Create(validation);
         _hotelRepository.GetById("1").Returns(hotel);
         _hotelService.setRoom("1", 1, RoomType.Standard);
-        validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Rooms.Count == 1);
+
+        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Rooms.Count == 1);
 
         _hotelRepository.Received().Update(validation);
     }
-
-    [Test]
-    public void update_a_room()
-    {
-        var hotel = new Hotel("1", "Hotel One");
-        _hotelService.AddHotel(hotel.Id, hotel.Name);
-        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Name == "Hotel One");
-
-        _hotelRepository.Received().Create(validation);
-        _hotelRepository.GetById("1").Returns(hotel);
-        _hotelService.setRoom("1", 1, RoomType.Standard);
-        validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Rooms.Count == 1);
-
-        _hotelRepository.Received().Update(validation);
-    }
-
-
 }

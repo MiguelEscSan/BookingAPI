@@ -27,4 +27,17 @@ public class HotelShould {
         hotel.Rooms[0].RoomType.ShouldBe(RoomType.Standard);
     }
 
+    [Test]
+    public void update_a_room()
+    {
+        var hotel = new Hotel("1", "Gloria Palace");
+        hotel.AddRoom(1, RoomType.Standard);
+        hotel.Rooms[0].RoomType.ShouldBe(RoomType.Standard);
+
+        hotel.AddRoom(1, RoomType.Suite);
+
+        hotel.Rooms.Count.ShouldBe(1);
+        hotel.Rooms[0].RoomType.ShouldBe(RoomType.Suite);
+    }
+
 }

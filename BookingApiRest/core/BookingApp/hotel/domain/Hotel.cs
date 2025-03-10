@@ -17,7 +17,15 @@ public class Hotel
         
     public void AddRoom(int number, RoomType roomType)
     {
-        var room = new Room(number, roomType);
-        Rooms.Add(room);
+        var existingRoom = Rooms.FirstOrDefault(r => r.Number == number);
+
+        if (existingRoom != null)
+        {
+            existingRoom.RoomType = roomType;
+            return;
+        }
+
+        var newRoom = new Room(number, roomType);
+        Rooms.Add(newRoom);
     }
 }
