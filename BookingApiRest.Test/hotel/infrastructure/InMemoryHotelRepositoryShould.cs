@@ -1,6 +1,7 @@
 
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
+using BookingApiRest.Core.Shared.Domain;
 using BookingApiRest.Infrastructure.Repositories;
 using Shouldly;
 
@@ -73,14 +74,14 @@ public class InMemoryHotelRepositoryShould
     public void update_a_hotel()
     {
         var hotel = new Hotel("1", "Gloria Palace");
-        var updatedHotel = new Hotel("1", "Gloria Palace Updated");
-
         _inMemoryHotelRepository.Create(hotel);
-        _inMemoryHotelRepository.Update(updatedHotel);
+
+        hotel = _inMemoryHotelRepository.GetById("1");
+        hotel.AddRoom(1, RoomType.Standard);
+        _inMemoryHotelRepository.Update(hotel);
         var result = _inMemoryHotelRepository._hotels[0];
 
-        result.Id.ShouldBe("1");
-        result.Name.ShouldBe("Gloria Palace Updated");
+        result.Rooms.Count.ShouldBe(1);
     }
 
 }
