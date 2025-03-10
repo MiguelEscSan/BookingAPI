@@ -1,7 +1,8 @@
 
 
 using BookingApiRest.core.BookingApp.hotel.application;
-using BookingApiRest.core.BookingApp.hotel.controller.DTO;
+using BookingApiRest.core.BookingApp.hotel.controller.DTO.request;
+using BookingApiRest.core.BookingApp.hotel.controller.DTO.response;
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
 using BookingApiRest.Infrastructure.Repositories;
@@ -24,9 +25,8 @@ public class HotelController : ControllerBase {
     [HttpPost]
     public IActionResult CreateHotel([FromBody] CreateHotelDTO request) {
         try {
-            Hotel hotel = new Hotel(request.Id, request.Name);
             _hotelService.AddHotel(request.Id, request.Name);
-            return Ok(hotel);
+            return Ok();
         } catch (ConflictException e) {
             return Conflict(e.Message);
         }
@@ -38,12 +38,36 @@ public class HotelController : ControllerBase {
         try
         {
             Hotel hotel = _hotelService.findHotelBy(id);
-            return Ok(hotel);
+            var hotelDto = new HotelDTO
+            {
+                Id = hotel.Id,
+                Name = hotel.Name,
+                Rooms = hotel.Rooms.Select(r => new RoomDTO
+                {
+                    Number = r.Number,
+                    RoomType = r.RoomType.ToString()
+                }).ToList()
+            };
+            return Ok(hotelDto);
         }
         catch (NotFoundException e)
         {
             return NotFound(e.Message);
 
+        }
+    }
+
+    [HttpPut("{id}/rooms")]
+    public IActionResult SetRoom([FromBody] SetHotelRoomsDTO request, string id)
+    {
+        try
+        {
+            _hotelService.setRoom(id, request.RoomNumber, request.GetRoomTypeEnum());
+            return Ok();
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
         }
     }
 

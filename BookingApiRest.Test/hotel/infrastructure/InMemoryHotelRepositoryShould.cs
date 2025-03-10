@@ -69,4 +69,18 @@ public class InMemoryHotelRepositoryShould
         result.ShouldBeNull();
     }
 
+    [Test]
+    public void update_a_hotel()
+    {
+        var hotel = new Hotel("1", "Gloria Palace");
+        var updatedHotel = new Hotel("1", "Gloria Palace Updated");
+
+        _inMemoryHotelRepository.Create(hotel);
+        _inMemoryHotelRepository.Update(updatedHotel);
+        var result = _inMemoryHotelRepository._hotels[0];
+
+        result.Id.ShouldBe("1");
+        result.Name.ShouldBe("Gloria Palace Updated");
+    }
+
 }

@@ -1,6 +1,7 @@
 using BookingApiRest.core.BookingApp.hotel.application;
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
+using BookingApiRest.Core.Shared.Domain;
 using BookingApp.Hotel.Application.Ports;
 using NSubstitute;
 using NUnit.Framework;
@@ -61,11 +62,41 @@ public class HotelServiceShould {
     public void return_a_hotel()
     {
         var hotel = new Hotel("1", "Hotel One");
-
         _hotelRepository.GetById("1").Returns(hotel);
 
         var result = _hotelService.findHotelBy("1");
+
         result.ShouldBe(hotel);
+    }
+
+    [Test]
+    public void create_a_room()
+    {
+        var hotel = new Hotel("1", "Hotel One");
+        _hotelService.AddHotel(hotel.Id, hotel.Name);
+        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Name == "Hotel One");
+
+        _hotelRepository.Received().Create(validation);
+        _hotelRepository.GetById("1").Returns(hotel);
+        _hotelService.setRoom("1", 1, RoomType.Standard);
+        validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Rooms.Count == 1);
+
+        _hotelRepository.Received().Update(validation);
+    }
+
+    [Test]
+    public void update_a_room()
+    {
+        var hotel = new Hotel("1", "Hotel One");
+        _hotelService.AddHotel(hotel.Id, hotel.Name);
+        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Name == "Hotel One");
+
+        _hotelRepository.Received().Create(validation);
+        _hotelRepository.GetById("1").Returns(hotel);
+        _hotelService.setRoom("1", 1, RoomType.Standard);
+        validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Rooms.Count == 1);
+
+        _hotelRepository.Received().Update(validation);
     }
 
 

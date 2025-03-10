@@ -1,5 +1,6 @@
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
+using BookingApiRest.Core.Shared.Domain;
 using BookingApp.Hotel.Application.Ports;
 
 namespace BookingApiRest.core.BookingApp.hotel.application;
@@ -45,5 +46,12 @@ public class HotelService {
         {
             throw e;
         }
+    }
+
+    public void setRoom(string hotelId, int roomNumber, RoomType roomType)
+    {
+        var hotel = findHotelBy(hotelId);
+        hotel.AddRoom(roomNumber, roomType);
+        _hotelRepository.Update(hotel);
     }
 }

@@ -20,6 +20,19 @@ public class InMemoryHotelRepository : HotelRepository {
         }
     }
 
+    public void Update(Hotel hotel)
+    {
+        try
+        {
+            var index = _hotels.FindIndex(h => h.Id == hotel.Id);
+            _hotels[index] = hotel;
+        }
+        catch (NotFoundException e)
+        {
+            throw new NotFoundException("Error updating hotel", e);
+        }
+    }
+
     public Hotel? GetById(string id) {
         return _hotels.FirstOrDefault(hotel => hotel.Id == id);
     }
