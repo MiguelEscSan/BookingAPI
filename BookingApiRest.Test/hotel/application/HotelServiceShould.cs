@@ -70,6 +70,16 @@ public class HotelServiceShould {
     }
 
     [Test]
+    public void return_not_found_exception_when_hotel_does_not_exist()
+    {
+        _hotelRepository.GetById("1").Returns((Hotel)null);
+
+        var exception = Should.Throw<NotFoundException>(() => _hotelService.findHotelBy("1"));
+
+        exception.Message.ShouldBe("Hotel with id 1 not found");
+    }
+
+    [Test]
     public void set_a_room()
     {
         var hotel = new Hotel("1", "Hotel One");

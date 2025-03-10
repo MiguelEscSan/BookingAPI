@@ -50,8 +50,15 @@ public class HotelService {
 
     public void setRoom(string hotelId, int roomNumber, RoomType roomType)
     {
-        var hotel = findHotelBy(hotelId);
-        hotel.AddRoom(roomNumber, roomType);
-        _hotelRepository.Update(hotel);
+        try
+        {
+            var hotel = findHotelBy(hotelId);
+            hotel.SetRoom(roomNumber, roomType);
+            _hotelRepository.Update(hotel);
+        }
+        catch (NotFoundException e)
+        {
+            throw e;
+        }
     }
 }

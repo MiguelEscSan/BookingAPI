@@ -15,7 +15,7 @@ public class Hotel
         Rooms = new List<Room>();
     }
         
-    public void AddRoom(int number, RoomType roomType)
+    public void SetRoom(int number, RoomType roomType)
     {
         var existingRoom = Rooms.FirstOrDefault(r => r.Number == number);
 

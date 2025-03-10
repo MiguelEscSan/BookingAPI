@@ -77,11 +77,10 @@ public class InMemoryHotelRepositoryShould
         _inMemoryHotelRepository.Create(hotel);
 
         hotel = _inMemoryHotelRepository.GetById("1");
-        hotel.AddRoom(1, RoomType.Standard);
+        hotel.SetRoom(1, RoomType.Standard);
         _inMemoryHotelRepository.Update(hotel);
         var result = _inMemoryHotelRepository._hotels[0];
 
         result.Rooms.Count.ShouldBe(1);
     }
-
 }

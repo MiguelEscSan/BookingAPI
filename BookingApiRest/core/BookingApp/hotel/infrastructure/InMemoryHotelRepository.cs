@@ -29,7 +29,7 @@ public class InMemoryHotelRepository : HotelRepository {
         }
         catch (NotFoundException e)
         {
-            throw new NotFoundException("Error updating hotel", e);
+            throw new NotFoundException(e.Message, e);
         }
     }
 
