@@ -28,5 +28,22 @@ public class HotelService {
         {
             throw e;
         }
-    } 
+    }
+
+    public Hotel findHotelBy(string id)
+    {
+        try
+        {
+            var hotel = _hotelRepository.GetById(id);
+            if (hotel == null)
+            {
+                throw new NotFoundException($"Hotel with id {id} not found");
+            }
+            return hotel;
+        }
+        catch (NotFoundException e)
+        {
+            throw e;
+        }
+    }
 }

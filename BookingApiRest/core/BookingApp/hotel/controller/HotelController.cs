@@ -32,4 +32,19 @@ public class HotelController : ControllerBase {
         }
     }
 
+    [HttpGet("{id}")]
+    public IActionResult GetHotel(string id)
+    {
+        try
+        {
+            Hotel hotel = _hotelService.findHotelBy(id);
+            return Ok(hotel);
+        }
+        catch (NotFoundException e)
+        {
+            return NotFound(e.Message);
+
+        }
+    }
+
 }

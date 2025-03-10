@@ -20,8 +20,8 @@ public class InMemoryHotelRepository : HotelRepository {
         }
     }
 
-    public Hotel GetById(string id) {
-        throw new NotImplementedException();
+    public Hotel? GetById(string id) {
+        return _hotels.FirstOrDefault(hotel => hotel.Id == id);
     }
 
     public bool Exists(string id) {

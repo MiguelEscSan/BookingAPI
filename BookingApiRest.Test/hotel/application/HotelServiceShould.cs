@@ -28,6 +28,24 @@ public class HotelServiceShould {
     }
 
     [Test]
+    public async Task create_multiple_hotels()
+    {
+        var hotelOne = new Hotel("1", "Hotel One");
+        var hotelTwo = new Hotel("2", "Hotel Two");
+
+        _hotelService.AddHotel("1", "Hotel One");
+        var validationOne = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Name == "Hotel One");
+
+        _hotelRepository.Received().Create(validationOne);
+
+        _hotelService.AddHotel("2", "Hotel Two");
+        var validationTwo = Arg.Is<Hotel>(hotel => hotel.Id == "2" && hotel.Name == "Hotel Two");
+
+        
+        _hotelRepository.Received().Create(validationTwo);
+    }
+
+    [Test]
     public void not_allow_when_hotel_id_is_already_used()
     {
         var hotel = new Hotel("1", "Hotel One");
@@ -38,4 +56,17 @@ public class HotelServiceShould {
         exception.Message.ShouldBe("Hotel ID already exists");
         _hotelRepository.DidNotReceive().Create(Arg.Any<Hotel>());
     }
+
+    [Test]
+    public void return_a_hotel()
+    {
+        var hotel = new Hotel("1", "Hotel One");
+
+        _hotelRepository.GetById("1").Returns(hotel);
+
+        var result = _hotelService.findHotelBy("1");
+        result.ShouldBe(hotel);
+    }
+
+
 }

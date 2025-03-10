@@ -3,7 +3,7 @@ using BookingApiRest.Core.BookingApp.Hotel.Domain;
 
 public interface HotelRepository {
     void Create(Hotel hotel);
-    Hotel GetById(string id);
+    Hotel? GetById(string id);
 
     bool Exists(string id);
 }

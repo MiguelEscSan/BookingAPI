@@ -75,4 +75,32 @@ public class HotelApiShould
         response = await client.PostAsJsonAsync("/api/hotel", body);
         response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
     }
+
+    [Test]
+    public async Task return_a_hotel() {
+        var uid = Guid.NewGuid().ToString();
+        var body = new CreateHotelDTO
+        {
+            Id = uid,
+            Name = "Gloria Palace"
+        };
+
+        var response = await client.PostAsJsonAsync("/api/hotel", body);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
+        response = await client.GetAsync($"/api/hotel/{uid}");
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var hotel = await response.Content.ReadFromJsonAsync<Hotel>();
+
+        hotel.Name.ShouldBe("Gloria Palace");
+        hotel.Id.ShouldBe(uid);
+    }
+
+    [Test]
+    public async Task return_not_found_when_hotel_does_not_exist()
+    {
+        var uid = Guid.NewGuid().ToString();
+        var response = await client.GetAsync($"/api/hotel/{uid}");
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
 }
