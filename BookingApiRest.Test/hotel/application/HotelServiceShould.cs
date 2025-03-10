@@ -80,4 +80,14 @@ public class HotelServiceShould {
 
         _hotelRepository.Received().Update(validation);
     }
+
+    [Test]
+    public void not_allow_to_set_a_room_when_hotel_does_not_exist()
+    {
+        _hotelRepository.GetById("1").Returns((Hotel) null);
+        var exception = Should.Throw<NotFoundException>(() => _hotelService.setRoom("1", 1, RoomType.Standard));
+
+        exception.Message.ShouldBe("Hotel with id 1 not found");
+        _hotelRepository.DidNotReceive().Update(Arg.Any<Hotel>());
+    }
 }

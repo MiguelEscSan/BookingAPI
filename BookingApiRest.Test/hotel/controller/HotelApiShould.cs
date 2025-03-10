@@ -129,4 +129,17 @@ public class HotelApiShould
         response2.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
+    [Test]
+    public async Task not_allow_to_set_rooms_to_non_existing_hotel()
+    {
+        var uid = Guid.NewGuid().ToString();
+        var SetHotelsRoomsBody = new SetHotelRoomsDTO
+        {
+            RoomNumber = 1,
+            RoomType = RoomType.Standard.ToString()
+        };
+        var response = await client.PutAsJsonAsync($"/api/hotel/{uid}/rooms", SetHotelsRoomsBody);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
+
 }
