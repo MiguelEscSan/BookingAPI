@@ -13,17 +13,20 @@ public class HotelService {
 
 
     public void AddHotel(string HotelId, string HotelName) {
-        try {
-
-            if (_hotelRepository.Exists(HotelId)) {
+        try
+        {
+            if (_hotelRepository.Exists(HotelId))
+            {
                 throw new ConflictException("Hotel ID already exists");
             }
 
             var newHotel = new Hotel(HotelId, HotelName);
 
             _hotelRepository.Create(newHotel);
-        } catch (Exception error) {
-            throw new Exception("Cannot create a hotel", error);
         }
-    }
+        catch (ConflictException e)
+        {
+            throw e;
+        }
+    } 
 }

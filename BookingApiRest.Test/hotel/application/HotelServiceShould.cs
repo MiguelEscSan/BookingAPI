@@ -38,5 +38,4 @@ public class HotelServiceShould {
         exception.Message.ShouldBe("Hotel ID already exists");
         _hotelRepository.DidNotReceive().Create(Arg.Any<Hotel>());
     }
-
 }

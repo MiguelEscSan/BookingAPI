@@ -26,7 +26,7 @@ public class InMemoryHotelRepositoryShould
     }
 
     [Test]
-    public void not_allow_when_hotel_id_is_already_used() {
+    public void check_if_an_hotel_exists_by_id() {
         var hotel = new Hotel("1", "Gloria Palace");
 
         _inMemoryHotelRepository.Create(hotel);

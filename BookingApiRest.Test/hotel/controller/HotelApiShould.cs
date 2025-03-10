@@ -4,9 +4,14 @@ using System.Text;
 using System.Text.Json;
 using BookingApiRest.core.BookingApp.hotel.controller.DTO;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
+using BookingApiRest.Infrastructure.Repositories;
+using BookingApp.Hotel.Application.Ports;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using Shouldly;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace BookingApiRest.Test.hotel.controller;
 
@@ -20,6 +25,7 @@ public class HotelApiShould
     {
         factory = new WebApplicationFactory<Program>();
         client = factory.CreateClient();
+
     }
 
     [TearDown]
@@ -64,6 +70,7 @@ public class HotelApiShould
 
         var response = await client.PostAsJsonAsync("/api/hotel", body);
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
+
 
         response = await client.PostAsJsonAsync("/api/hotel", body);
         response.StatusCode.ShouldBe(HttpStatusCode.Conflict);

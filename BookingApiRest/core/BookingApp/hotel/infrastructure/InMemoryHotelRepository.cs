@@ -13,6 +13,7 @@ public class InMemoryHotelRepository : HotelRepository {
         try {
 
             _hotels.Add(hotel);
+            Console.WriteLine($"Hoteles {_hotels.ToString()}");
 
         } catch (Exception e) {
             throw new Exception("Error adding hotel", e);
