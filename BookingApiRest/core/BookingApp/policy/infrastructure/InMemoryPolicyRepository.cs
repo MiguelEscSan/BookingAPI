@@ -7,7 +7,11 @@ public class InMemoryPolicyRepository : PolicyRepository
     internal readonly Dictionary<PolicyType, List<Policy>> _policies = new Dictionary<PolicyType, List<Policy>>();
     public void Save(PolicyType policyType, Policy policy)
     {
-        throw new NotImplementedException();
+        if(_policies.ContainsKey(policyType) is false)
+        {
+            _policies[policyType] = new List<Policy>();
+        }
+        _policies[policyType].Add(policy);
     }
 }
 
