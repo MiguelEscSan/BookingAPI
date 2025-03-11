@@ -22,15 +22,23 @@ namespace BookingApiRest.Test
         {
             builder.ConfigureServices(services =>
             {
-                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(HotelRepository));
-                if (descriptor != null)
+                var hotelDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(HotelRepository));
+                if (hotelDescriptor != null)
                 {
-                    services.Remove(descriptor);
+                    services.Remove(hotelDescriptor);
                 }
                 HotelRepository = new InMemoryHotelRepository();
                 services.AddSingleton<HotelRepository>(HotelRepository);
 
+                var employeeDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(EmployeeRepository));
+                if (employeeDescriptor != null)
+                {
+                    services.Remove(employeeDescriptor);
+                }
+                EmployeeRepository = new InMemoryEmployeeRepository();
+                services.AddSingleton<EmployeeRepository>(EmployeeRepository);
             });
         }
     }
+
 }
