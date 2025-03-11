@@ -1,4 +1,5 @@
 ﻿using BookingApiRest.core.BookingApp.policy.controller.DTO.request;
+using BookingApiRest.core.BookingApp.policy.domain;
 using BookingApiRest.Core.Shared.Domain;
 using Shouldly;
 using System.Net;
@@ -39,7 +40,7 @@ public class PolicyApiSetShould
         var response = await client.PutAsJsonAsync($"/api/policy/company/{companyId}", CreateRoomTypePolicyBody);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var policy = factory.PolicyRepository._policies[0];
+        var policy = factory.PolicyRepository._policies[PolicyType.Company][0];
         policy.RoomType.ToString().ShouldBe(RoomTypePolicy);
 
     }

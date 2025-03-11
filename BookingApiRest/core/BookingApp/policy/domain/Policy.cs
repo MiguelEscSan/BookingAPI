@@ -5,12 +5,10 @@ public  class Policy
 {
     public string Id { get; set; }
     public RoomType RoomType { get; set; }
-    public PolicyType PolicyType { get; set; }
 
-    public Policy(string id, RoomType roomType, PolicyType policyType)
+    public Policy(string id, RoomType roomType)
     {
         Id = id;
         RoomType = roomType;
-        PolicyType = policyType;
     }
 }

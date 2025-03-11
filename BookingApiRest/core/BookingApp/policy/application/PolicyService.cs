@@ -12,8 +12,8 @@ public class PolicyService
     }
     public void SetCompanyPolicy(string companyId, RoomType roomType)
     {
-        var policy = new Policy(companyId, roomType, PolicyType.Company);
-        _policyRepository.Save(policy);
+        var policy = new Policy(companyId, roomType);
+        _policyRepository.Save(PolicyType.Company, policy);
     }
 }
 
