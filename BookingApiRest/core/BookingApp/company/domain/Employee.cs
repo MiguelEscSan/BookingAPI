@@ -3,7 +3,7 @@ public class Employee
 {
     public string Id { get; }
     public string CompanyId { get; }
-    public Employee(string employeeId, string companyId)
+    public Employee(string companyId, string employeeId)
     {
         Id = employeeId;
         CompanyId = companyId;

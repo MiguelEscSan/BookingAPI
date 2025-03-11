@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http.Json;
 
 namespace BookingApiRest.Test.company.controller;
-public class CompanyApiShould
+public class CompanyApiAddEmployeeShould
 {
     private CustomWebApplicationFactory<Program> factory;
     private HttpClient client;
@@ -34,8 +34,9 @@ public class CompanyApiShould
         var companyId = Guid.NewGuid().ToString();
         var body = new CreateEmployeeDTO
         {
-            employeeId = employeeId,
-            companyId = companyId
+            companyId = companyId,
+            employeeId = employeeId
+
         };
 
         var response = await client.PostAsJsonAsync("/api/company/employee", body);
@@ -44,7 +45,30 @@ public class CompanyApiShould
         var employee = factory.EmployeeRepository._employees[0];
         employee.Id.ShouldBe(employeeId);
         employee.CompanyId.ShouldBe(companyId);
+    }
 
+    [Test]
+    public async Task not_allow_creating_employe_that_already_exist()
+    {
+        var employeeId = Guid.NewGuid().ToString();
+        var companyId = Guid.NewGuid().ToString();
+        var body = new CreateEmployeeDTO
+        {
+            companyId = companyId,
+            employeeId = employeeId
+
+        };
+        var body2 = new CreateEmployeeDTO
+        {
+            companyId = companyId,
+            employeeId = employeeId
+        };
+
+        var response = await client.PostAsJsonAsync("/api/company/employee", body);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        response = await client.PostAsJsonAsync("/api/company/employee", body);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
     }
 }
 

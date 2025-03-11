@@ -1,6 +1,7 @@
 ﻿using BookingApiRest.core.BookingApp.company.application.ports;
 using System.ComponentModel.Design;
 using BookingApiRest.core.BookingApp.company.domain;
+using BookingApiRest.core.shared.exceptions;
 
 namespace BookingApiRest.core.BookingApp.company.application;
 public class CompanyService {
@@ -14,9 +15,23 @@ public class CompanyService {
 
     public void AddEmployee(string companyId, string employeeId)
     {
-        var Employee = new Employee(companyId, employeeId);
+        if(_employeeRepository.Exists(employeeId))
+        {
+            throw new EmployeeAlreadyExistsException($"Employee with id {employeeId} already exists");
+        }
 
+        var Employee = new Employee(companyId, employeeId);
         _employeeRepository.Save(Employee);
+    }
+
+    public void DeleteEmployee(string employeeId)
+    {
+        if (_employeeRepository.Exists(employeeId) is false)
+        {
+            throw new EmployeeNotFoundException($"Employee with id {employeeId} not found");
+        }
+
+        _employeeRepository.Delete(employeeId);
     }
 }
 

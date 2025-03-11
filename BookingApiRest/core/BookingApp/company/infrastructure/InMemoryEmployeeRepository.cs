@@ -13,19 +13,12 @@ public class InMemoryEmployeeRepository : EmployeeRepository
 
     public void Delete(string id)
     {
-        throw new NotImplementedException();
+        _employees.RemoveAll(employee => employee.Id == id);
     }
 
     public bool Exists(string id)
     {
-        throw new NotImplementedException();
-    }
-
-    public Employee GetById(string id)
-    {
-        throw new NotImplementedException();
-    }
-
-    
+        return _employees.Any(employee => employee.Id == id);
+    }    
 }
 
