@@ -86,7 +86,7 @@ public class HotelServiceShould {
         _hotelRepository.GetById("1").Returns(hotel);
 
         _hotelService.setRoom("1", 1, RoomType.Standard);
-        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Rooms.Count == 1);
+        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Rooms[RoomType.Standard] == 1);
 
         _hotelRepository.Received().Update(validation);
     }
@@ -100,4 +100,5 @@ public class HotelServiceShould {
         exception.Message.ShouldBe("Hotel with id 1 not found");
         _hotelRepository.DidNotReceive().Update(Arg.Any<Hotel>());
     }
+
 }

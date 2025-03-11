@@ -13,19 +13,40 @@ using Shouldly;
 using BookingApiRest.Core.Shared.Domain;
 using BookingApiRest.core.BookingApp.hotel.controller.DTO.response;
 using BookingApiRest.core.BookingApp.hotel.controller.DTO.request;
+using Microsoft.Extensions.DependencyInjection;
+
 
 
 namespace BookingApiRest.Test.hotel.controller;
 
+public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
+{
+    public InMemoryHotelRepository HotelRepository { get; private set; }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureServices(services =>
+        {
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(HotelRepository));
+            if (descriptor != null)
+            {
+                services.Remove(descriptor); 
+            }
+
+            services.AddSingleton<HotelRepository, InMemoryHotelRepository>();
+        });
+    }
+}
+
 public class HotelApiShould
 {
-    private WebApplicationFactory<Program> factory;
+    private CustomWebApplicationFactory<Program> factory;
     private HttpClient client;
 
     [SetUp]
     public void SetUp()
     {
-        factory = new WebApplicationFactory<Program>();
+        factory = new CustomWebApplicationFactory<Program>();
         client = factory.CreateClient();
 
     }
@@ -42,7 +63,6 @@ public class HotelApiShould
     {
         var hotelName = "Gloria Palace";
         var uid = Guid.NewGuid().ToString();
-        var hotel = new Hotel(uid, hotelName);
         var body = new CreateHotelDTO
         {
             Id = uid,
@@ -52,7 +72,10 @@ public class HotelApiShould
         var response = await client.PostAsJsonAsync("/api/hotel", body);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        
+        var hotel = factory.HotelRepository._hotels[0];
+        hotel.Id.ShouldBe(uid);
+        hotel.Name.ShouldBe(hotelName);
+
     }
 
     [Test]

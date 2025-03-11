@@ -38,16 +38,8 @@ public class HotelController : ControllerBase {
         try
         {
             Hotel hotel = _hotelService.findHotelBy(id);
-            var hotelDto = new HotelDTO
-            {
-                Id = hotel.Id,
-                Name = hotel.Name,
-                Rooms = hotel.Rooms.Select(r => new RoomDTO
-                {
-                    Number = r.Number,
-                    RoomType = r.RoomType.ToString()
-                }).ToList()
-            };
+            var hotelDto = new HotelDTO(hotel.Id, hotel.Name, hotel.Rooms);
+            
             return Ok(hotelDto);
         }
         catch (HotelHasNotBeenFound e)
