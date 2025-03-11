@@ -19,25 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BookingApiRest.Test.hotel.controller;
 
-public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
-{
-    public InMemoryHotelRepository HotelRepository { get; private set; }
-
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        builder.ConfigureServices(services =>
-        {
-            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(HotelRepository));
-            if (descriptor != null)
-            {
-                services.Remove(descriptor); 
-            }
-
-            services.AddSingleton<HotelRepository, InMemoryHotelRepository>();
-        });
-    }
-}
-
 public class HotelApiShould
 {
     private CustomWebApplicationFactory<Program> factory;
@@ -75,7 +56,6 @@ public class HotelApiShould
         var hotel = factory.HotelRepository._hotels[0];
         hotel.Id.ShouldBe(uid);
         hotel.Name.ShouldBe(hotelName);
-
     }
 
     [Test]
