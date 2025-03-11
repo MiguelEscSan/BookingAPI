@@ -6,9 +6,9 @@ using BookingApiRest.core.shared.exceptions;
 namespace BookingApiRest.core.BookingApp.company.application;
 public class CompanyService {
 
-    private readonly EmployeeRepository _employeeRepository;
+    private readonly CompanyRepository _employeeRepository;
 
-    public CompanyService(EmployeeRepository employeeRepository)
+    public CompanyService(CompanyRepository employeeRepository)
     {
         _employeeRepository = employeeRepository;
     }   
@@ -20,8 +20,8 @@ public class CompanyService {
             throw new EmployeeAlreadyExistsException($"Employee with id {employeeId} already exists");
         }
 
-        var Employee = new Employee(companyId, employeeId);
-        _employeeRepository.Save(Employee);
+        var Employee = new Employee(employeeId);
+        _employeeRepository.Save(companyId, Employee);
     }
 
     public void DeleteEmployee(string employeeId)

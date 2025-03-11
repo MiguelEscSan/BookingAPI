@@ -1,9 +1,9 @@
 ﻿using BookingApiRest.core.BookingApp.company.domain;
 
 namespace BookingApiRest.core.BookingApp.company.application.ports;
-public interface EmployeeRepository
+public interface CompanyRepository
 {
-    void Save(Employee employee);
+    void Save(string companyId, Employee employee); 
     bool Exists(string id);
     void Delete(string id);
 }

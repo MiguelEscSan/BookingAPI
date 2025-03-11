@@ -9,14 +9,14 @@ using Shouldly;
 namespace BookingApiRest.Test.company.application;
 public class CompanyServiceShould {
 
-    private EmployeeRepository _employeeRepository;
+    private CompanyRepository _companyRepository;
     private CompanyService _companyService;
 
     [SetUp]
     public void SetUp()
     {
-        _employeeRepository = Substitute.For<EmployeeRepository>();
-        _companyService = new CompanyService(_employeeRepository);
+        _companyRepository = Substitute.For<CompanyRepository>();
+        _companyService = new CompanyService(_companyRepository);
     }
 
     [Test]
@@ -24,47 +24,46 @@ public class CompanyServiceShould {
     {
         var employeeId = Guid.NewGuid().ToString();
         var companyId = Guid.NewGuid().ToString();
-        var employee = new Employee(companyId, employeeId);
 
         _companyService.AddEmployee(companyId, employeeId);
-        var validation = Arg.Is<Employee>(employee => employee.Id == employeeId && employee.CompanyId == companyId);
-        
-        _employeeRepository.Received().Save(validation);
+
+        _companyRepository.Received().Save(companyId, Arg.Is<Employee>(e => e.Id == employeeId));
     }
 
     [Test]
-    public void not_allow_creating_employe_that_already_exist()
+    public void not_allow_creating_employee_that_already_exists()
     {
         var employeeId = Guid.NewGuid().ToString();
         var companyId = Guid.NewGuid().ToString();
-        var employee = new Employee(companyId, employeeId);
-        _employeeRepository.Exists(employeeId).Returns(true);
-        
+
+        _companyRepository.Exists(employeeId).Returns(true);
+
         Should.Throw<EmployeeAlreadyExistsException>(() => _companyService.AddEmployee(companyId, employeeId));
 
-        _employeeRepository.DidNotReceive().Save(Arg.Any<Employee>());
+        _companyRepository.DidNotReceive().Save(Arg.Any<string>(), Arg.Any<Employee>());
     }
+
 
     [Test]
     public void delete_existing_employee()
     {
         var employeeId = Guid.NewGuid().ToString();
-        _employeeRepository.Exists(employeeId).Returns(true);
+        _companyRepository.Exists(employeeId).Returns(true);
 
         _companyService.DeleteEmployee(employeeId);
 
-        _employeeRepository.Received().Delete(employeeId);
+        _companyRepository.Received().Delete(employeeId);
     }
 
     [Test]
     public void not_allow_deleting_an_employee_that_does_not_exist()
     {
         var employeeId = Guid.NewGuid().ToString();
-        _employeeRepository.Exists(employeeId).Returns(false);
+        _companyRepository.Exists(employeeId).Returns(false);
 
         Should.Throw<EmployeeNotFoundException>(() => _companyService.DeleteEmployee(employeeId));
 
-        _employeeRepository.DidNotReceive().Delete(Arg.Any<string>());
+        _companyRepository.DidNotReceive().Delete(Arg.Any<string>());
     }
 }
 

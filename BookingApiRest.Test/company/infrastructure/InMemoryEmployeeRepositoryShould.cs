@@ -9,31 +9,30 @@ namespace BookingApiRest.Test.company.infrastructure;
 public class InMemoryEmployeeRepositoryShould
 {
 
-    private InMemoryEmployeeRepository _inMemoryEmployeeRepository;
+    private InMemoryCompanyRepository _inMemoryEmployeeRepository;
 
     [SetUp]
     public void SetUp()
     {
-        _inMemoryEmployeeRepository = new InMemoryEmployeeRepository();
+        _inMemoryEmployeeRepository = new InMemoryCompanyRepository();
     }
 
     [Test]
     public void save_a_single_employee()
     {
-        var employee = new Employee("1", "1");
+        var employee = new Employee("1");
 
-        _inMemoryEmployeeRepository.Save(employee);
-        var result = _inMemoryEmployeeRepository._employees[0];
+        _inMemoryEmployeeRepository.Save("1", employee);
+        var result = _inMemoryEmployeeRepository._companies["1"][0];
 
         result.Id.ShouldBe("1");
-        result.CompanyId.ShouldBe("1");
     }
 
     [Test]
     public void check_if_an_employee_exists_by_id()
     {
-        var employee = new Employee("1", "1");
-        _inMemoryEmployeeRepository.Save(employee);
+        var employee = new Employee("1");
+        _inMemoryEmployeeRepository.Save("1", employee);
 
         var result = _inMemoryEmployeeRepository.Exists("1");
 
@@ -50,12 +49,12 @@ public class InMemoryEmployeeRepositoryShould
     [Test]
     public void delete_an_employee()
     {
-        var employee = new Employee("1", "1");
-        _inMemoryEmployeeRepository.Save(employee);
+        var employee = new Employee("1");
+        _inMemoryEmployeeRepository.Save("1", employee);
 
         _inMemoryEmployeeRepository.Delete("1");
 
-        _inMemoryEmployeeRepository._employees.Count.ShouldBe(0);
+        _inMemoryEmployeeRepository._companies["1"].Count.ShouldBe(0);
     }
 }
 

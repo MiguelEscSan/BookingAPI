@@ -42,9 +42,8 @@ public class CompanyApiAddEmployeeShould
         var response = await client.PostAsJsonAsync("/api/company/employee", body);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var employee = factory.EmployeeRepository._employees[0];
+        var employee = factory.EmployeeRepository._companies[companyId][0];
         employee.Id.ShouldBe(employeeId);
-        employee.CompanyId.ShouldBe(companyId);
     }
 
     [Test]
@@ -60,11 +59,10 @@ public class CompanyApiAddEmployeeShould
 
         var response = await client.PostAsJsonAsync("/api/company/employee", body);
 
-        var employee = factory.EmployeeRepository._employees[0];
+        var employee = factory.EmployeeRepository._companies[companyId][0];
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         employee.Id.ShouldBe(employeeId);
-        employee.CompanyId.ShouldBe(companyId);
 
         var employeeId2 = Guid.NewGuid().ToString();
         var body2 = new CreateEmployeeDTO
@@ -74,11 +72,10 @@ public class CompanyApiAddEmployeeShould
         };
 
         response = await client.PostAsJsonAsync("/api/company/employee", body2);
-        var employee2 = factory.EmployeeRepository._employees[1];
+        var employee2 = factory.EmployeeRepository._companies[companyId][1];
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         employee2.Id.ShouldBe(employeeId2);
-        employee2.CompanyId.ShouldBe(companyId);
     }
     [Test]
     public async Task not_allow_creating_employe_that_already_exist()

@@ -2,6 +2,7 @@
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -13,6 +14,7 @@ public class CompanyApiDeleteShould
     private CustomWebApplicationFactory<Program> factory;
     private HttpClient client;
     private string employeeId;
+    private string companyId;
 
     [SetUp]
     public void SetUp()
@@ -20,7 +22,8 @@ public class CompanyApiDeleteShould
         factory = new CustomWebApplicationFactory<Program>();
         client = factory.CreateClient();
         employeeId = Guid.NewGuid().ToString();
-        factory.EmployeeRepository.Save(new Employee(Guid.NewGuid().ToString(), employeeId));
+        companyId = Guid.NewGuid().ToString();
+        factory.EmployeeRepository.Save(companyId, new Employee(employeeId));
 
     }
 
@@ -37,7 +40,7 @@ public class CompanyApiDeleteShould
         var response = await client.DeleteAsync($"/api/company/employee/{employeeId}");
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        factory.EmployeeRepository._employees.Count.ShouldBe(0);
+        factory.EmployeeRepository._companies[companyId].Count.ShouldBe(0);
     }
 
     [Test]
