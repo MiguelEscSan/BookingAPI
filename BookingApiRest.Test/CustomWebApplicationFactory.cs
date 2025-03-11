@@ -1,5 +1,7 @@
 ﻿using BookingApiRest.core.BookingApp.company.application.ports;
 using BookingApiRest.core.BookingApp.company.infrastructure;
+using BookingApiRest.core.BookingApp.policy.application.DTO;
+using BookingApiRest.core.BookingApp.policy.infrastructure;
 using BookingApiRest.Infrastructure.Repositories;
 using BookingApp.Hotel.Application.Ports;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +19,7 @@ namespace BookingApiRest.Test
     {
         public InMemoryHotelRepository HotelRepository { get; private set; }
         public InMemoryCompanyRepository EmployeeRepository { get; private set; }
+        public InMemoryPolicyRepository PolicyRepository { get; private set; }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -37,6 +40,14 @@ namespace BookingApiRest.Test
                 }
                 EmployeeRepository = new InMemoryCompanyRepository();
                 services.AddSingleton<CompanyRepository>(EmployeeRepository);
+
+                var policyDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(PolicyRepository));
+                if (policyDescriptor != null)
+                {
+                    services.Remove(policyDescriptor);
+                }
+                PolicyRepository = new InMemoryPolicyRepository();
+                services.AddSingleton<PolicyRepository>(PolicyRepository);
             });
         }
     }

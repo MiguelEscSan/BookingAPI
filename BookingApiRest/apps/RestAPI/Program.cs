@@ -2,6 +2,9 @@ using BookingApiRest.core.BookingApp.company.application;
 using BookingApiRest.core.BookingApp.company.application.ports;
 using BookingApiRest.core.BookingApp.company.infrastructure;
 using BookingApiRest.core.BookingApp.hotel.application;
+using BookingApiRest.core.BookingApp.policy.application;
+using BookingApiRest.core.BookingApp.policy.application.DTO;
+using BookingApiRest.core.BookingApp.policy.infrastructure;
 using BookingApiRest.Infrastructure.Repositories;
 using BookingApp.Hotel.Application.Ports;
 
@@ -20,6 +23,9 @@ public class Program
 
         builder.Services.AddSingleton<CompanyRepository, InMemoryCompanyRepository>();
         builder.Services.AddSingleton<CompanyService>();
+
+        builder.Services.AddSingleton<PolicyRepository, InMemoryPolicyRepository>();
+        builder.Services.AddSingleton<PolicyService>();
 
         var app = builder.Build();
 
