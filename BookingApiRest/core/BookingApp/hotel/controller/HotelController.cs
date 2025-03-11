@@ -27,7 +27,7 @@ public class HotelController : ControllerBase {
         try {
             _hotelService.AddHotel(request.Id, request.Name);
             return Ok();
-        } catch (ConflictException e) {
+        } catch (HotelAlreadyExistsException e) {
             return Conflict(e.Message);
         }
     }
@@ -50,7 +50,7 @@ public class HotelController : ControllerBase {
             };
             return Ok(hotelDto);
         }
-        catch (NotFoundException e)
+        catch (HotelHasNotBeenFound e)
         {
             return NotFound(e.Message);
 
@@ -65,7 +65,7 @@ public class HotelController : ControllerBase {
             _hotelService.setRoom(id, request.RoomNumber, request.GetRoomTypeEnum());
             return Ok();
         }
-        catch (NotFoundException e)
+        catch (HotelHasNotBeenFound e)
         {
             return NotFound(e.Message);
         }

@@ -52,7 +52,7 @@ public class HotelServiceShould {
         var hotel = new Hotel("1", "Hotel One");
 
         _hotelRepository.Exists("1").Returns(true);
-        var exception = Should.Throw<ConflictException>(() => _hotelService.AddHotel("1", "Hotel One"));
+        var exception = Should.Throw<HotelAlreadyExistsException>(() => _hotelService.AddHotel("1", "Hotel One"));
         
         exception.Message.ShouldBe("Hotel ID already exists");
         _hotelRepository.DidNotReceive().Create(Arg.Any<Hotel>());
@@ -74,7 +74,7 @@ public class HotelServiceShould {
     {
         _hotelRepository.GetById("1").Returns((Hotel)null);
 
-        var exception = Should.Throw<NotFoundException>(() => _hotelService.findHotelBy("1"));
+        var exception = Should.Throw<HotelHasNotBeenFound>(() => _hotelService.findHotelBy("1"));
 
         exception.Message.ShouldBe("Hotel with id 1 not found");
     }
@@ -95,7 +95,7 @@ public class HotelServiceShould {
     public void not_allow_to_set_a_room_when_hotel_does_not_exist()
     {
         _hotelRepository.GetById("1").Returns((Hotel) null);
-        var exception = Should.Throw<NotFoundException>(() => _hotelService.setRoom("1", 1, RoomType.Standard));
+        var exception = Should.Throw<HotelHasNotBeenFound>(() => _hotelService.setRoom("1", 1, RoomType.Standard));
 
         exception.Message.ShouldBe("Hotel with id 1 not found");
         _hotelRepository.DidNotReceive().Update(Arg.Any<Hotel>());

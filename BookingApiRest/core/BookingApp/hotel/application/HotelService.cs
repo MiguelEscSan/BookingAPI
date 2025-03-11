@@ -16,7 +16,7 @@ public class HotelService {
     public void AddHotel(string HotelId, string HotelName) {
         if (_hotelRepository.Exists(HotelId))
         {
-            throw new ConflictException("Hotel ID already exists");
+            throw new HotelAlreadyExistsException("Hotel ID already exists");
         }
 
         var newHotel = new Hotel(HotelId, HotelName);
@@ -29,7 +29,7 @@ public class HotelService {
         var hotel = _hotelRepository.GetById(id);
         if (hotel == null)
         {
-            throw new NotFoundException($"Hotel with id {id} not found");
+            throw new HotelHasNotBeenFound($"Hotel with id {id} not found");
         }
         return hotel;
 

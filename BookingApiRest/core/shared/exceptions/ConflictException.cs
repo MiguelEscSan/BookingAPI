@@ -1,9 +1,9 @@
 ﻿namespace BookingApiRest.core.shared.exceptions;
-public class ConflictException : Exception {
-    public ConflictException() : base("A conflict occurred with the current state of the resource.") { }
+public class HotelAlreadyExistsException : Exception {
+    public HotelAlreadyExistsException() : base("A conflict occurred with the current state of the resource.") { }
 
-    public ConflictException(string message) : base(message) { }
+    public HotelAlreadyExistsException(string message) : base(message) { }
 
-    public ConflictException(string message, Exception innerException) : base(message, innerException) { }
+    public HotelAlreadyExistsException(string message, Exception innerException) : base(message, innerException) { }
 }
 
