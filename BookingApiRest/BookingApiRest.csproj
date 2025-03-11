@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="core\BookingApp\booking\controller\" />
-    <Folder Include="core\BookingApp\company\controller\" />
     <Folder Include="core\BookingApp\policy\controller\" />
   </ItemGroup>
 

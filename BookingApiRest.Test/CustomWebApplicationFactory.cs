@@ -1,4 +1,6 @@
-﻿using BookingApiRest.Infrastructure.Repositories;
+﻿using BookingApiRest.core.BookingApp.company.application.ports;
+using BookingApiRest.core.BookingApp.company.infrastructure;
+using BookingApiRest.Infrastructure.Repositories;
 using BookingApp.Hotel.Application.Ports;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -14,6 +16,7 @@ namespace BookingApiRest.Test
     public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
     {
         public InMemoryHotelRepository HotelRepository { get; private set; }
+        public InMemoryEmployeeRepository EmployeeRepository { get; private set; }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -26,6 +29,7 @@ namespace BookingApiRest.Test
                 }
                 HotelRepository = new InMemoryHotelRepository();
                 services.AddSingleton<HotelRepository>(HotelRepository);
+
             });
         }
     }
