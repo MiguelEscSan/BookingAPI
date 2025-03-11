@@ -37,6 +37,7 @@ public class CompanyApiDeleteShould
         var response = await client.DeleteAsync($"/api/company/employee/{employeeId}");
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        factory.EmployeeRepository._employees.Count.ShouldBe(0);
     }
 
     [Test]

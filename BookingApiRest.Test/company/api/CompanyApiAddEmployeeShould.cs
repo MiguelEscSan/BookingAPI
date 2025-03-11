@@ -48,6 +48,39 @@ public class CompanyApiAddEmployeeShould
     }
 
     [Test]
+    public async Task create_multiple_employees()
+    {
+        var employeeId = Guid.NewGuid().ToString();
+        var companyId = Guid.NewGuid().ToString();
+        var body = new CreateEmployeeDTO
+        {
+            companyId = companyId,
+            employeeId = employeeId
+        };
+
+        var response = await client.PostAsJsonAsync("/api/company/employee", body);
+
+        var employee = factory.EmployeeRepository._employees[0];
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        employee.Id.ShouldBe(employeeId);
+        employee.CompanyId.ShouldBe(companyId);
+
+        var employeeId2 = Guid.NewGuid().ToString();
+        var body2 = new CreateEmployeeDTO
+        {
+            companyId = companyId,
+            employeeId = employeeId2
+        };
+
+        response = await client.PostAsJsonAsync("/api/company/employee", body2);
+        var employee2 = factory.EmployeeRepository._employees[1];
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        employee2.Id.ShouldBe(employeeId2);
+        employee2.CompanyId.ShouldBe(companyId);
+    }
+    [Test]
     public async Task not_allow_creating_employe_that_already_exist()
     {
         var employeeId = Guid.NewGuid().ToString();
@@ -70,6 +103,7 @@ public class CompanyApiAddEmployeeShould
 
         response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
     }
+    
 }
 
 
