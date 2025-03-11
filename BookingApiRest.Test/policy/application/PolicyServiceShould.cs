@@ -26,7 +26,7 @@ public class PolicyServiceShould
 
         _policyService.SetCompanyPolicy(companyId, roomType);
 
-        _policyRepository.Received().Save(companyId, Arg.Is<Policy>(policy => policy.RoomType == roomType && policy.PolicyType == PolicyType.Company));
+        _policyRepository.Received().Save(Arg.Is<Policy>(policy => policy.RoomType == roomType && policy.PolicyType == PolicyType.Company));
     }
 }
 

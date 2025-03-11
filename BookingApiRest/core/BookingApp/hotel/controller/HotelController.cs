@@ -15,7 +15,6 @@ namespace BookingApiRest.Controllers;
 [Route("api/hotel")]
 public class HotelController : ControllerBase {
 
-    private readonly HotelRepository _hotelRepository;
     private readonly HotelService _hotelService;
 
     public HotelController(HotelService hotelService) {

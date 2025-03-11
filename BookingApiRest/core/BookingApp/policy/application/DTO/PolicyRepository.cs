@@ -2,6 +2,6 @@
 
 namespace BookingApiRest.core.BookingApp.policy.application.DTO;
 public interface PolicyRepository {
-    void Save(string id, Policy policy);
+    void Save(Policy policy);
     
 }
