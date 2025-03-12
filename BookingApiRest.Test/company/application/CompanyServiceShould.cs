@@ -1,6 +1,7 @@
 ﻿using BookingApiRest.core.BookingApp.company.application;
 using BookingApiRest.core.BookingApp.company.application.ports;
 using BookingApiRest.core.BookingApp.company.domain;
+using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.exceptions;
 using NSubstitute;
 using NUnit.Framework;
@@ -11,12 +12,15 @@ public class CompanyServiceShould {
 
     private CompanyRepository _companyRepository;
     private CompanyService _companyService;
+    private EventBus _eventBus;
 
     [SetUp]
     public void SetUp()
     {
         _companyRepository = Substitute.For<CompanyRepository>();
-        _companyService = new CompanyService(_companyRepository);
+        _eventBus = Substitute.For<EventBus>();
+
+        _companyService = new CompanyService(_companyRepository, _eventBus);
     }
 
     [Test]

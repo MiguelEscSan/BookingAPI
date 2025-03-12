@@ -2,6 +2,7 @@
 using BookingApiRest.core.BookingApp.policy.application;
 using BookingApiRest.core.BookingApp.policy.application.DTO;
 using BookingApiRest.core.BookingApp.policy.domain;
+using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.Shared.Domain;
 using NSubstitute;
@@ -11,12 +12,14 @@ public class PolicyServiceShould
 {
     private PolicyRepository _policyRepository;
     private PolicyService _policyService;
+    private EventBus _eventBus;
 
     [SetUp]
     public void SetUp()
     {
+        _eventBus = Substitute.For<EventBus>();
         _policyRepository = Substitute.For<PolicyRepository>();
-        _policyService = new PolicyService(_policyRepository);
+        _policyService = new PolicyService(_policyRepository, _eventBus);
     }
 
     [Test]

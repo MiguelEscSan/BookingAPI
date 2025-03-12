@@ -1,14 +1,17 @@
 ﻿using BookingApiRest.core.BookingApp.policy.application.DTO;
 using BookingApiRest.core.BookingApp.policy.domain;
+using BookingApiRest.core.shared.application;
 using BookingApiRest.Core.Shared.Domain;
 
 namespace BookingApiRest.core.BookingApp.policy.application;
 public class PolicyService 
 {
     private readonly PolicyRepository _policyRepository;
-    public PolicyService(PolicyRepository policyRepository)
+    private readonly EventBus _eventBus;
+    public PolicyService(PolicyRepository policyRepository, EventBus eventBus)
     {
         _policyRepository = policyRepository;
+        _eventBus = eventBus;
     }
     public void SetCompanyPolicy(string companyId, RoomType roomType)
     {

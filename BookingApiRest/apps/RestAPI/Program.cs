@@ -5,6 +5,8 @@ using BookingApiRest.core.BookingApp.hotel.application;
 using BookingApiRest.core.BookingApp.policy.application;
 using BookingApiRest.core.BookingApp.policy.application.DTO;
 using BookingApiRest.core.BookingApp.policy.infrastructure;
+using BookingApiRest.core.shared.application;
+using BookingApiRest.core.shared.infrastructure;
 using BookingApiRest.Infrastructure.Repositories;
 using BookingApp.Hotel.Application.Ports;
 
@@ -17,6 +19,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
+
+        builder.Services.AddSingleton<EventBus, InMemoryEventBus>();
 
         builder.Services.AddSingleton<HotelRepository, InMemoryHotelRepository>();
         builder.Services.AddSingleton<HotelService>();
