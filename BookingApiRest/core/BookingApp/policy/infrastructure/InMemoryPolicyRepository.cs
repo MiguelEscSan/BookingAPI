@@ -21,11 +21,16 @@ public class InMemoryPolicyRepository : PolicyRepository
 
     public bool EmployeePolicyExists(string employeeId)
     {
-        return _policies[PolicyType.Employee].ContainsKey(employeeId);
+
+        return _policies.ContainsKey(PolicyType.Employee) &&
+               _policies[PolicyType.Employee].ContainsKey(employeeId);
     }
 
     public bool CheckEmployeePolicy(string employeeId, RoomType roomType)
     {
+        if (EmployeePolicyExists(employeeId) is false) {
+            return false;
+        }
         return _policies[PolicyType.Employee][employeeId].RoomType == roomType;
     }
 }

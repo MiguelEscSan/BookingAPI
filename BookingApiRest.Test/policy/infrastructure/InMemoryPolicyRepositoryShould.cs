@@ -58,4 +58,23 @@ public class InMemoryPolicyRepositoryShould {
         
         result.ShouldBeTrue();
     }
+
+    [Test]
+    public void check_if_an_employee_policy_does_not_exist()
+    {
+        var result = _inMemoryPolicyRepository.EmployeePolicyExists("1");
+
+        result.ShouldBeFalse();
+    }
+
+    [Test]
+    public void check_if_employee_policy_is_correct()
+    {
+        var policy = new Policy("1", RoomType.Standard);
+        _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
+
+        var result = _inMemoryPolicyRepository.CheckEmployeePolicy("1", RoomType.Standard);
+
+        result.ShouldBeTrue();
+    }
 }
