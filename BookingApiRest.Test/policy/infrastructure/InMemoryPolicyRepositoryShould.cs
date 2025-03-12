@@ -36,4 +36,26 @@ public class InMemoryPolicyRepositoryShould {
         var result = _inMemoryPolicyRepository._policies[PolicyType.Company]["1"];
         result.RoomType.ShouldBe(RoomType.Suite);
     }
+
+    [Test]
+    public void save_a_policy_for_an_employee()
+    {
+        var policy = new Policy("1", RoomType.Standard);
+
+        _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
+
+        var result = _inMemoryPolicyRepository._policies[PolicyType.Employee]["1"];
+        result.RoomType.ShouldBe(RoomType.Standard);
+    }
+
+    [Test]
+    public void check_if_an_employee_policy_exists()
+    {
+        var policy = new Policy("1", RoomType.Standard);
+        _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
+
+        var result = _inMemoryPolicyRepository.EmployeePolicyExists("1");
+        
+        result.ShouldBeTrue();
+    }
 }

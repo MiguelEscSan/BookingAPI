@@ -32,5 +32,21 @@ public class PolicyService
         var policy = new Policy(employeeId, roomType);
         _policyRepository.Save(PolicyType.Employee, policy);
     }
+
+    public bool IsBookingAllowed(string employeeId, RoomType roomType)
+    {
+        if(_companyRepository.Exists(employeeId) is false)
+        {
+            throw new EmployeeNotFoundException($"Employee with id {employeeId} not found");
+        }
+
+        if (_policyRepository.EmployeePolicyExists(employeeId))
+        {
+            return _policyRepository.CheckEmployeePolicy(employeeId, roomType);
+        }
+
+        return true;
+        
+    }
 }
 

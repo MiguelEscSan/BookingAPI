@@ -7,6 +7,7 @@ using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.Shared.Domain;
 using NSubstitute;
+using Shouldly;
 
 namespace BookingApiRest.Test.policy.application;
 public class PolicyServiceShould
@@ -71,6 +72,21 @@ public class PolicyServiceShould
         _companyRepository.Exists(employeeId).Returns(false);
 
         Assert.Throws<EmployeeNotFoundException>(() => _policyService.SetEmployeePolicy(employeeId, roomType));
+    }
+
+    [Test]
+    public void check_if_booking_is_allow()
+    {
+        var companyId = Guid.NewGuid().ToString();
+        var employeeId = Guid.NewGuid().ToString();
+        var roomType = RoomType.Standard;
+        _companyRepository.Exists(employeeId).Returns(true);
+        _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
+        _policyRepository.CheckEmployeePolicy(employeeId, roomType).Returns(true);
+
+        var result = _policyService.IsBookingAllowed(employeeId, roomType);
+
+        result.ShouldBeTrue();
     }
 }
 

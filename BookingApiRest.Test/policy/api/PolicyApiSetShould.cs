@@ -13,7 +13,6 @@ public class PolicyApiSetShould
     private HttpClient client;
 
     private string companyId = Guid.NewGuid().ToString();
-    private string employeeId = Guid.NewGuid().ToString();
     private string createdEmployeeId = Guid.NewGuid().ToString();
 
     [SetUp]
@@ -100,6 +99,7 @@ public class PolicyApiSetShould
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
+
 
 }
 
