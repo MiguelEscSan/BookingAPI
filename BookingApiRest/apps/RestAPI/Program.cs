@@ -1,16 +1,15 @@
-using BookingApiRest.core.BookingApp.company.application;
 using BookingApiRest.core.BookingApp.company.application.ports;
+using BookingApiRest.core.BookingApp.company.application;
 using BookingApiRest.core.BookingApp.company.infrastructure;
 using BookingApiRest.core.BookingApp.hotel.application;
-using BookingApiRest.core.BookingApp.policy.application;
 using BookingApiRest.core.BookingApp.policy.application.DTO;
+using BookingApiRest.core.BookingApp.policy.application.handler;
+using BookingApiRest.core.BookingApp.policy.application;
 using BookingApiRest.core.BookingApp.policy.infrastructure;
 using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.infrastructure;
 using BookingApiRest.Infrastructure.Repositories;
 using BookingApp.Hotel.Application.Ports;
-
-namespace BookingApiRest;
 
 public class Program
 {
@@ -22,6 +21,7 @@ public class Program
 
         builder.Services.AddSingleton<EventBus, InMemoryEventBus>();
 
+        // Repositorios
         builder.Services.AddSingleton<HotelRepository, InMemoryHotelRepository>();
         builder.Services.AddSingleton<HotelService>();
 
@@ -31,7 +31,19 @@ public class Program
         builder.Services.AddSingleton<PolicyRepository, InMemoryPolicyRepository>();
         builder.Services.AddSingleton<PolicyService>();
 
+        // EventHandlers
+        builder.Services.AddSingleton<IEventHandler, NewEmployeeHandler>();
+
         var app = builder.Build();
+
+        // Suscribir los handlers al EventBus
+        var eventBus = app.Services.GetRequiredService<EventBus>();
+        var handlers = app.Services.GetServices<IEventHandler>();
+
+        foreach (var handler in handlers)
+        {
+            eventBus.Subscribe(handler);
+        }
 
         app.UseHttpsRedirection();
 

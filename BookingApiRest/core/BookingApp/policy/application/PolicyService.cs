@@ -10,12 +10,11 @@ public class PolicyService
 {
     private readonly PolicyRepository _policyRepository;
     private readonly EventBus _eventBus;
-    private readonly CompanyRepository _companyRepository; // Cambiarlo luego para que vaya por bus de eventos
-    public PolicyService(PolicyRepository policyRepository, EventBus eventBus, CompanyRepository companyRepository)
+ 
+    public PolicyService(PolicyRepository policyRepository, EventBus eventBus)
     {
         _policyRepository = policyRepository;
         _eventBus = eventBus;
-        _companyRepository = companyRepository;
     }
     public void SetCompanyPolicy(string companyId, RoomType roomType)
     {
@@ -25,7 +24,7 @@ public class PolicyService
 
     public void SetEmployeePolicy(string employeeId, RoomType roomType)
     {
-        if(_companyRepository.Exists(employeeId) is false)
+        if(_policyRepository.EmployeePolicyExists(employeeId) is false)
         {
             throw new EmployeeNotFoundException($"Employee with id {employeeId} not found");
         }
@@ -35,7 +34,7 @@ public class PolicyService
 
     public bool IsBookingAllowed(string employeeId, RoomType roomType)
     {
-        if(_companyRepository.Exists(employeeId) is false)
+        if(_policyRepository.EmployeePolicyExists(employeeId) is false)
         {
             throw new EmployeeNotFoundException($"Employee with id {employeeId} not found");
         }

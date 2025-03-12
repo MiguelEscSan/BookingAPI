@@ -1,7 +1,10 @@
-﻿using BookingApiRest.core.BookingApp.company.domain;
+﻿using BookingApiRest.core.BookingApp.company.application;
+using BookingApiRest.core.BookingApp.company.domain;
+using BookingApiRest.core.BookingApp.policy.application;
 using BookingApiRest.core.BookingApp.policy.controller.DTO.request;
 using BookingApiRest.core.BookingApp.policy.domain;
 using BookingApiRest.Core.Shared.Domain;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Net;
 using System.Net.Http.Json;
@@ -20,8 +23,8 @@ public class PolicyApiSetShould
     {
         factory = new CustomWebApplicationFactory<Program>();
         client = factory.CreateClient();
-
-        factory.EmployeeRepository.Save(companyId, new Employee(createdEmployeeId));
+        var companyService = factory.Services.GetRequiredService<CompanyService>();
+        companyService.AddEmployee(companyId, createdEmployeeId);
     }
 
     [TearDown]

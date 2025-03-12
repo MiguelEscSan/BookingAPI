@@ -1,22 +1,34 @@
 ﻿using BookingApiRest.core.shared.application;
+using BookingApiRest.core.shared.domain;
 
 namespace BookingApiRest.core.shared.infrastructure
 {
     public class InMemoryEventBus : EventBus
     {
-        private readonly List<Delegate> _handlers = new List<Delegate>();
+        private readonly Dictionary<string, List<IEventHandler>> _handlers = new Dictionary<string, List<IEventHandler>>();
 
-        public void Publish<T>(T eventItem)
+        public void Publish(List<DomainEvent> events)
         {
-            foreach (var handler in _handlers.OfType<Action<T>>())
+            foreach (var domainEvent in events)
             {
-                handler(eventItem);
+                if (_handlers.TryGetValue(domainEvent.GetEventId(), out var eventHandlers))
+                {
+                    foreach (var handler in eventHandlers)
+                    {
+                        handler.Handle(domainEvent);
+                    }
+                }
             }
         }
 
-        public void Subscribe<T>(Action<T> handler)
+        public void Subscribe(IEventHandler handler)
         {
-            _handlers.Add(handler);
+            var eventId = handler.GetEventId();
+            if (!_handlers.ContainsKey(eventId))
+            {
+                _handlers[eventId] = new List<IEventHandler>();
+            }
+            _handlers[eventId].Add(handler);
         }
     }
 }

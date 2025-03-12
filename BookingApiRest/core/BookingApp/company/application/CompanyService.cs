@@ -25,6 +25,8 @@ public class CompanyService {
 
         var Employee = new Employee(employeeId);
         _employeeRepository.Save(companyId, Employee);
+
+        this._eventBus.Publish(Employee.PullDomainEvents());
     }
 
     public void DeleteEmployee(string employeeId)

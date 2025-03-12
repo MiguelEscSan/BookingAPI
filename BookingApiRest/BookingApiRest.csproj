@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Compile Include="core\BookingApp\policy\application\DTO\PolicyRepository.cs" />
+    <Compile Include="core\BookingApp\policy\application\handler\NewEmployeeHandler.cs" />
     <Compile Include="core\BookingApp\policy\application\PolicyService.cs" />
     <Compile Include="core\BookingApp\policy\domain\Policy.cs" />
     <Compile Include="core\BookingApp\policy\domain\PolicyType.cs" />

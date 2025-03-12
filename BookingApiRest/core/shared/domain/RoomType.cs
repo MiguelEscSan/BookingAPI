@@ -3,5 +3,6 @@ public enum RoomType
 {
     Standard,
     Junior,
-    Suite
+    Suite,
+    All
 }

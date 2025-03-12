@@ -1,9 +1,10 @@
-﻿namespace BookingApiRest.core.shared.application
+﻿using BookingApiRest.core.shared.domain;
+
+namespace BookingApiRest.core.shared.application
 {
     public interface EventBus
     {
-        void Publish<T>(T eventItem);
-        void Subscribe<T>(Action<T> handler);
-
+        void Publish(List<DomainEvent> events);
+        void Subscribe(IEventHandler handler);
     }
 }

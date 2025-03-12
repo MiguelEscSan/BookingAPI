@@ -14,7 +14,6 @@ public class PolicyServiceShould
 {
     private PolicyRepository _policyRepository;
     private PolicyService _policyService;
-    private CompanyRepository _companyRepository;
     private EventBus _eventBus;
 
     [SetUp]
@@ -22,9 +21,8 @@ public class PolicyServiceShould
     {
         _eventBus = Substitute.For<EventBus>();
         _policyRepository = Substitute.For<PolicyRepository>();
-        _companyRepository = Substitute.For<CompanyRepository>();
 
-        _policyService = new PolicyService(_policyRepository, _eventBus, _companyRepository);
+        _policyService = new PolicyService(_policyRepository, _eventBus);
     }
 
     [Test]
@@ -57,7 +55,7 @@ public class PolicyServiceShould
     {
         var employeeId = Guid.NewGuid().ToString();
         var roomType = RoomType.Standard;
-        _companyRepository.Exists(employeeId).Returns(true);
+        _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
 
         _policyService.SetEmployeePolicy(employeeId, roomType);
 
@@ -69,7 +67,7 @@ public class PolicyServiceShould
     {
         var employeeId = Guid.NewGuid().ToString();
         var roomType = RoomType.Standard;
-        _companyRepository.Exists(employeeId).Returns(false);
+        _policyRepository.EmployeePolicyExists(employeeId).Returns(false);
 
         Assert.Throws<EmployeeNotFoundException>(() => _policyService.SetEmployeePolicy(employeeId, roomType));
     }
@@ -80,7 +78,6 @@ public class PolicyServiceShould
         var companyId = Guid.NewGuid().ToString();
         var employeeId = Guid.NewGuid().ToString();
         var roomType = RoomType.Standard;
-        _companyRepository.Exists(employeeId).Returns(true);
         _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
         _policyRepository.CheckEmployeePolicy(employeeId, roomType).Returns(true);
 

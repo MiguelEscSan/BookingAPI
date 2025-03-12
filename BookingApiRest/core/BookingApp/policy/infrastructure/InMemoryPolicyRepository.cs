@@ -7,8 +7,6 @@ public class InMemoryPolicyRepository : PolicyRepository
 {
     internal readonly Dictionary<PolicyType, Dictionary<string, Policy>> _policies = new Dictionary<PolicyType, Dictionary<string, Policy>>();
 
-
-
     public void Save(PolicyType policyType, Policy policy)
     {
         
