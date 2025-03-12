@@ -1,4 +1,5 @@
-﻿using BookingApiRest.core.BookingApp.policy.controller.DTO.request;
+﻿using BookingApiRest.core.BookingApp.company.domain;
+using BookingApiRest.core.BookingApp.policy.controller.DTO.request;
 using BookingApiRest.core.BookingApp.policy.domain;
 using BookingApiRest.Core.Shared.Domain;
 using Shouldly;
@@ -11,12 +12,12 @@ public class PolicyApiSetShould
     private CustomWebApplicationFactory<Program> factory;
     private HttpClient client;
 
-    private string companyId;
+    private string companyId = Guid.NewGuid().ToString();
+    private string employeeId = Guid.NewGuid().ToString();
 
     [SetUp]
     public void SetUp()
     {
-        companyId = Guid.NewGuid().ToString();
         factory = new CustomWebApplicationFactory<Program>();
         client = factory.CreateClient();
     }
@@ -40,9 +41,61 @@ public class PolicyApiSetShould
         var response = await client.PutAsJsonAsync($"/api/policy/company/{companyId}", CreateRoomTypePolicyBody);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var policy = factory.PolicyRepository._policies[PolicyType.Company][0];
+        var policy = factory.PolicyRepository._policies[PolicyType.Company][companyId];
         policy.RoomType.ToString().ShouldBe(RoomTypePolicy);
+    }
 
+    [Test]
+    public async Task update_an_existing_company_policy()
+    {
+        var RoomTypePolicy = RoomType.Standard.ToString();
+        var CreateRoomTypePolicyBody = new CreatePolicyDTO
+        {
+            RoomType = RoomTypePolicy,
+        };
+        await client.PutAsJsonAsync($"/api/policy/company/{companyId}", CreateRoomTypePolicyBody);
+        var newRoomTypePolicy = RoomType.Suite.ToString();
+        var UpdateRoomTypePolicyBody = new CreatePolicyDTO
+        {
+            RoomType = newRoomTypePolicy,
+        };
+
+        var response = await client.PutAsJsonAsync($"/api/policy/company/{companyId}", UpdateRoomTypePolicyBody);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var policy = factory.PolicyRepository._policies[PolicyType.Company][companyId];
+        policy.RoomType.ToString().ShouldBe(newRoomTypePolicy);
+    }
+
+    [Test]
+    public async Task create_a_policy_for_a_employee()
+    {
+        var RoomTypePolicy = RoomType.Standard.ToString();
+        var CreateRoomTypePolicyBody = new CreatePolicyDTO
+        {
+            RoomType = RoomTypePolicy,
+        };
+
+        var response = await client.PutAsJsonAsync($"/api/policy/employee/{employeeId}", CreateRoomTypePolicyBody);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var policy = factory.PolicyRepository._policies[PolicyType.Employee][employeeId];
+        policy.RoomType.ToString().ShouldBe(RoomTypePolicy);
+    }
+
+    [Test]
+    public async Task not_allow_save_a_policy_for_a_non_existing_employee()
+    {
+        var randomId = Guid.NewGuid().ToString();
+        var RoomTypePolicy = RoomType.Standard.ToString();
+        var CreateRoomTypePolicyBody = new CreatePolicyDTO
+        {
+            RoomType = RoomTypePolicy,
+        };
+
+        var response = await client.PutAsJsonAsync($"/api/policy/employee/{randomId}", CreateRoomTypePolicyBody);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
 }

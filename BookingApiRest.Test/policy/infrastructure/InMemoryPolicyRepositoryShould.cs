@@ -20,7 +20,20 @@ public class InMemoryPolicyRepositoryShould {
         var policy = new Policy("1", RoomType.Standard);
 
         _inMemoryPolicyRepository.Save(PolicyType.Company, policy);
-        var result = _inMemoryPolicyRepository._policies[PolicyType.Company][0];
+        var result = _inMemoryPolicyRepository._policies[PolicyType.Company]["1"];
         result.RoomType.ShouldBe(RoomType.Standard);
+    }
+
+    [Test]
+    public void update_an_existing_policy()
+    {
+        var policy = new Policy("1", RoomType.Standard);
+        var newPolicy = new Policy("1", RoomType.Suite);
+        _inMemoryPolicyRepository.Save(PolicyType.Company, policy);
+
+        _inMemoryPolicyRepository.Save(PolicyType.Company, newPolicy);
+
+        var result = _inMemoryPolicyRepository._policies[PolicyType.Company]["1"];
+        result.RoomType.ShouldBe(RoomType.Suite);
     }
 }

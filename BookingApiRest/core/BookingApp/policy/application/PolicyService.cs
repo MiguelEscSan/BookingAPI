@@ -15,5 +15,11 @@ public class PolicyService
         var policy = new Policy(companyId, roomType);
         _policyRepository.Save(PolicyType.Company, policy);
     }
+
+    public void SetEmployeePolicy(string employeeId, RoomType roomType)
+    {
+        var policy = new Policy(employeeId, roomType);
+        _policyRepository.Save(PolicyType.Employee, policy);
+    }
 }
 
