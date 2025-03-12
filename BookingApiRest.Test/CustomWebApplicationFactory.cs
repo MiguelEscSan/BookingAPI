@@ -50,6 +50,7 @@ namespace BookingApiRest.Test
                 services.AddSingleton<PolicyRepository>(PolicyRepository);
             });
         }
+
     }
 
 }

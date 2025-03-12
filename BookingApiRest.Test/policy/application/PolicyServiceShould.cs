@@ -1,4 +1,5 @@
 ﻿
+using BookingApiRest.core.BookingApp.company.application.ports;
 using BookingApiRest.core.BookingApp.policy.application;
 using BookingApiRest.core.BookingApp.policy.application.DTO;
 using BookingApiRest.core.BookingApp.policy.domain;
@@ -12,6 +13,7 @@ public class PolicyServiceShould
 {
     private PolicyRepository _policyRepository;
     private PolicyService _policyService;
+    private CompanyRepository _companyRepository;
     private EventBus _eventBus;
 
     [SetUp]
@@ -19,7 +21,9 @@ public class PolicyServiceShould
     {
         _eventBus = Substitute.For<EventBus>();
         _policyRepository = Substitute.For<PolicyRepository>();
-        _policyService = new PolicyService(_policyRepository, _eventBus);
+        _companyRepository = Substitute.For<CompanyRepository>();
+
+        _policyService = new PolicyService(_policyRepository, _eventBus, _companyRepository);
     }
 
     [Test]
@@ -52,6 +56,7 @@ public class PolicyServiceShould
     {
         var employeeId = Guid.NewGuid().ToString();
         var roomType = RoomType.Standard;
+        _companyRepository.Exists(employeeId).Returns(true);
 
         _policyService.SetEmployeePolicy(employeeId, roomType);
 
@@ -63,6 +68,7 @@ public class PolicyServiceShould
     {
         var employeeId = Guid.NewGuid().ToString();
         var roomType = RoomType.Standard;
+        _companyRepository.Exists(employeeId).Returns(false);
 
         Assert.Throws<EmployeeNotFoundException>(() => _policyService.SetEmployeePolicy(employeeId, roomType));
     }

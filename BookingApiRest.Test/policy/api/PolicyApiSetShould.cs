@@ -14,12 +14,15 @@ public class PolicyApiSetShould
 
     private string companyId = Guid.NewGuid().ToString();
     private string employeeId = Guid.NewGuid().ToString();
+    private string createdEmployeeId = Guid.NewGuid().ToString();
 
     [SetUp]
     public void SetUp()
     {
         factory = new CustomWebApplicationFactory<Program>();
         client = factory.CreateClient();
+
+        factory.EmployeeRepository.Save(companyId, new Employee(createdEmployeeId));
     }
 
     [TearDown]
@@ -76,10 +79,10 @@ public class PolicyApiSetShould
             RoomType = RoomTypePolicy,
         };
 
-        var response = await client.PutAsJsonAsync($"/api/policy/employee/{employeeId}", CreateRoomTypePolicyBody);
+        var response = await client.PutAsJsonAsync($"/api/policy/employee/{createdEmployeeId}", CreateRoomTypePolicyBody);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var policy = factory.PolicyRepository._policies[PolicyType.Employee][employeeId];
+        var policy = factory.PolicyRepository._policies[PolicyType.Employee][createdEmployeeId];
         policy.RoomType.ToString().ShouldBe(RoomTypePolicy);
     }
 
