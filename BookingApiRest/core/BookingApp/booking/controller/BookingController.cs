@@ -25,7 +25,7 @@ namespace BookingApiRest.core.BookingApp.booking.controller
         }
 
         [HttpPost("{hotelId}/{employeeId}")]
-        public IActionResult BookRoom(string hotelId, string employeeId, [FromBody] BookingDTO bookingDTO)
+        public IActionResult BookRoom(string hotelId, string employeeId, [FromBody] CreateBookingDTO bookingDTO)
         {
             var roomType = Enum.Parse<RoomType>(bookingDTO.RoomType);
             var CheckIn = DateTime.Parse(bookingDTO.CheckIn);
@@ -33,10 +33,20 @@ namespace BookingApiRest.core.BookingApp.booking.controller
 
             if (_policyService.IsBookingAllowed(employeeId, roomType) is false)
             {
-                return BadRequest("Booking not allowed");
+                return Forbid();
             }
-            _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
-            return Ok();
+
+
+            var Booking = _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
+
+            var bookingResponse = new BookingDTO {
+                HotelId = Booking.HotelId,
+                RoomType = Booking.RoomType.ToString(),
+                CheckIn = Booking.CheckIn.ToString("yyyy-MM-dd"),
+                CheckOut = Booking.CheckOut.ToString("yyyy-MM-dd")
+            };
+
+            return Ok(bookingResponse);
         }
     }
 }

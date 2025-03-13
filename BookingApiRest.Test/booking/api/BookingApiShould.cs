@@ -15,7 +15,7 @@ namespace BookingApiRest.Test.booking
         private HttpClient client;
 
         private string companyId = Guid.NewGuid().ToString();
-        private string createdEmployeeId = Guid.NewGuid().ToString();
+        private string employeeId = Guid.NewGuid().ToString();
         private string hotelId = Guid.NewGuid().ToString();
 
         [SetUp]
@@ -24,10 +24,10 @@ namespace BookingApiRest.Test.booking
             factory = new CustomWebApplicationFactory<Program>();
             client = factory.CreateClient();
             var companyService = factory.Services.GetRequiredService<CompanyService>();
-            companyService.AddEmployee(companyId, createdEmployeeId);
+            companyService.AddEmployee(companyId, employeeId);
 
             var hotelService = factory.Services.GetRequiredService<HotelService>();
-            hotelService.AddHotel(hotelId, createdEmployeeId);
+            hotelService.AddHotel(hotelId, "Gloria Palace");
             hotelService.setRoom(hotelId, 5, RoomType.Standard);
         }
 
@@ -44,15 +44,21 @@ namespace BookingApiRest.Test.booking
             var roomType = RoomType.Standard.ToString();
             var checkIn = DateTime.Now.ToString("yyyy-MM-dd");
             var checkOut = DateTime.Now.AddDays(3).ToString("yyyy-MM-dd");
-            var bookingDTO = new BookingDTO {
+            var bookingDTO = new CreateBookingDTO {
                 RoomType = roomType,
                 CheckIn = checkIn,
                 CheckOut = checkOut,
             };
 
-            var response = await client.PostAsJsonAsync($"/api/booking/{hotelId}/{createdEmployeeId}", bookingDTO);
+            var response = await client.PostAsJsonAsync($"/api/booking/{hotelId}/{employeeId}", bookingDTO);
+            var result = await response.Content.ReadFromJsonAsync<BookingDTO>();
 
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            result.ShouldNotBeNull();
+            result.HotelId.ShouldBe(hotelId);
+            result.RoomType.ShouldBe(roomType);
+            result.CheckIn.ShouldBe(checkIn);
+            result.CheckOut.ShouldBe(checkOut);
 
         }
     }

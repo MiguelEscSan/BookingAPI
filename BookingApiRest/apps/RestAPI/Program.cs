@@ -10,6 +10,9 @@ using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.infrastructure;
 using BookingApiRest.Infrastructure.Repositories;
 using BookingApp.Hotel.Application.Ports;
+using BookingApiRest.core.BookingApp.booking.application.ports;
+using BookingApiRest.core.BookingApp.booking.infrastructure;
+using BookingApiRest.core.BookingApp.booking.application;
 
 public class Program
 {
@@ -30,6 +33,9 @@ public class Program
 
         builder.Services.AddSingleton<PolicyRepository, InMemoryPolicyRepository>();
         builder.Services.AddSingleton<PolicyService>();
+
+        builder.Services.AddSingleton<BookingRepository, InMemoryBookingRepository>();
+        builder.Services.AddSingleton<BookingService>();
 
         // EventHandlers
         builder.Services.AddSingleton<IEventHandler, NewEmployeeHandler>();
