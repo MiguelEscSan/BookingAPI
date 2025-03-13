@@ -10,31 +10,35 @@ public class InMemoryEmployeeRepositoryShould
 {
 
     private InMemoryCompanyRepository _inMemoryEmployeeRepository;
+    private string employeeId;
+    private string companyId;
 
     [SetUp]
     public void SetUp()
     {
         _inMemoryEmployeeRepository = new InMemoryCompanyRepository();
+        employeeId = Guid.NewGuid().ToString();
+        companyId = Guid.NewGuid().ToString();
     }
 
     [Test]
     public void save_a_single_employee()
     {
-        var employee = new Employee("1");
+        var employee = new Employee(employeeId, companyId);
 
-        _inMemoryEmployeeRepository.Save("1", employee);
-        var result = _inMemoryEmployeeRepository._companies["1"][0];
+        _inMemoryEmployeeRepository.Save(companyId, employee);
+        var result = _inMemoryEmployeeRepository._companies[companyId][0];
 
-        result.Id.ShouldBe("1");
+        result.Id.ShouldBe(employeeId);
     }
 
     [Test]
     public void check_if_an_employee_exists_by_id()
     {
-        var employee = new Employee("1");
-        _inMemoryEmployeeRepository.Save("1", employee);
+        var employee = new Employee(employeeId, companyId);
+        _inMemoryEmployeeRepository.Save(companyId, employee);
 
-        var result = _inMemoryEmployeeRepository.Exists("1");
+        var result = _inMemoryEmployeeRepository.Exists(employeeId);
 
         result.ShouldBeTrue();
     }
@@ -42,30 +46,30 @@ public class InMemoryEmployeeRepositoryShould
     [Test]
     public void check_if_an_employee_does_not_exist_by_id()
     {
-        var result = _inMemoryEmployeeRepository.Exists("1");
+        var result = _inMemoryEmployeeRepository.Exists(employeeId);
         result.ShouldBeFalse();
     }
 
     [Test]
     public void delete_an_employee()
     {
-        var employee = new Employee("1");
-        _inMemoryEmployeeRepository.Save("1", employee);
+        var employee = new Employee(employeeId, companyId);
+        _inMemoryEmployeeRepository.Save(companyId, employee);
 
-        _inMemoryEmployeeRepository.Delete("1");
+        _inMemoryEmployeeRepository.Delete(employeeId);
 
-        _inMemoryEmployeeRepository._companies["1"].Count.ShouldBe(0);
+        _inMemoryEmployeeRepository._companies[companyId].Count.ShouldBe(0);
     }
 
     [Test]
     public void return_an_existing_employee_by_id()
     {
-        var employee = new Employee("1");
-        _inMemoryEmployeeRepository.Save("1", employee);
+        var employee = new Employee(employeeId, companyId);
+        _inMemoryEmployeeRepository.Save(companyId, employee);
 
-        var result = _inMemoryEmployeeRepository.GetById("1");
+        var result = _inMemoryEmployeeRepository.GetById(employeeId);
 
-        result.Id.ShouldBe("1");
+        result.Id.ShouldBe(employeeId);
     }
 }
 

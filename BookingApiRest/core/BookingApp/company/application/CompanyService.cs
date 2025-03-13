@@ -23,7 +23,7 @@ public class CompanyService {
             throw new EmployeeAlreadyExistsException($"Employee with id {employeeId} already exists");
         }
 
-        var Employee = new Employee(employeeId);
+        var Employee = new Employee(employeeId, companyId);
         _employeeRepository.Save(companyId, Employee);
 
         this._eventBus.Publish(Employee.PullDomainEvents());
