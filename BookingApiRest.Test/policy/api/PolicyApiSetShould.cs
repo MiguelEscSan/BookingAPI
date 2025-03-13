@@ -46,7 +46,7 @@ public class PolicyApiSetShould
         var response = await client.PutAsJsonAsync($"/api/policy/company/{companyId}", CreateRoomTypePolicyBody);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var policy = factory.PolicyRepository._policies[PolicyType.Company][companyId];
+        var policy = factory.PolicyRepository._companiesPolices[companyId];
         policy.RoomType.ToString().ShouldBe(RoomTypePolicy);
     }
 
@@ -68,7 +68,7 @@ public class PolicyApiSetShould
         var response = await client.PutAsJsonAsync($"/api/policy/company/{companyId}", UpdateRoomTypePolicyBody);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var policy = factory.PolicyRepository._policies[PolicyType.Company][companyId];
+        var policy = factory.PolicyRepository._companiesPolices[companyId];
         policy.RoomType.ToString().ShouldBe(newRoomTypePolicy);
     }
 
@@ -84,7 +84,7 @@ public class PolicyApiSetShould
         var response = await client.PutAsJsonAsync($"/api/policy/employee/{createdEmployeeId}", CreateRoomTypePolicyBody);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var policy = factory.PolicyRepository._policies[PolicyType.Employee][createdEmployeeId];
+        var policy = factory.PolicyRepository._employeesPolicies[createdEmployeeId];
         policy.RoomType.ToString().ShouldBe(RoomTypePolicy);
     }
 

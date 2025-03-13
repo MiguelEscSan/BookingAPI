@@ -108,10 +108,11 @@ public class PolicyServiceShould
     [Test]
     public void check_the_company_policy()
     {
-        _policyRepository.EmployeePolicyExists(employeeId).Returns(false);
+        _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
+        _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(true);
         _policyRepository.CheckCompanyPolicy(companyId, roomType).Returns(true);
 
-        var result = _policyService.IsBookingAllowed(companyId, roomType);
+        var result = _policyService.IsBookingAllowed(employeeId, roomType);
 
         result.ShouldBeTrue();
     }

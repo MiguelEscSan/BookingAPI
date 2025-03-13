@@ -1,50 +1,52 @@
-﻿using BookingApiRest.core.BookingApp.policy.application.DTO;
+﻿using BookingApiRest.core.BookingApp.company.domain;
+using BookingApiRest.core.BookingApp.policy.application.DTO;
 using BookingApiRest.core.BookingApp.policy.domain;
 using BookingApiRest.Core.Shared.Domain;
 
 namespace BookingApiRest.core.BookingApp.policy.infrastructure;
 public class InMemoryPolicyRepository : PolicyRepository
 {
-    internal readonly Dictionary<PolicyType, Dictionary<string, Policy>> _policies = new Dictionary<PolicyType, Dictionary<string, Policy>>();
+    internal readonly Dictionary<string, Policy> _employeesPolicies = new Dictionary<string, Policy>();
+    internal readonly Dictionary<string, Policy> _companiesPolices = new Dictionary<string, Policy>();
 
     public void Save(PolicyType policyType, Policy policy)
     {
-        
-        if (_policies.ContainsKey(policyType) is false)
+        if (policyType == PolicyType.Employee)
         {
-            _policies[policyType] = new Dictionary<string, Policy>();
+            _employeesPolicies[policy.Id] = policy;
         }
-        _policies[policyType][policy.Id] = policy;
+        else if (policyType == PolicyType.Company)
+        {
+            _companiesPolices[policy.Id] = policy;
+        }
     }
 
     public bool EmployeePolicyExists(string employeeId)
     {
-        return _policies.ContainsKey(PolicyType.Employee) &&
-               _policies[PolicyType.Employee].ContainsKey(employeeId);
+        return _employeesPolicies.ContainsKey(employeeId);
     }
 
     public bool IsEmployeePolicyDefault(string employeeId)
     {
-        return _policies[PolicyType.Employee][employeeId].RoomType != RoomType.All;
+        return _employeesPolicies[employeeId].RoomType == RoomType.All;
     }
 
     public bool CheckEmployeePolicy(string employeeId, RoomType roomType)
     {
-        var employePolicyRoomType = _policies[PolicyType.Employee][employeeId].RoomType;
-        return employePolicyRoomType == roomType || employePolicyRoomType == RoomType.All;
+        var employeePolicyRoomType = _employeesPolicies[employeeId].RoomType;
+        return employeePolicyRoomType == roomType;
     }
 
     public bool CheckCompanyPolicy(string companyId, RoomType roomType)
     {
-        throw new NotImplementedException();
+        
+        var companyPolicyRoomType = _companiesPolices[companyId].RoomType;
+        return companyPolicyRoomType == roomType || companyPolicyRoomType == RoomType.All;
     }
 
     public void Delete(string employeeId)
     {
-        if (_policies.ContainsKey(PolicyType.Employee))
-        {
-            _policies[PolicyType.Employee].Remove(employeeId);
-        }
+        _employeesPolicies.Remove(employeeId);
     }
 }
 

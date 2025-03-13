@@ -29,7 +29,9 @@ public class InMemoryPolicyRepositoryDeleteShould
     {
         _inMemoryPolicyRepository.Delete(employeeId);
 
-        _inMemoryPolicyRepository._policies[PolicyType.Employee].ContainsKey(employeeId).ShouldBeFalse();
+        //_inMemoryPolicyRepository._policies[PolicyType.Employee].ContainsKey(employeeId).ShouldBeFalse();
+        _inMemoryPolicyRepository._employeesPolicies.ContainsKey(employeeId).ShouldBeFalse();
+
     }
 }
 

@@ -62,7 +62,7 @@ public class CompanyApiDeleteShould
         var response = await client.DeleteAsync($"/api/company/employee/{employeeId}");
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        factory.PolicyRepository._policies[PolicyType.Employee].ContainsKey(employeeId).ShouldBeFalse();
+        factory.PolicyRepository._employeesPolicies.ContainsKey(employeeId).ShouldBeFalse();
     }
 
 }
