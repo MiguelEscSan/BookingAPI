@@ -4,7 +4,7 @@ using BookingApiRest.Core.Shared.Domain;
 using Shouldly;
 
 namespace BookingApiRest.Test.policy.infrastructure;
-public class InMemoryPolicyRepositoryShould {
+public class InMemoryPolicyRepositorySaveShould {
 
     private InMemoryPolicyRepository _inMemoryPolicyRepository;
 
@@ -46,48 +46,5 @@ public class InMemoryPolicyRepositoryShould {
 
         var result = _inMemoryPolicyRepository._policies[PolicyType.Employee]["1"];
         result.RoomType.ShouldBe(RoomType.Standard);
-    }
-
-    [Test]
-    public void check_if_an_employee_policy_exists()
-    {
-        var policy = new Policy("1", RoomType.Standard);
-        _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
-
-        var result = _inMemoryPolicyRepository.EmployeePolicyExists("1");
-        
-        result.ShouldBeTrue();
-    }
-
-    [Test]
-    public void check_if_an_employee_policy_does_not_exist()
-    {
-        var result = _inMemoryPolicyRepository.EmployeePolicyExists("1");
-
-        result.ShouldBeFalse();
-    }
-
-    [TestCase(RoomType.Standard, RoomType.Standard)]
-    [TestCase(RoomType.All, RoomType.Standard)]
-    public void check_if_employee_policy_is_correct(RoomType employeePolicyRoomType, RoomType bookingPolicy)
-    {
-        var policy = new Policy("1", employeePolicyRoomType);
-        _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
-
-        var result = _inMemoryPolicyRepository.CheckEmployeePolicy("1", bookingPolicy);
-
-        result.ShouldBeTrue();
-    }
-
-    [Test]
-    public void check_if_employee_policy_is_not_correct()
-    {
-        var employeeId = Guid.NewGuid().ToString();
-        var policy = new Policy(employeeId, RoomType.Standard);
-        _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
-
-        var result = _inMemoryPolicyRepository.CheckEmployeePolicy(employeeId, RoomType.Suite);
-
-        result.ShouldBeFalse();
     }
 }

@@ -38,5 +38,13 @@ public class InMemoryPolicyRepository : PolicyRepository
     {
         throw new NotImplementedException();
     }
+
+    public void Delete(string employeeId)
+    {
+        if (_policies.ContainsKey(PolicyType.Employee))
+        {
+            _policies[PolicyType.Employee].Remove(employeeId);
+        }
+    }
 }
 

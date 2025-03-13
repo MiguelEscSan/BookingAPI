@@ -52,7 +52,8 @@ public class CompanyServiceShould {
     public void delete_existing_employee()
     {
         var employeeId = Guid.NewGuid().ToString();
-        _companyRepository.Exists(employeeId).Returns(true);
+        var Employee = new Employee(employeeId);
+        _companyRepository.GetById(employeeId).Returns(Employee);
 
         _companyService.DeleteEmployee(employeeId);
 

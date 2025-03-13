@@ -31,12 +31,17 @@ public class CompanyService {
 
     public void DeleteEmployee(string employeeId)
     {
-        if (_employeeRepository.Exists(employeeId) is false)
+        var Employee = _employeeRepository.GetById(employeeId);
+
+        if (Employee == null)
         {
             throw new EmployeeNotFoundException($"Employee with id {employeeId} not found");
         }
 
+        Employee.Delete();
         _employeeRepository.Delete(employeeId);
+
+        this._eventBus.Publish(Employee.PullDomainEvents());
     }
 }
 

@@ -12,5 +12,10 @@ public class Employee : AggregateRoot
         this.RecordEvent(NewEmployee.From(this));
     }
 
+    public void Delete()
+    {
+        this.RecordEvent(DeleteEmployee.From(this));
+    }
+
 }
 

@@ -1,4 +1,7 @@
-﻿using BookingApiRest.core.BookingApp.company.domain;
+﻿using BookingApiRest.core.BookingApp.company.application;
+using BookingApiRest.core.BookingApp.company.domain;
+using BookingApiRest.core.BookingApp.policy.domain;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
 using System.Collections.Generic;
@@ -23,8 +26,8 @@ public class CompanyApiDeleteShould
         client = factory.CreateClient();
         employeeId = Guid.NewGuid().ToString();
         companyId = Guid.NewGuid().ToString();
-        factory.EmployeeRepository.Save(companyId, new Employee(employeeId));
-
+        var companyService = factory.Services.GetRequiredService<CompanyService>();
+        companyService.AddEmployee(companyId, employeeId);
     }
 
     [TearDown]
@@ -51,6 +54,15 @@ public class CompanyApiDeleteShould
         var response = await client.DeleteAsync($"/api/company/employee/{NonExistingEmployeeId}");
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
+
+    [Test]
+    public async Task delete_employee_policies_if_exists()
+    {
+        var response = await client.DeleteAsync($"/api/company/employee/{employeeId}");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        factory.PolicyRepository._policies[PolicyType.Employee][employeeId].ShouldBeNull();
     }
 
 }

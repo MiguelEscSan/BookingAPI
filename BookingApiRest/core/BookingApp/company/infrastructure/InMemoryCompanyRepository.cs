@@ -26,5 +26,10 @@ public class InMemoryCompanyRepository : CompanyRepository
                                         .Any(employee => employee.Id == id);
     }
 
+    public Employee GetById(string id)
+    {
+        return _companies.Values.SelectMany(employees => employees)
+                        .FirstOrDefault(employee => employee.Id == id);
+    }
 }
 

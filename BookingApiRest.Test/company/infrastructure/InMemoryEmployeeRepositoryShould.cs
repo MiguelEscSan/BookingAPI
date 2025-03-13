@@ -56,5 +56,16 @@ public class InMemoryEmployeeRepositoryShould
 
         _inMemoryEmployeeRepository._companies["1"].Count.ShouldBe(0);
     }
+
+    [Test]
+    public void return_an_existing_employee_by_id()
+    {
+        var employee = new Employee("1");
+        _inMemoryEmployeeRepository.Save("1", employee);
+
+        var result = _inMemoryEmployeeRepository.GetById("1");
+
+        result.Id.ShouldBe("1");
+    }
 }
 

@@ -12,4 +12,6 @@ public interface PolicyRepository {
     bool CheckCompanyPolicy(string companyId, RoomType roomType);
 
     bool IsEmployeePolicyDefault(string employeeId);
+
+    void Delete(string employeeId);
 }

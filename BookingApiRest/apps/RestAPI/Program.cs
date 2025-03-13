@@ -33,6 +33,7 @@ public class Program
 
         // EventHandlers
         builder.Services.AddSingleton<IEventHandler, NewEmployeeHandler>();
+        builder.Services.AddSingleton<IEventHandler, DeleteEmployeeHandler>();
 
         var app = builder.Build();
 
