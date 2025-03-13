@@ -44,7 +44,6 @@ namespace BookingApiRest.core.BookingApp.booking.controller
                 return Conflict();
             }
 
-
             var Booking = _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
 
             var bookingResponse = new BookingDTO {
@@ -59,7 +58,7 @@ namespace BookingApiRest.core.BookingApp.booking.controller
 
         private bool HasEnoughRoomsForBooking(int HotelRoomsCapacity, int BookingsAtTheSameTime)
         {
-            return HotelRoomsCapacity < BookingsAtTheSameTime;
+            return HotelRoomsCapacity > BookingsAtTheSameTime;
         }
 
     }

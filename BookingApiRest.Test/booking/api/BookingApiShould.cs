@@ -18,6 +18,7 @@ namespace BookingApiRest.Test.booking
         private string companyId = Guid.NewGuid().ToString();
         private string employeeId = Guid.NewGuid().ToString();
         private string hotelId = Guid.NewGuid().ToString();
+        private HotelService hotelService;
 
         [SetUp]
         public void SetUp()
@@ -27,7 +28,7 @@ namespace BookingApiRest.Test.booking
             var companyService = factory.Services.GetRequiredService<CompanyService>();
             companyService.AddEmployee(companyId, employeeId);
 
-            var hotelService = factory.Services.GetRequiredService<HotelService>();
+            hotelService = factory.Services.GetRequiredService<HotelService>();
             hotelService.AddHotel(hotelId, "Gloria Palace");
             hotelService.setRoom(hotelId, 5, RoomType.Standard);
 
@@ -93,6 +94,7 @@ namespace BookingApiRest.Test.booking
                 CheckIn = checkIn,
                 CheckOut = checkOut,
             };
+            hotelService.setRoom(hotelId, 0, RoomType.Standard);
 
             var response = await client.PostAsJsonAsync($"/api/booking/{hotelId}/{employeeId}", bookingDTO);
 

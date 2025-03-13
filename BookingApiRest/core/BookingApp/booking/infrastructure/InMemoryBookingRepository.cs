@@ -21,8 +21,14 @@ namespace BookingApiRest.core.BookingApp.booking.infrastructure
 
         public List<Booking> GetBookings(string hotelId, RoomType roomType)
         {
+            if (!_bookings.ContainsKey(hotelId))
+            {
+                return new List<Booking>();
+            }
+
             return _bookings[hotelId].FindAll(book => book.RoomType == roomType);
         }
+
 
         public void Delete(string employeeId)
         {
