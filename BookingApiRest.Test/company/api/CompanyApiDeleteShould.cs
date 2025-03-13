@@ -11,7 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingApiRest.Test.company.api;
+namespace BookingApiRest.Test.company;
 public class CompanyApiDeleteShould
 {
     private CustomWebApplicationFactory<Program> factory;

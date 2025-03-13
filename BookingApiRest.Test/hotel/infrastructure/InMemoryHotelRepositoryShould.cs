@@ -5,7 +5,7 @@ using BookingApiRest.Core.Shared.Domain;
 using BookingApiRest.Infrastructure.Repositories;
 using Shouldly;
 
-namespace BookingApiRest.Test.hotel.infrastructure;
+namespace BookingApiRest.Test.hotel;
 
 public class InMemoryHotelRepositoryShould
 {

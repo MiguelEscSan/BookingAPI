@@ -3,7 +3,7 @@ using BookingApiRest.core.BookingApp.policy.infrastructure;
 using BookingApiRest.Core.Shared.Domain;
 using Shouldly;
 
-namespace BookingApiRest.Test.policy.infrastructure;
+namespace BookingApiRest.Test.policy;
 public class InMemoryPolicyRepositorySaveShould {
 
     private InMemoryPolicyRepository _inMemoryPolicyRepository;
@@ -21,7 +21,6 @@ public class InMemoryPolicyRepositorySaveShould {
 
         _inMemoryPolicyRepository.Save(PolicyType.Company, policy);
 
-        //var result = _inMemoryPolicyRepository._policies[PolicyType.Company]["1"];
         var result = _inMemoryPolicyRepository._companiesPolices["1"];
         result.RoomType.ShouldBe(RoomType.Standard);
     }
@@ -35,7 +34,6 @@ public class InMemoryPolicyRepositorySaveShould {
 
         _inMemoryPolicyRepository.Save(PolicyType.Company, newPolicy);
 
-        //var result = _inMemoryPolicyRepository._policies[PolicyType.Company]["1"];
         var result = _inMemoryPolicyRepository._companiesPolices["1"];
         result.RoomType.ShouldBe(RoomType.Suite);
     }
@@ -47,7 +45,6 @@ public class InMemoryPolicyRepositorySaveShould {
 
         _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
 
-        //var result = _inMemoryPolicyRepository._policies[PolicyType.Employee]["1"];
         var result = _inMemoryPolicyRepository._employeesPolicies["1"];
         result.RoomType.ShouldBe(RoomType.Standard);
     }

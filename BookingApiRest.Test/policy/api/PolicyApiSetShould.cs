@@ -9,7 +9,7 @@ using Shouldly;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace BookingApiRest.Test.policy.api;
+namespace BookingApiRest.Test.policy;
 public class PolicyApiSetShould
 {
     private CustomWebApplicationFactory<Program> factory;

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingApiRest.Test.policy.infrastructure;
+namespace BookingApiRest.Test.policy;
 public class InMemoryPolicyRepositoryDeleteShould
 {
     private InMemoryPolicyRepository _inMemoryPolicyRepository;

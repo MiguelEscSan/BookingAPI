@@ -6,7 +6,7 @@ using Shouldly;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace BookingApiRest.Test.company.controller;
+namespace BookingApiRest.Test.company;
 public class CompanyApiAddEmployeeShould
 {
     private CustomWebApplicationFactory<Program> factory;

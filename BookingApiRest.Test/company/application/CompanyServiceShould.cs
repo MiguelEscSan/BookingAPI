@@ -7,7 +7,7 @@ using NSubstitute;
 using NUnit.Framework;
 using Shouldly;
 
-namespace BookingApiRest.Test.company.application;
+namespace BookingApiRest.Test.company;
 public class CompanyServiceShould {
 
     private CompanyRepository _companyRepository;

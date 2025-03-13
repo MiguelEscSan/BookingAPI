@@ -17,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 
-namespace BookingApiRest.Test.hotel.controller;
+namespace BookingApiRest.Test.hotel;
 
 public class HotelApiShould
 {

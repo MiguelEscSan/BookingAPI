@@ -3,7 +3,7 @@ using BookingApiRest.Core.Shared.Domain;
 using NUnit.Framework;
 using Shouldly;
 
-namespace BookingApiRest.Test.hotel.domain;
+namespace BookingApiRest.Test.hotel;
 
 public class HotelShould {
 

@@ -9,7 +9,7 @@ using BookingApiRest.Core.Shared.Domain;
 using NSubstitute;
 using Shouldly;
 
-namespace BookingApiRest.Test.policy.application;
+namespace BookingApiRest.Test.policy;
 public class PolicyServiceShould
 {
     private PolicyRepository _policyRepository;

@@ -5,7 +5,7 @@ using NSubstitute;
 using NUnit.Framework;
 using Shouldly;
 
-namespace BookingApiRest.Test.company.infrastructure;
+namespace BookingApiRest.Test.company;
 public class InMemoryEmployeeRepositoryShould
 {
 
