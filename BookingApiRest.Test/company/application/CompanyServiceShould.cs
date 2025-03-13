@@ -4,7 +4,6 @@ using BookingApiRest.core.BookingApp.company.domain;
 using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.exceptions;
 using NSubstitute;
-using NUnit.Framework;
 using Shouldly;
 
 namespace BookingApiRest.Test.company;

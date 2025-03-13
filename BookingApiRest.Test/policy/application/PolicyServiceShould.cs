@@ -120,4 +120,17 @@ public class PolicyServiceShould
 
         result.ShouldBeTrue();
     }
+
+    [Test]
+    public void not_allow_booking_if_company_has_a_different_policy()
+    {
+        _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
+        _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(true);
+        _companyRepository.GetCompanyIdByEmployeeId(employeeId).Returns(companyId);
+        _policyRepository.CheckCompanyPolicy(companyId, roomType).Returns(false);
+
+        var result = _policyService.IsBookingAllowed(employeeId, roomType);
+
+        result.ShouldBeFalse();
+    }
 }

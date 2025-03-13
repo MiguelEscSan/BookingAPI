@@ -39,8 +39,4 @@
     <InternalsVisibleTo Include="BookingApiRest.Test" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="core\BookingApp\booking\controller\" />
-  </ItemGroup>
-
 </Project>
