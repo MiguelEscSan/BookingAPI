@@ -41,11 +41,15 @@ public class PolicyController : ControllerBase
     }
 
     [HttpGet("booking/{createdEmployeeId}/{roomType}")]
-    public IActionResult IsBookingAllow(string createdEmployeeId, string roomTypeRequest)
+    public IActionResult IsBookingAllow(string createdEmployeeId, string roomType)
     {
-        RoomType RoomType = Enum.Parse<RoomType>(roomTypeRequest);
-        var isAllow = _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
-        return Ok(isAllow);
+        RoomType RoomType = Enum.Parse<RoomType>(roomType);
+
+        var isAllowed = _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
+
+
+        return Ok(isAllowed);
     }
+
 }
 

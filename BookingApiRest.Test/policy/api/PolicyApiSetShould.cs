@@ -109,6 +109,7 @@ public class PolicyApiSetShould
     {
         var roomType = RoomType.Standard.ToString();
 
+
         var response = await client.GetAsync($"/api/policy/booking/{createdEmployeeId}/{roomType}");
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);

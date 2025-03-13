@@ -17,9 +17,13 @@ public class NewEmployeeHandler : IEventHandler
    public void Handle(DomainEvent domainEvent)
     {
         var employeeId = domainEvent.GetAggregateId();
+        var companyId = domainEvent.GetPayload()["companyId"];
 
         var employeePolicy = new Policy(employeeId, RoomType.All);
+        var companyPolicy = new Policy(companyId, RoomType.All);
+
         this._policyRepository.Save(PolicyType.Employee, employeePolicy);
+        this._policyRepository.Save(PolicyType.Company, companyPolicy);
     }
 
     public string GetEventId()
