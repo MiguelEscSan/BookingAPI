@@ -67,14 +67,27 @@ public class InMemoryPolicyRepositoryShould {
         result.ShouldBeFalse();
     }
 
-    [Test]
-    public void check_if_employee_policy_is_correct()
+    [TestCase(RoomType.Standard, RoomType.Standard)]
+    [TestCase(RoomType.All, RoomType.Standard)]
+    public void check_if_employee_policy_is_correct(RoomType employeePolicyRoomType, RoomType bookingPolicy)
     {
-        var policy = new Policy("1", RoomType.Standard);
+        var policy = new Policy("1", employeePolicyRoomType);
         _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
 
-        var result = _inMemoryPolicyRepository.CheckEmployeePolicy("1", RoomType.Standard);
+        var result = _inMemoryPolicyRepository.CheckEmployeePolicy("1", bookingPolicy);
 
         result.ShouldBeTrue();
+    }
+
+    [Test]
+    public void check_if_employee_policy_is_not_correct()
+    {
+        var employeeId = Guid.NewGuid().ToString();
+        var policy = new Policy(employeeId, RoomType.Standard);
+        _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
+
+        var result = _inMemoryPolicyRepository.CheckEmployeePolicy(employeeId, RoomType.Suite);
+
+        result.ShouldBeFalse();
     }
 }

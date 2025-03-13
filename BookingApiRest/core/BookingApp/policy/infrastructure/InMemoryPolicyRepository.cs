@@ -29,7 +29,8 @@ public class InMemoryPolicyRepository : PolicyRepository
         if (EmployeePolicyExists(employeeId) is false) {
             return false;
         }
-        return _policies[PolicyType.Employee][employeeId].RoomType == roomType;
+        var employePolicyRoomType = _policies[PolicyType.Employee][employeeId].RoomType;
+        return employePolicyRoomType == roomType || employePolicyRoomType == RoomType.All;
     }
 }
 

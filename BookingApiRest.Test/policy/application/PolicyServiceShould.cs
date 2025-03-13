@@ -73,7 +73,7 @@ public class PolicyServiceShould
     }
 
     [Test]
-    public void check_if_booking_is_allow()
+    public void check_if_booking_is_allow_for_an_employee()
     {
         var companyId = Guid.NewGuid().ToString();
         var employeeId = Guid.NewGuid().ToString();
@@ -84,6 +84,20 @@ public class PolicyServiceShould
         var result = _policyService.IsBookingAllowed(employeeId, roomType);
 
         result.ShouldBeTrue();
+    }
+
+    [Test]
+    public void not_allow_booking_of_room_not_allowed_for_employee()
+    {
+        var companyId = Guid.NewGuid().ToString();
+        var employeeId = Guid.NewGuid().ToString();
+        var roomType = RoomType.Standard;
+        _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
+        _policyRepository.CheckEmployeePolicy(employeeId, roomType).Returns(false);
+
+        var result = _policyService.IsBookingAllowed(employeeId, roomType);
+
+        result.ShouldBeFalse();
     }
 }
 
