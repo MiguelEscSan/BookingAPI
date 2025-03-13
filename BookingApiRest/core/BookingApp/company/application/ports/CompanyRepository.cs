@@ -7,5 +7,6 @@ public interface CompanyRepository
     bool Exists(string id);
     void Delete(string id);
     Employee GetById(string id);
+    string GetCompanyIdByEmployeeId(string employeeId);
 }
 

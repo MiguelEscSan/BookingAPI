@@ -39,5 +39,13 @@ public class PolicyController : ControllerBase
             return NotFound(e.Message);
         }
     }
+
+    [HttpGet("booking/{createdEmployeeId}/{roomType}")]
+    public IActionResult IsBookingAllow(string createdEmployeeId, string roomTypeRequest)
+    {
+        RoomType RoomType = Enum.Parse<RoomType>(roomTypeRequest);
+        var isAllow = _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
+        return Ok(isAllow);
+    }
 }
 

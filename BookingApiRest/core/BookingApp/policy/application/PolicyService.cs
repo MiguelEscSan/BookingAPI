@@ -10,11 +10,13 @@ public class PolicyService
 {
     private readonly PolicyRepository _policyRepository;
     private readonly EventBus _eventBus;
- 
-    public PolicyService(PolicyRepository policyRepository, EventBus eventBus)
+    private readonly CompanyRepository _companyRepository;
+
+    public PolicyService(PolicyRepository policyRepository, EventBus eventBus, CompanyRepository companyRepository)
     {
         _policyRepository = policyRepository;
         _eventBus = eventBus;
+        _companyRepository = companyRepository;
     }
     public void SetCompanyPolicy(string companyId, RoomType roomType)
     {
@@ -41,7 +43,8 @@ public class PolicyService
 
         if(_policyRepository.IsEmployeePolicyDefault(employeeId) is true)
         {
-            return _policyRepository.CheckCompanyPolicy(employeeId, roomType);
+            var companyId = _companyRepository.GetCompanyIdByEmployeeId(employeeId);
+            return _policyRepository.CheckCompanyPolicy(companyId, roomType);
         }
         return _policyRepository.CheckEmployeePolicy(employeeId, roomType);
         

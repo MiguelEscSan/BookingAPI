@@ -1,6 +1,7 @@
 ﻿using BookingApiRest.core.BookingApp.company.application;
 using BookingApiRest.core.BookingApp.company.domain;
 using BookingApiRest.core.BookingApp.policy.application;
+using BookingApiRest.core.BookingApp.policy.application.DTO;
 using BookingApiRest.core.BookingApp.policy.controller.DTO.request;
 using BookingApiRest.core.BookingApp.policy.domain;
 using BookingApiRest.Core.Shared.Domain;
@@ -101,6 +102,16 @@ public class PolicyApiSetShould
         var response = await client.PutAsJsonAsync($"/api/policy/employee/{randomId}", CreateRoomTypePolicyBody);
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
+
+    [Test]
+    public async Task check_if_a_booking_is_allow()
+    {
+        var roomType = RoomType.Standard.ToString();
+
+        var response = await client.GetAsync($"/api/policy/booking/{createdEmployeeId}/{roomType}");
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
 

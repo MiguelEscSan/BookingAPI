@@ -14,6 +14,7 @@ public class PolicyServiceShould
 {
     private PolicyRepository _policyRepository;
     private PolicyService _policyService;
+    private CompanyRepository _companyRepository;
     private EventBus _eventBus;
 
     private string companyId;
@@ -26,7 +27,9 @@ public class PolicyServiceShould
     {
         _eventBus = Substitute.For<EventBus>();
         _policyRepository = Substitute.For<PolicyRepository>();
-        _policyService = new PolicyService(_policyRepository, _eventBus);
+        _companyRepository = Substitute.For<CompanyRepository>();
+
+        _policyService = new PolicyService(_policyRepository, _eventBus, _companyRepository);
 
         companyId = Guid.NewGuid().ToString();
         employeeId = Guid.NewGuid().ToString();
@@ -110,6 +113,7 @@ public class PolicyServiceShould
     {
         _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
         _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(true);
+        _companyRepository.GetCompanyIdByEmployeeId(employeeId).Returns(companyId);
         _policyRepository.CheckCompanyPolicy(companyId, roomType).Returns(true);
 
         var result = _policyService.IsBookingAllowed(employeeId, roomType);
