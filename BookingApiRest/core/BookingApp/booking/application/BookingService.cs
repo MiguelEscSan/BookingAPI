@@ -18,9 +18,16 @@ namespace BookingApiRest.core.BookingApp.booking.application
 
         public Booking BookRoom(string hotelId, string employeeId, RoomType roomType, DateTime checkIn, DateTime checkOut)
         {
-            var Booking = new Booking(hotelId, roomType, checkIn, checkOut);
-            _bookingRepository.Save(employeeId, Booking);
+            var Booking = new Booking(employeeId, roomType, checkIn, checkOut);
+            _bookingRepository.Save(hotelId, Booking);
             return Booking;
         }
+
+        public int GetBookingsAtTheSameTime(string hotelId, RoomType roomType, DateTime checkIn, DateTime checkOut)
+        {
+            var bookings = _bookingRepository.GetBookings(hotelId, roomType);
+            return bookings.Count(booking => booking.CheckIn < checkOut && booking.CheckOut > checkIn);
+        }
+
     }
 }

@@ -33,14 +33,22 @@ namespace BookingApiRest.core.BookingApp.booking.controller
 
             if (_policyService.IsBookingAllowed(employeeId, roomType) is false)
             {
-                return Forbid();
+                return BadRequest();
+            }
+
+            var HotelRoomsCapacity = _hotelService.GetHotelRoomCapacity(hotelId, roomType);
+            var BookingsAtTheSameTime = _bookingService.GetBookingsAtTheSameTime(hotelId, roomType, CheckIn, CheckOut);
+
+            if (HasEnoughRoomsForBooking(HotelRoomsCapacity, BookingsAtTheSameTime) is false)
+            {
+                return Conflict();
             }
 
 
             var Booking = _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
 
             var bookingResponse = new BookingDTO {
-                HotelId = Booking.HotelId,
+                EmployeeId = Booking.EmployeeId,
                 RoomType = Booking.RoomType.ToString(),
                 CheckIn = Booking.CheckIn.ToString("yyyy-MM-dd"),
                 CheckOut = Booking.CheckOut.ToString("yyyy-MM-dd")
@@ -48,5 +56,11 @@ namespace BookingApiRest.core.BookingApp.booking.controller
 
             return Ok(bookingResponse);
         }
+
+        private bool HasEnoughRoomsForBooking(int HotelRoomsCapacity, int BookingsAtTheSameTime)
+        {
+            return HotelRoomsCapacity < BookingsAtTheSameTime;
+        }
+
     }
 }

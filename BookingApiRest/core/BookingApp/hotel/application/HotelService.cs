@@ -12,6 +12,19 @@ public class HotelService {
         _hotelRepository = hotelRepository;
     }
 
+    public int GetHotelRoomCapacity(string hotelId, RoomType roomType)
+    {
+        try
+        {
+            var hotel = findHotelBy(hotelId);
+
+            return hotel.Rooms[roomType];
+        }
+        catch (HotelHasNotBeenFound error)
+        {
+            throw error;
+        } 
+    }
 
     public void AddHotel(string HotelId, string HotelName) {
         if (_hotelRepository.Exists(HotelId))

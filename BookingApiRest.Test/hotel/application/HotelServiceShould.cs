@@ -29,7 +29,7 @@ public class HotelServiceShould {
     }
 
     [Test]
-    public async Task create_multiple_hotels()
+    public void create_multiple_hotels()
     {
         var hotelOne = new Hotel("1", "Hotel One");
         var hotelTwo = new Hotel("2", "Hotel Two");
@@ -47,6 +47,27 @@ public class HotelServiceShould {
     }
 
     [Test]
+    public void return_hotel_rooms_capacity()
+    {
+        var hotel = new Hotel("1", "Hotel One");
+        hotel.SetRoom(5, RoomType.Standard);
+        _hotelRepository.GetById("1").Returns(hotel);
+
+        var result = _hotelService.GetHotelRoomCapacity("1", RoomType.Standard);
+
+        result.ShouldBe(5);
+    }
+
+    [Test]
+    public void throw_not_found_exception_when_hotel_does_not_exist()
+    {
+        _hotelRepository.GetById("1").Returns((Hotel)null);
+
+        var exception = Should.Throw<HotelHasNotBeenFound>(() => _hotelService.GetHotelRoomCapacity("1", RoomType.Standard));
+    }
+
+
+        [Test]
     public void not_allow_when_hotel_id_is_already_used()
     {
         var hotel = new Hotel("1", "Hotel One");

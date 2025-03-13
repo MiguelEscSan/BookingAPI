@@ -33,10 +33,16 @@ namespace BookingApiRest.Test.booking
             var checkIn = DateTime.Now;
             var checkOut = DateTime.Now.AddDays(3);
 
+
             _bookingService.BookRoom(employeeId, hotelId, roomType, checkIn, checkOut);
 
-            _bookingRepository.Received().Save(Arg.Is<string>(id => id == employeeId), Arg.Is<Booking>(b => b.HotelId == hotelId && b.RoomType == roomType && b.CheckIn == checkIn && b.CheckOut == checkOut));
+            _bookingRepository.Received().Save(Arg.Is<string>(id => id == employeeId), 
+                Arg.Is<Booking>(b => 
+                b.EmployeeId == hotelId 
+                && b.RoomType == roomType 
+                && b.CheckIn == checkIn 
+                && b.CheckOut == checkOut
+            ));
         }
-
     }
 }

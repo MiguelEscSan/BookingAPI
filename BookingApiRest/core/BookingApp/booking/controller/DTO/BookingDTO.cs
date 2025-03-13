@@ -2,7 +2,7 @@
 {
     public class BookingDTO
     {
-        public string HotelId { get; set; }
+        public string EmployeeId { get; set; }
         public string RoomType { get; set; }
         public string CheckIn { get; set; }
         public string CheckOut { get; set; }
