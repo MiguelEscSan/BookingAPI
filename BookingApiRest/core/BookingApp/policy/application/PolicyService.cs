@@ -39,12 +39,11 @@ public class PolicyService
             throw new EmployeeNotFoundException($"Employee with id {employeeId} not found");
         }
 
-        if (_policyRepository.EmployeePolicyExists(employeeId))
+        if(_policyRepository.IsEmployeePolicyDefault(employeeId) is true)
         {
-            return _policyRepository.CheckEmployeePolicy(employeeId, roomType);
+            return _policyRepository.CheckCompanyPolicy(employeeId, roomType);
         }
-
-        return true;
+        return _policyRepository.CheckEmployeePolicy(employeeId, roomType);
         
     }
 }

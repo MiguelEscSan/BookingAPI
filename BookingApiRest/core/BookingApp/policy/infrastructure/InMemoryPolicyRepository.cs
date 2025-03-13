@@ -19,18 +19,24 @@ public class InMemoryPolicyRepository : PolicyRepository
 
     public bool EmployeePolicyExists(string employeeId)
     {
-
         return _policies.ContainsKey(PolicyType.Employee) &&
                _policies[PolicyType.Employee].ContainsKey(employeeId);
     }
 
+    public bool IsEmployeePolicyDefault(string employeeId)
+    {
+        return _policies[PolicyType.Employee][employeeId].RoomType != RoomType.All;
+    }
+
     public bool CheckEmployeePolicy(string employeeId, RoomType roomType)
     {
-        if (EmployeePolicyExists(employeeId) is false) {
-            return false;
-        }
         var employePolicyRoomType = _policies[PolicyType.Employee][employeeId].RoomType;
         return employePolicyRoomType == roomType || employePolicyRoomType == RoomType.All;
+    }
+
+    public bool CheckCompanyPolicy(string companyId, RoomType roomType)
+    {
+        throw new NotImplementedException();
     }
 }
 

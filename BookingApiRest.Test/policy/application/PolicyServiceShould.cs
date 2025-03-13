@@ -99,5 +99,16 @@ public class PolicyServiceShould
 
         result.ShouldBeFalse();
     }
+
+    [Test]
+    public void not_allow_booking_for_employee_that_does_not_exist()
+    {
+        var employeeId = Guid.NewGuid().ToString();
+        var roomType = RoomType.Standard;
+
+        _policyRepository.EmployeePolicyExists(employeeId).Returns(false);
+
+        Assert.Throws<EmployeeNotFoundException>(() => _policyService.IsBookingAllowed(employeeId, roomType));
+    }
 }
 

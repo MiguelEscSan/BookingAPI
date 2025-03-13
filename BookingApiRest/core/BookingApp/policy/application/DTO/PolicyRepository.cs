@@ -8,4 +8,8 @@ public interface PolicyRepository {
     bool EmployeePolicyExists(string employeeId);
 
     bool CheckEmployeePolicy(string employeeId, RoomType roomType);
+
+    bool CheckCompanyPolicy(string companyId, RoomType roomType);
+
+    bool IsEmployeePolicyDefault(string employeeId);
 }
