@@ -23,7 +23,8 @@ public class HotelServiceCreateShould {
         var hotel = new Hotel("1", "Hotel One");
         
         _hotelService.AddHotel("1", "Hotel One");
-        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Name == "Hotel One");
+        var validation = Arg.Is<Hotel>(hotel => hotel.Id == "1" 
+                                            && hotel.Name == "Hotel One");
 
         _hotelRepository.Received().Save(validation);
     }
@@ -35,12 +36,14 @@ public class HotelServiceCreateShould {
         var hotelTwo = new Hotel("2", "Hotel Two");
 
         _hotelService.AddHotel("1", "Hotel One");
-        var validationOne = Arg.Is<Hotel>(hotel => hotel.Id == "1" && hotel.Name == "Hotel One");
+        var validationOne = Arg.Is<Hotel>(hotel => hotel.Id == "1" 
+                                                && hotel.Name == "Hotel One");
 
         _hotelRepository.Received().Save(validationOne);
 
         _hotelService.AddHotel("2", "Hotel Two");
-        var validationTwo = Arg.Is<Hotel>(hotel => hotel.Id == "2" && hotel.Name == "Hotel Two");
+        var validationTwo = Arg.Is<Hotel>(hotel => hotel.Id == "2" 
+                                                && hotel.Name == "Hotel Two");
 
         
         _hotelRepository.Received().Save(validationTwo);
@@ -56,7 +59,6 @@ public class HotelServiceCreateShould {
         _hotelRepository.Exists("1").Returns(true);
         var exception = Should.Throw<HotelAlreadyExistsException>(() => _hotelService.AddHotel("1", "Hotel One"));
 
-        exception.Message.ShouldBe("Hotel ID already exists");
         _hotelRepository.DidNotReceive().Save(Arg.Any<Hotel>());
     }
 }

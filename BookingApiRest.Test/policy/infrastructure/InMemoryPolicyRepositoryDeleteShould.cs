@@ -18,6 +18,7 @@ public class InMemoryPolicyRepositoryDeleteShould
     public void SetUp()
     {
         _inMemoryPolicyRepository = new InMemoryPolicyRepository();
+
         employeeId = Guid.NewGuid().ToString();
         var policy = new Policy(employeeId, RoomType.Standard);
         _inMemoryPolicyRepository.Save(PolicyType.Employee, policy);
@@ -29,9 +30,7 @@ public class InMemoryPolicyRepositoryDeleteShould
     {
         _inMemoryPolicyRepository.Delete(employeeId);
 
-        //_inMemoryPolicyRepository._policies[PolicyType.Employee].ContainsKey(employeeId).ShouldBeFalse();
         _inMemoryPolicyRepository._employeesPolicies.ContainsKey(employeeId).ShouldBeFalse();
-
     }
 }
 

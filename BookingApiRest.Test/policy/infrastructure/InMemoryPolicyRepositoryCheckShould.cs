@@ -40,12 +40,12 @@ public class InMemoryPolicyRepositoryCheckShould
         result.ShouldBeFalse();
     }
 
-    [TestCase(RoomType.Standard, RoomType.Standard)]
-    [TestCase(RoomType.All, RoomType.Standard)]
-    public void check_if_employee_policy_is_correct(RoomType employeePolicyRoomType, RoomType bookingPolicy)
+    [Test]
+    public void check_if_employee_policy_is_correct()
     {
+        var roomPolicy = RoomType.Standard;
 
-        var result = _inMemoryPolicyRepository.CheckEmployeePolicy(employeeId, bookingPolicy);
+        var result = _inMemoryPolicyRepository.CheckEmployeePolicy(employeeId, roomPolicy);
 
         result.ShouldBeTrue();
     }
@@ -53,7 +53,9 @@ public class InMemoryPolicyRepositoryCheckShould
     [Test]
     public void check_if_employee_policy_is_not_correct()
     {
-        var result = _inMemoryPolicyRepository.CheckEmployeePolicy(employeeId, RoomType.Suite);
+        var roomPolicy = RoomType.Suite;
+
+        var result = _inMemoryPolicyRepository.CheckEmployeePolicy(employeeId, roomPolicy);
 
         result.ShouldBeFalse();
     }

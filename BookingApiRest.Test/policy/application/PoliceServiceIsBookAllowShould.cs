@@ -45,6 +45,7 @@ namespace BookingApiRest.Test.policy
         public void check_if_booking_is_allow_for_an_employee()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
+            _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(false);
             _policyRepository.CheckEmployeePolicy(employeeId, roomType).Returns(true);
 
             var result = _policyService.IsBookingAllowed(employeeId, roomType);
@@ -56,6 +57,7 @@ namespace BookingApiRest.Test.policy
         public void not_allow_booking_of_room_not_allowed_for_employee()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
+            _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(false);
             _policyRepository.CheckEmployeePolicy(employeeId, roomType).Returns(false);
 
             var result = _policyService.IsBookingAllowed(employeeId, roomType);
