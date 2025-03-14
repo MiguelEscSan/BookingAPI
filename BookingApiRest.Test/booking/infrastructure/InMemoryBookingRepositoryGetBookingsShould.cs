@@ -3,11 +3,6 @@ using BookingApiRest.core.BookingApp.booking.infrastructure;
 using BookingApiRest.core.BookingApp.company.infrastructure;
 using BookingApiRest.Core.Shared.Domain;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookingApiRest.Test.booking
 {

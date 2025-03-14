@@ -123,6 +123,5 @@ namespace BookingApiRest.Test.booking
 
             response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
         }
-
     }
 }
