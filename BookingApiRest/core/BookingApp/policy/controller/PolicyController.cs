@@ -43,12 +43,16 @@ public class PolicyController : ControllerBase
     [HttpGet("booking/{createdEmployeeId}/{roomType}")]
     public IActionResult IsBookingAllow(string createdEmployeeId, string roomType)
     {
-        RoomType RoomType = Enum.Parse<RoomType>(roomType);
-
-        var isAllowed = _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
-
-
-        return Ok(isAllowed);
+        try
+        {
+            RoomType RoomType = Enum.Parse<RoomType>(roomType);
+            var isAllowed = _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
+            return Ok(isAllowed);
+        }
+        catch (EmployeeNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
 }

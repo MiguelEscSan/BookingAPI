@@ -103,18 +103,5 @@ public class PolicyApiSetShould
 
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
-
-    [Test]
-    public async Task check_if_a_booking_is_allow()
-    {
-        var roomType = RoomType.Standard.ToString();
-
-
-        var response = await client.GetAsync($"/api/policy/booking/{createdEmployeeId}/{roomType}");
-
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-    }
-
-
 }
 

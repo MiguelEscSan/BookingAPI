@@ -49,8 +49,8 @@ public class InMemoryHotelRepositoryCreateShould
     {
         var hotel = new Hotel("1", "Gloria Palace");
         _inMemoryHotelRepository.Save(hotel);
-
         hotel = _inMemoryHotelRepository.GetById("1");
+
         hotel.SetRoom(1, RoomType.Standard);
         _inMemoryHotelRepository.Update(hotel);
         var result = _inMemoryHotelRepository._hotels[0];

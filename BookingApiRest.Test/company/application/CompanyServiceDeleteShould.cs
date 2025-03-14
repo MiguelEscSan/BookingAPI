@@ -11,7 +11,7 @@ using BookingApiRest.core.shared.exceptions;
 using Shouldly;
 using BookingApiRest.core.BookingApp.company.domain;
 
-namespace BookingApiRest.Test.company.application
+namespace BookingApiRest.Test.company
 {
     public class CompanyServiceDeleteShould
     {

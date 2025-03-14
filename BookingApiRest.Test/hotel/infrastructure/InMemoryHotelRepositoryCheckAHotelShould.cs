@@ -41,7 +41,7 @@ namespace BookingApiRest.Test.hotel
         }
 
         [Test]
-        public void hotel_exists_when_hotel_is_saved()
+        public void confirm_existance_when_hotel_is_saved()
         {
             var result = _inMemoryHotelRepository.Exists(hotelId);
             
@@ -49,7 +49,7 @@ namespace BookingApiRest.Test.hotel
         }
 
         [Test]
-        public void hotel_does_not_exist_when_id_is_unknown()
+        public void confirm_non_existance_when_hotel_is_not_saved()
         {
             var result = _inMemoryHotelRepository.Exists("2");
 

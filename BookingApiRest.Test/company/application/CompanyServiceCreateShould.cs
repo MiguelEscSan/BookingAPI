@@ -7,7 +7,7 @@ using NSubstitute;
 using Shouldly;
 
 namespace BookingApiRest.Test.company;
-public class CompanyServiceShould {
+public class CompanyServiceCreateShould {
 
     private CompanyRepository _companyRepository;
     private CompanyService _companyService;
