@@ -1,4 +1,5 @@
-﻿using BookingApiRest.core.BookingApp.booking.controller.DTO;
+﻿using BookingApiRest.core.BookingApp.booking.application;
+using BookingApiRest.core.BookingApp.booking.controller.DTO;
 using BookingApiRest.core.BookingApp.company.application;
 using BookingApiRest.core.BookingApp.hotel.application;
 using BookingApiRest.core.BookingApp.policy.application;
@@ -34,6 +35,9 @@ namespace BookingApiRest.Test.booking
 
             var policyService = factory.Services.GetRequiredService<PolicyService>();
             policyService.SetEmployeePolicy(employeeId, RoomType.Standard);
+
+            var bookingService = factory.Services.GetRequiredService<BookingService>();
+            bookingService.BookRoom(hotelId, employeeId, RoomType.Standard, DateTime.Now, DateTime.Now.AddDays(3));
         }
 
         [TearDown]
@@ -95,6 +99,25 @@ namespace BookingApiRest.Test.booking
                 CheckOut = checkOut,
             };
             hotelService.setRoom(hotelId, 0, RoomType.Standard);
+
+            var response = await client.PostAsJsonAsync($"/api/booking/{hotelId}/{employeeId}", bookingDTO);
+
+            response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
+        }
+
+        [Test]
+        public async Task not_allow_a_booking_due_to_hotel_capacity_and_date()
+        {
+            var roomType = RoomType.Standard.ToString();
+            var checkIn = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+            var checkOut = DateTime.Now.AddDays(4).ToString("yyyy-MM-dd");
+            var bookingDTO = new CreateBookingDTO
+            {
+                RoomType = roomType,
+                CheckIn = checkIn,
+                CheckOut = checkOut,
+            };
+            hotelService.setRoom(hotelId, 1, RoomType.Standard);
 
             var response = await client.PostAsJsonAsync($"/api/booking/{hotelId}/{employeeId}", bookingDTO);
 
