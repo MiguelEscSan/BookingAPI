@@ -32,7 +32,10 @@ namespace BookingApiRest.core.BookingApp.booking.infrastructure
 
         public void Delete(string employeeId)
         {
-            throw new NotImplementedException();
+            foreach (var hotelBookings in _bookings)
+            {
+                hotelBookings.Value.RemoveAll(b => b.EmployeeId == employeeId);
+            }
         }
     }
 }

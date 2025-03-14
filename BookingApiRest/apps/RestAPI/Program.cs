@@ -13,6 +13,7 @@ using BookingApp.Hotel.Application.Ports;
 using BookingApiRest.core.BookingApp.booking.application.ports;
 using BookingApiRest.core.BookingApp.booking.infrastructure;
 using BookingApiRest.core.BookingApp.booking.application;
+using BookingApiRest.core.BookingApp.booking.application.handler;
 
 public class Program
 {
@@ -40,6 +41,7 @@ public class Program
         // EventHandlers
         builder.Services.AddSingleton<IEventHandler, NewEmployeeHandler>();
         builder.Services.AddSingleton<IEventHandler, DeleteEmployeeHandler>();
+        builder.Services.AddSingleton<IEventHandler, DeleteEmployeeBookingsHandler>();
 
         var app = builder.Build();
 

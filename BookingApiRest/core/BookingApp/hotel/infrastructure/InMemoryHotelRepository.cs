@@ -9,7 +9,7 @@ public class InMemoryHotelRepository : HotelRepository {
 
     internal readonly List<Hotel> _hotels = new List<Hotel>();
 
-    public void Create(Hotel hotel) {
+    public void Save(Hotel hotel) {
          _hotels.Add(hotel);
     }
 

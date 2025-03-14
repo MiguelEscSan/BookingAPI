@@ -7,7 +7,7 @@ using Shouldly;
 
 namespace BookingApiRest.Test.hotel;
 
-public class InMemoryHotelRepositoryShould
+public class InMemoryHotelRepositoryCreateShould
 {
     private InMemoryHotelRepository _inMemoryHotelRepository;
     [SetUp]
@@ -20,7 +20,7 @@ public class InMemoryHotelRepositoryShould
     public void create_a_single_hotel() {
         var hotel = new Hotel("1", "Gloria Palace");
 
-        _inMemoryHotelRepository.Create(hotel);
+        _inMemoryHotelRepository.Save(hotel);
         var result = _inMemoryHotelRepository._hotels[0];
         result.Id.ShouldBe("1");
         result.Name.ShouldBe("Gloria Palace");
@@ -32,8 +32,8 @@ public class InMemoryHotelRepositoryShould
         var hotelOne = new Hotel("1", "Gloria Palace");
         var hotelTwo = new Hotel("2", "Gloria Palace2");
 
-        _inMemoryHotelRepository.Create(hotelOne);
-        _inMemoryHotelRepository.Create(hotelTwo);
+        _inMemoryHotelRepository.Save(hotelOne);
+        _inMemoryHotelRepository.Save(hotelTwo);
 
         _inMemoryHotelRepository._hotels.Count.ShouldBe(2);
         _inMemoryHotelRepository._hotels[0].Id.ShouldBe("1");
@@ -42,39 +42,13 @@ public class InMemoryHotelRepositoryShould
         _inMemoryHotelRepository._hotels[1].Name.ShouldBe("Gloria Palace2");
     }
 
-    [Test]
-    public void check_if_an_hotel_exists_by_id() {
-        var hotel = new Hotel("1", "Gloria Palace");
-
-        _inMemoryHotelRepository.Create(hotel);
-
-        _inMemoryHotelRepository.Exists("1").ShouldBeTrue();
-    }
-
-    [Test]
-    public void return_a_hotel()
-    {
-        var hotel = new Hotel("1", "Gloria Palace");
-        _inMemoryHotelRepository.Create(hotel);
-
-        var result = _inMemoryHotelRepository.GetById("1");
-
-        result.Id.ShouldBe("1");
-        result.Name.ShouldBe("Gloria Palace");
-    }
-
-    [Test]
-    public void return_null_when_hotel_does_not_exist()
-    {
-        var result = _inMemoryHotelRepository.GetById("1");
-        result.ShouldBeNull();
-    }
+    
 
     [Test]
     public void update_a_hotel()
     {
         var hotel = new Hotel("1", "Gloria Palace");
-        _inMemoryHotelRepository.Create(hotel);
+        _inMemoryHotelRepository.Save(hotel);
 
         hotel = _inMemoryHotelRepository.GetById("1");
         hotel.SetRoom(1, RoomType.Standard);

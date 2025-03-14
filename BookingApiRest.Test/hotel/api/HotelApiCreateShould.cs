@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BookingApiRest.Test.hotel;
 
-public class HotelApiShould
+public class HotelApiCreateShould
 {
     private CustomWebApplicationFactory<Program> factory;
     private HttpClient client;
@@ -79,69 +79,4 @@ public class HotelApiShould
         response = await client.PostAsJsonAsync("/api/hotel", body);
         response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
     }
-
-    [Test]
-    public async Task return_a_hotel() {
-        var uid = Guid.NewGuid().ToString();
-        var body = new CreateHotelDTO
-        {
-            Id = uid,
-            Name = "Gloria Palace"
-        };
-
-        var response = await client.PostAsJsonAsync("/api/hotel", body);
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        response = await client.GetAsync($"/api/hotel/{uid}");
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var hotelDto = await response.Content.ReadFromJsonAsync<HotelDTO>();
-
-        hotelDto.Id.ShouldBe(uid);
-        hotelDto.Name.ShouldBe("Gloria Palace");
-        hotelDto.Rooms.ShouldBeEmpty();
-    }
-
-    [Test]
-    public async Task return_not_found_when_hotel_does_not_exist()
-    {
-        var uid = Guid.NewGuid().ToString();
-        var response = await client.GetAsync($"/api/hotel/{uid}");
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
-    [Test]
-    public async Task set_rooms()
-    {
-        var uid = Guid.NewGuid().ToString();
-        var body = new CreateHotelDTO
-        {
-            Id = uid,
-            Name = "Gloria Palace"
-        };
-        var response = await client.PostAsJsonAsync("/api/hotel", body);
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var SetHotelsRoomsBody = new SetHotelRoomsDTO
-        {
-            RoomNumber = 1,
-            RoomType = RoomType.Standard.ToString()
-        };
-
-        var response2 = await client.PutAsJsonAsync($"/api/hotel/{uid}/rooms", SetHotelsRoomsBody);
-        response2.StatusCode.ShouldBe(HttpStatusCode.OK);
-    }
-
-    [Test]
-    public async Task not_allow_to_set_rooms_to_non_existing_hotel()
-    {
-        var uid = Guid.NewGuid().ToString();
-        var SetHotelsRoomsBody = new SetHotelRoomsDTO
-        {
-            RoomNumber = 1,
-            RoomType = RoomType.Standard.ToString()
-        };
-        var response = await client.PutAsJsonAsync($"/api/hotel/{uid}/rooms", SetHotelsRoomsBody);
-        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
 }

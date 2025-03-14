@@ -46,29 +46,5 @@ public class CompanyServiceShould {
         _companyRepository.DidNotReceive().Save(Arg.Any<string>(), Arg.Any<Employee>());
     }
 
-
-    [Test]
-    public void delete_existing_employee()
-    {
-        var employeeId = Guid.NewGuid().ToString();
-        var companyId = Guid.NewGuid().ToString();
-        var Employee = new Employee(employeeId, companyId);
-        _companyRepository.GetById(employeeId).Returns(Employee);
-
-        _companyService.DeleteEmployee(employeeId);
-
-        _companyRepository.Received().Delete(employeeId);
-    }
-
-    [Test]
-    public void not_allow_deleting_an_employee_that_does_not_exist()
-    {
-        var employeeId = Guid.NewGuid().ToString();
-        _companyRepository.Exists(employeeId).Returns(false);
-
-        Should.Throw<EmployeeNotFoundException>(() => _companyService.DeleteEmployee(employeeId));
-
-        _companyRepository.DidNotReceive().Delete(Arg.Any<string>());
-    }
 }
 

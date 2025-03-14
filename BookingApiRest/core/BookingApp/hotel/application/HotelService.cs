@@ -34,7 +34,7 @@ public class HotelService {
 
         var newHotel = new Hotel(HotelId, HotelName);
 
-        _hotelRepository.Create(newHotel);
+        _hotelRepository.Save(newHotel);
     }
 
     public Hotel findHotelBy(string id)

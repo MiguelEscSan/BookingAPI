@@ -2,7 +2,7 @@ namespace BookingApp.Hotel.Application.Ports;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
 
 public interface HotelRepository {
-    void Create(Hotel hotel);
+    void Save(Hotel hotel);
     void Update(Hotel hotel);
     Hotel? GetById(string id);
 
