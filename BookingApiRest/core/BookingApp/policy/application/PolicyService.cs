@@ -1,22 +1,24 @@
 ﻿using BookingApiRest.core.BookingApp.company.application.ports;
+using BookingApiRest.core.BookingApp.company.application.ports.requests;
 using BookingApiRest.core.BookingApp.policy.application.DTO;
 using BookingApiRest.core.BookingApp.policy.domain;
 using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.Shared.Domain;
+using System.Threading.Tasks;
 
 namespace BookingApiRest.core.BookingApp.policy.application;
 public class PolicyService 
 {
     private readonly PolicyRepository _policyRepository;
     private readonly EventBus _eventBus;
-    private readonly CompanyRepository _companyRepository;
+    //private readonly CompanyRepository _companyRepository;
 
-    public PolicyService(PolicyRepository policyRepository, EventBus eventBus, CompanyRepository companyRepository)
+    public PolicyService(PolicyRepository policyRepository, EventBus eventBus)
     {
         _policyRepository = policyRepository;
         _eventBus = eventBus;
-        _companyRepository = companyRepository;
+        //_companyRepository = companyRepository;
     }
     public void SetCompanyPolicy(string companyId, RoomType roomType)
     {
@@ -34,7 +36,7 @@ public class PolicyService
         _policyRepository.Save(PolicyType.Employee, policy);
     }
 
-    public bool IsBookingAllowed(string employeeId, RoomType roomType)
+    public async Task<bool> IsBookingAllowed(string employeeId, RoomType roomType)
     {
         if(_policyRepository.EmployeePolicyExists(employeeId) is false)
         {
@@ -43,7 +45,16 @@ public class PolicyService
 
         if(_policyRepository.IsEmployeePolicyDefault(employeeId) is true)
         {
-            var companyId = _companyRepository.GetCompanyIdByEmployeeId(employeeId);
+            //var companyId = _companyRepository.GetCompanyIdByEmployeeId(employeeId);
+            var companyIdResponse = await _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, int>(new GetCompanyIdByEmployeeIdRequest(employeeId));
+
+            if (!companyIdResponse.IsSuccess || companyIdResponse.Value <= 0)
+            {
+                throw new CompanyNotFoundException($"Company not found for employee with id {employeeId}");
+            }
+
+            var companyId = companyIdResponse.Value;
+
             return _policyRepository.CheckCompanyPolicy(companyId, roomType);
         }
         return _policyRepository.CheckEmployeePolicy(employeeId, roomType);

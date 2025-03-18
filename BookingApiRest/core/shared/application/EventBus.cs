@@ -6,5 +6,8 @@ namespace BookingApiRest.core.shared.application
     {
         void Publish(List<DomainEvent> events);
         void Subscribe(IEventHandler handler);
+        Task<Result<TResponse>> PublishAndWait<TRequest, TResponse>(TRequest request)
+            where TRequest : class
+            where TResponse : class;
     }
 }

@@ -21,6 +21,13 @@ namespace BookingApiRest.core.shared.infrastructure
             }
         }
 
+        public Task<Result<TResponse>> PublishAndWait<TRequest, TResponse>(TRequest request)
+            where TRequest : class
+            where TResponse : class
+        {
+            throw new NotImplementedException();
+        }
+
         public void Subscribe(IEventHandler handler)
         {
             var eventId = handler.GetEventId();

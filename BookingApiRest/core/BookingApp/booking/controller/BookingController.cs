@@ -25,28 +25,29 @@ namespace BookingApiRest.core.BookingApp.booking.controller
         }
 
         [HttpPost("{hotelId}/{employeeId}")]
-        public IActionResult BookRoom(string hotelId, string employeeId, [FromBody] CreateBookingDTO bookingDTO)
+        public async Task<IActionResult> BookRoom(string hotelId, string employeeId, [FromBody] CreateBookingDTO bookingDTO)
         {
             var roomType = Enum.Parse<RoomType>(bookingDTO.RoomType);
             var CheckIn = DateTime.Parse(bookingDTO.CheckIn);
             var CheckOut = DateTime.Parse(bookingDTO.CheckOut);
 
-            if (_policyService.IsBookingAllowed(employeeId, roomType) is false)
+            //if (_policyService.IsBookingAllowed(employeeId, roomType) is false)
+            //{
+            //    return BadRequest();
+            //}
+
+            //var HotelRoomsCapacity = _hotelService.GetHotelRoomCapacity(hotelId, roomType);
+            //var BookingsAtTheSameTime = _bookingService.GetBookingsAtTheSameTime(hotelId, roomType, CheckIn, CheckOut);
+
+            //if (HasEnoughRoomsForBooking(HotelRoomsCapacity, BookingsAtTheSameTime) is false)
+            //{
+            //    return Conflict();
+            //}
+
+            var Booking = await _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
+
+            var bookingResponse = new BookingDTO
             {
-                return BadRequest();
-            }
-
-            var HotelRoomsCapacity = _hotelService.GetHotelRoomCapacity(hotelId, roomType);
-            var BookingsAtTheSameTime = _bookingService.GetBookingsAtTheSameTime(hotelId, roomType, CheckIn, CheckOut);
-
-            if (HasEnoughRoomsForBooking(HotelRoomsCapacity, BookingsAtTheSameTime) is false)
-            {
-                return Conflict();
-            }
-
-            var Booking = _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
-
-            var bookingResponse = new BookingDTO {
                 EmployeeId = Booking.EmployeeId,
                 RoomType = Booking.RoomType.ToString(),
                 CheckIn = Booking.CheckIn.ToString("yyyy-MM-dd"),

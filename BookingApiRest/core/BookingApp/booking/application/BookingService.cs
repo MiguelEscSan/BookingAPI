@@ -16,7 +16,7 @@ namespace BookingApiRest.core.BookingApp.booking.application
             _bookingRepository = bookingRepository;
         }
 
-        public Booking BookRoom(string hotelId, string employeeId, RoomType roomType, DateTime checkIn, DateTime checkOut)
+        public async Task<Booking> BookRoom(string hotelId, string employeeId, RoomType roomType, DateTime checkIn, DateTime checkOut)
         {
             var Booking = new Booking(employeeId, roomType, checkIn, checkOut);
             _bookingRepository.Save(hotelId, Booking);
