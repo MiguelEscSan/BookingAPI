@@ -32,5 +32,13 @@ namespace BookingApiRest.Test.booking
 
             result.ShouldContain(booking);
         }
+
+        [Test]
+        public void return_an_empty_list_if_there_are_no_bookings()
+        {
+            var result = _inMemoryBookingRepository.GetBookings(hotelId, RoomType.Suite);
+
+            result.ShouldBeEmpty();
+        }
     }
 }

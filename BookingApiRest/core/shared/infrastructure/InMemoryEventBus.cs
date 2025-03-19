@@ -31,17 +31,14 @@ namespace BookingApiRest.core.shared.infrastructure
             {
                 foreach (var handler in eventHandlers)
                 {
-                    // Aseguramos que el handler sea del tipo adecuado
                     if (handler is IEventHandler typedHandler)
                     {
-                        // Invocar el método Handle de manera asincrónica
                         var result = await typedHandler.Handle(request);
                         return new Result<TResponse>(result.Value as TResponse, result.IsSuccess);
                     }
                 }
             }
-
-            return new Result<TResponse>(null, false); // Si no se encuentra un manejador adecuado
+            return new Result<TResponse>(null, false);
         }
 
 

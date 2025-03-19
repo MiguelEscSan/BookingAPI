@@ -33,7 +33,7 @@ namespace BookingApiRest.core.BookingApp.booking.application
             }
 
             var HotelRooms = await _eventBus.PublishAndWait<GetHotelRoomsCapacityRequest, IntResult>(
-                new GetHotelRoomsCapacityRequest(employeeId, roomType.ToString())
+                new GetHotelRoomsCapacityRequest(hotelId, roomType.ToString())
             );
 
             var BookingsAtTheSameTime = GetBookingsAtTheSameTime(hotelId, roomType, checkIn, checkOut);
@@ -48,13 +48,13 @@ namespace BookingApiRest.core.BookingApp.booking.application
             return Result<Booking>.Success(Booking);
         }
 
-        private int GetBookingsAtTheSameTime(string hotelId, RoomType roomType, DateTime checkIn, DateTime checkOut)
+        public int GetBookingsAtTheSameTime(string hotelId, RoomType roomType, DateTime checkIn, DateTime checkOut)
         {
             var bookings = _bookingRepository.GetBookings(hotelId, roomType);
             return bookings.Count(booking => booking.CheckIn < checkOut && booking.CheckOut > checkIn);
         }
 
-        private bool HasEnoughRoomsForBooking(int HotelRoomsCapacity, int BookingsAtTheSameTime)
+        public bool HasEnoughRoomsForBooking(int HotelRoomsCapacity, int BookingsAtTheSameTime)
         {
             return HotelRoomsCapacity > BookingsAtTheSameTime;
         }
