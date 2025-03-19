@@ -15,11 +15,15 @@ namespace BookingApiRest.core.BookingApp.policy.application.handler
             this._policyRepository = policyRepository;
         }
 
-        public void Handle(DomainEvent domainEvent)
+        public async Task<Result<object>> Handle(DomainEvent domainEvent)
         {
             var employeeId = domainEvent.GetAggregateId();
 
             this._policyRepository.Delete(employeeId);
+
+            var resultString = new Result<string>("Employee policies deleted successfully", true);
+
+            return new Result<object>(resultString.Value, resultString.IsSuccess);
         }
 
         public string GetEventId()

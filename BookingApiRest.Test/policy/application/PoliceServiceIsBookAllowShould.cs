@@ -34,7 +34,7 @@ namespace BookingApiRest.Test.policy
             _policyRepository = Substitute.For<PolicyRepository>();
             _companyRepository = Substitute.For<CompanyRepository>();
 
-            _policyService = new PolicyService(_policyRepository, _eventBus, _companyRepository);
+            _policyService = new PolicyService(_policyRepository, _eventBus);
 
             companyId = Guid.NewGuid().ToString();
             employeeId = Guid.NewGuid().ToString();
@@ -42,31 +42,31 @@ namespace BookingApiRest.Test.policy
         }
 
         [Test]
-        public void check_if_booking_is_allow_for_an_employee()
+        public async Task check_if_booking_is_allow_for_an_employee()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
             _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(false);
             _policyRepository.CheckEmployeePolicy(employeeId, roomType).Returns(true);
 
-            var result = _policyService.IsBookingAllowed(employeeId, roomType);
+            var result = await _policyService.IsBookingAllowed(employeeId, roomType);
 
             result.ShouldBeTrue();
         }
 
         [Test]
-        public void not_allow_booking_of_room_not_allowed_for_employee()
+        public async Task not_allow_booking_of_room_not_allowed_for_employee()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
             _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(false);
             _policyRepository.CheckEmployeePolicy(employeeId, roomType).Returns(false);
 
-            var result = _policyService.IsBookingAllowed(employeeId, roomType);
+            var result = await _policyService.IsBookingAllowed(employeeId, roomType);
 
             result.ShouldBeFalse();
         }
 
         [Test]
-        public void not_allow_booking_for_employee_that_does_not_exist()
+        public async Task not_allow_booking_for_employee_that_does_not_exist()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(false);
 
@@ -74,27 +74,28 @@ namespace BookingApiRest.Test.policy
         }
 
         [Test]
-        public void check_the_company_policy()
+        public async Task check_the_company_policy()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
             _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(true);
+
             _companyRepository.GetCompanyIdByEmployeeId(employeeId).Returns(companyId);
             _policyRepository.CheckCompanyPolicy(companyId, roomType).Returns(true);
 
-            var result = _policyService.IsBookingAllowed(employeeId, roomType);
+            var result = await _policyService.IsBookingAllowed(employeeId, roomType);
 
             result.ShouldBeTrue();
         }
 
         [Test]
-        public void not_allow_booking_if_company_has_a_different_policy()
+        public async Task not_allow_booking_if_company_has_a_different_policy()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
             _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(true);
             _companyRepository.GetCompanyIdByEmployeeId(employeeId).Returns(companyId);
             _policyRepository.CheckCompanyPolicy(companyId, roomType).Returns(false);
 
-            var result = _policyService.IsBookingAllowed(employeeId, roomType);
+            var result = await _policyService.IsBookingAllowed(employeeId, roomType);
 
             result.ShouldBeFalse();
         }

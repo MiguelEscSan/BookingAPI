@@ -14,11 +14,15 @@ namespace BookingApiRest.core.BookingApp.booking.application.handler
             this._bookingRepository = bookingRepository;
         }
 
-        public void Handle(DomainEvent domainEvent)
+        public async Task<Result<object>> Handle(DomainEvent domainEvent)
         {
             var employeeId = domainEvent.GetAggregateId();
 
             this._bookingRepository.Delete(employeeId);
+
+            var resultString = new Result<string>("Employee bookings deleted successfully", true);
+
+            return new Result<object>(resultString.Value, resultString.IsSuccess);
         }
 
         public string GetEventId()

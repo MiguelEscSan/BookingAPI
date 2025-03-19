@@ -1,6 +1,6 @@
 ﻿using BookingApiRest.core.BookingApp.company.application.ports;
-using BookingApiRest.core.BookingApp.company.application.ports.requests;
 using BookingApiRest.core.BookingApp.policy.application.DTO;
+using BookingApiRest.core.BookingApp.policy.application.requests;
 using BookingApiRest.core.BookingApp.policy.domain;
 using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.exceptions;
@@ -46,9 +46,9 @@ public class PolicyService
         if(_policyRepository.IsEmployeePolicyDefault(employeeId) is true)
         {
             //var companyId = _companyRepository.GetCompanyIdByEmployeeId(employeeId);
-            var companyIdResponse = await _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, int>(new GetCompanyIdByEmployeeIdRequest(employeeId));
+            var companyIdResponse = await _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, string>(new GetCompanyIdByEmployeeIdRequest(employeeId));
 
-            if (!companyIdResponse.IsSuccess || companyIdResponse.Value <= 0)
+            if (!companyIdResponse.IsSuccess)
             {
                 throw new CompanyNotFoundException($"Company not found for employee with id {employeeId}");
             }
@@ -58,7 +58,7 @@ public class PolicyService
             return _policyRepository.CheckCompanyPolicy(companyId, roomType);
         }
         return _policyRepository.CheckEmployeePolicy(employeeId, roomType);
-        
     }
 }
+
 

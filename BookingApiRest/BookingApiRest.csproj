@@ -26,6 +26,7 @@
     <Compile Include="core\BookingApp\policy\application\handler\DeleteEmployeeHandler.cs" />
     <Compile Include="core\BookingApp\policy\application\handler\NewEmployeeHandler.cs" />
     <Compile Include="core\BookingApp\policy\application\PolicyService.cs" />
+    <Compile Include="core\BookingApp\policy\application\requests\GetCompanyIdByEmployeeIdRequest.cs" />
     <Compile Include="core\BookingApp\policy\domain\Policy.cs" />
     <Compile Include="core\BookingApp\policy\domain\PolicyType.cs" />
     <Compile Include="core\BookingApp\policy\infrastructure\InMemoryPolicyRepository.cs" />

@@ -1,8 +1,8 @@
 ﻿using BookingApiRest.core.shared.domain;
 
-namespace BookingApiRest.core.BookingApp.company.application.ports.requests
+namespace BookingApiRest.core.BookingApp.policy.application.requests
 {
-    public class GetCompanyIdByEmployeeIdRequest : DomainEvent
+    public class GetCompanyIdByEmployeeIdRequest : RequestDomainEvent<string>
     {
         public GetCompanyIdByEmployeeIdRequest(string aggregateId) : base(aggregateId, "get-employee-company")
         {

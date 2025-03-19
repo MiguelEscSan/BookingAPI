@@ -5,7 +5,7 @@ namespace BookingApiRest.core.shared.infrastructure
 {
     public class InMemoryEventBus : EventBus
     {
-        private readonly Dictionary<string, List<IEventHandler>> _handlers = new Dictionary<string, List<IEventHandler>>();
+        private readonly Dictionary<string, List<IEventHandler>> _handlers = new Dictionary<string, List<IEventHandler>>() ;
 
         public void Publish(List<DomainEvent> events)
         {
@@ -28,6 +28,7 @@ namespace BookingApiRest.core.shared.infrastructure
             throw new NotImplementedException();
         }
 
+
         public void Subscribe(IEventHandler handler)
         {
             var eventId = handler.GetEventId();
@@ -37,5 +38,7 @@ namespace BookingApiRest.core.shared.infrastructure
             }
             _handlers[eventId].Add(handler);
         }
+
     }
 }
+

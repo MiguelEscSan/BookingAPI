@@ -4,7 +4,8 @@ namespace BookingApiRest.core.shared.application
 {
     public interface IEventHandler
     {
-        void Handle(DomainEvent domainEvent);
+        Task<Result<object>> Handle(DomainEvent domainEvent);
         string GetEventId();
     }
+
 }

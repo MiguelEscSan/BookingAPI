@@ -29,7 +29,7 @@ public class PolicyServiceShould
         _policyRepository = Substitute.For<PolicyRepository>();
         _companyRepository = Substitute.For<CompanyRepository>();
 
-        _policyService = new PolicyService(_policyRepository, _eventBus, _companyRepository);
+        _policyService = new PolicyService(_policyRepository, _eventBus);
 
         companyId = Guid.NewGuid().ToString();
         employeeId = Guid.NewGuid().ToString();

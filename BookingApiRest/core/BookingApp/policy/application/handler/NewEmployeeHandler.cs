@@ -14,8 +14,8 @@ public class NewEmployeeHandler : IEventHandler
     {
         this._policyRepository = policyRepository;
     }
-   public void Handle(DomainEvent domainEvent)
-    {
+   public async Task<Result<object>> Handle(DomainEvent domainEvent)
+   {
         var employeeId = domainEvent.GetAggregateId();
         var companyId = domainEvent.GetPayload()["companyId"];
 
@@ -24,6 +24,10 @@ public class NewEmployeeHandler : IEventHandler
 
         this._policyRepository.Save(PolicyType.Employee, employeePolicy);
         this._policyRepository.Save(PolicyType.Company, companyPolicy);
+
+        var resultString = new Result<string>("Policies created successfully", true);
+
+        return new Result<object>(resultString.Value, resultString.IsSuccess);
     }
 
     public string GetEventId()
