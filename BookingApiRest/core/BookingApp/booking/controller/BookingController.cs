@@ -16,15 +16,11 @@ namespace BookingApiRest.core.BookingApp.booking.controller
     [Route("api/booking")]
     public class BookingController : ControllerBase
     {
-        //private readonly HotelService _hotelService;
         private readonly BookingService _bookingService;
-        //private readonly PolicyService _policyService;
 
         public BookingController(BookingService bookingService)
         {
-            //this._hotelService = hotelService;
             this._bookingService = bookingService;
-            //this._policyService = policyService;
         }
 
         [HttpPost("{hotelId}/{employeeId}")]
@@ -34,30 +30,16 @@ namespace BookingApiRest.core.BookingApp.booking.controller
             var CheckIn = DateTime.Parse(bookingDTO.CheckIn);
             var CheckOut = DateTime.Parse(bookingDTO.CheckOut);
 
-            //if (_policyService.IsBookingAllowed(employeeId, roomType) is false)
-            //{
-            //    return BadRequest();
-            //}
-
-            //var HotelRoomsCapacity = _hotelService.GetHotelRoomCapacity(hotelId, roomType);
-            //var BookingsAtTheSameTime = _bookingService.GetBookingsAtTheSameTime(hotelId, roomType, CheckIn, CheckOut);
-
-            //if (HasEnoughRoomsForBooking(HotelRoomsCapacity, BookingsAtTheSameTime) is false)
-            //{
-            //    return Conflict();
-            //}
-
-
             var result = await _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
 
             if (!result.IsSuccess)
             {
                 if (result.Exception is RoomsFullyBookedException)
                 {
-                    return Conflict(new { message = "No hay habitaciones disponibles para la fecha seleccionada." });
+                    return Conflict();
                 }
 
-                return BadRequest(new { message = "No se puede realizar la reserva debido a la política o algún error." });
+                return BadRequest();
             }
 
             var bookingResponse = new BookingDTO

@@ -44,7 +44,7 @@ namespace BookingApiRest.Test.booking
                 .Returns(new Result<BooleanResult>(new BooleanResult(true), true));
             _eventBus.PublishAndWait<GetHotelRoomsCapacityRequest, IntResult>(Arg.Any<GetHotelRoomsCapacityRequest>())
                 .Returns(new Result<IntResult>(new IntResult(5), true));
-            _bookingRepository.GetBookings(hotelId, roomType).Returns(new List<Booking>())
+            _bookingRepository.GetBookings(hotelId, roomType).Returns(new List<Booking>());
 
             var result = await _bookingService.BookRoom(hotelId, employeeId, roomType, checkIn, checkOut);
 
