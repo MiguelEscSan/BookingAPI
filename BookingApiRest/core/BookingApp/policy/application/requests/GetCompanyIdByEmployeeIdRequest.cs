@@ -2,7 +2,7 @@
 
 namespace BookingApiRest.core.BookingApp.policy.application.requests
 {
-    public class GetCompanyIdByEmployeeIdRequest : RequestDomainEvent<string>
+    public class GetCompanyIdByEmployeeIdRequest : DomainEvent
     {
         public GetCompanyIdByEmployeeIdRequest(string aggregateId) : base(aggregateId, "get-employee-company")
         {

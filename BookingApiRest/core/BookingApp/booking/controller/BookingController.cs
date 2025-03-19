@@ -3,6 +3,9 @@ using BookingApiRest.core.BookingApp.booking.controller.DTO;
 using BookingApiRest.core.BookingApp.company.application;
 using BookingApiRest.core.BookingApp.hotel.application;
 using BookingApiRest.core.BookingApp.policy.application;
+using BookingApiRest.core.BookingApp.policy.application.requests;
+using BookingApiRest.core.shared.application;
+using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.Shared.Domain;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -13,15 +16,15 @@ namespace BookingApiRest.core.BookingApp.booking.controller
     [Route("api/booking")]
     public class BookingController : ControllerBase
     {
-        private readonly HotelService _hotelService;
+        //private readonly HotelService _hotelService;
         private readonly BookingService _bookingService;
-        private readonly PolicyService _policyService;
+        //private readonly PolicyService _policyService;
 
-        public BookingController(HotelService hotelService, BookingService bookingService, PolicyService policyService)
+        public BookingController(BookingService bookingService)
         {
-            this._hotelService = hotelService;
+            //this._hotelService = hotelService;
             this._bookingService = bookingService;
-            this._policyService = policyService;
+            //this._policyService = policyService;
         }
 
         [HttpPost("{hotelId}/{employeeId}")]
@@ -44,23 +47,34 @@ namespace BookingApiRest.core.BookingApp.booking.controller
             //    return Conflict();
             //}
 
-            var Booking = await _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
+
+            var result = await _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
+
+            if (!result.IsSuccess)
+            {
+                if (result.Exception is RoomsFullyBookedException)
+                {
+                    return Conflict(new { message = "No hay habitaciones disponibles para la fecha seleccionada." });
+                }
+
+                return BadRequest(new { message = "No se puede realizar la reserva debido a la política o algún error." });
+            }
 
             var bookingResponse = new BookingDTO
             {
-                EmployeeId = Booking.EmployeeId,
-                RoomType = Booking.RoomType.ToString(),
-                CheckIn = Booking.CheckIn.ToString("yyyy-MM-dd"),
-                CheckOut = Booking.CheckOut.ToString("yyyy-MM-dd")
+                EmployeeId = result.GetValue().EmployeeId,
+                RoomType = result.GetValue().RoomType.ToString(),
+                CheckIn = result.GetValue().CheckIn.ToString("yyyy-MM-dd"),
+                CheckOut = result.GetValue().CheckOut.ToString("yyyy-MM-dd")
             };
 
             return Ok(bookingResponse);
         }
 
-        private bool HasEnoughRoomsForBooking(int HotelRoomsCapacity, int BookingsAtTheSameTime)
-        {
-            return HotelRoomsCapacity > BookingsAtTheSameTime;
-        }
+        //private bool HasEnoughRoomsForBooking(int HotelRoomsCapacity, int BookingsAtTheSameTime)
+        //{
+        //    return HotelRoomsCapacity > BookingsAtTheSameTime;
+        //}
 
     }
 }

@@ -23,7 +23,7 @@ namespace BookingApiRest.core.shared.infrastructure
         }
 
         public async Task<Result<TResponse>> PublishAndWait<TRequest, TResponse>(TRequest request)
-            where TRequest : RequestDomainEvent<TResponse>
+            where TRequest : DomainEvent
             where TResponse : class
         {
 

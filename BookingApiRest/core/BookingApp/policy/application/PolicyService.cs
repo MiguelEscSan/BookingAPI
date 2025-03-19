@@ -12,13 +12,11 @@ public class PolicyService
 {
     private readonly PolicyRepository _policyRepository;
     private readonly EventBus _eventBus;
-    //private readonly CompanyRepository _companyRepository;
 
     public PolicyService(PolicyRepository policyRepository, EventBus eventBus)
     {
         _policyRepository = policyRepository;
         _eventBus = eventBus;
-        //_companyRepository = companyRepository;
     }
     public void SetCompanyPolicy(string companyId, RoomType roomType)
     {

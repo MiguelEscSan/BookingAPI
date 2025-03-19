@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="core\BookingApp\policy\application\handler\IsBookingAllowHandler.cs" />
     <Compile Include="core\BookingApp\policy\application\ports\PolicyRepository.cs" />
     <Compile Include="core\BookingApp\policy\application\handler\DeleteEmployeeHandler.cs" />
     <Compile Include="core\BookingApp\policy\application\handler\NewEmployeeHandler.cs" />
