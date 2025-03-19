@@ -34,7 +34,7 @@ namespace BookingApiRest.core.BookingApp.policy.application.handler
                 
             }
 
-            return new Result<object>(result.GetValue().IsSuccess, true); 
+            return new Result<object>(result.GetValue(), true); 
         }
     }
 }

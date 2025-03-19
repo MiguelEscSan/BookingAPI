@@ -24,7 +24,7 @@ namespace BookingApiRest.core.BookingApp.booking.application
 
         public async Task<Result<Booking>> BookRoom(string hotelId, string employeeId, RoomType roomType, DateTime checkIn, DateTime checkOut)
         {
-            var isBookingAllowed = await _eventBus.PublishAndWait<IsBookingAllowRequest, BooleanResult>(
+            Result<BooleanResult> isBookingAllowed = await _eventBus.PublishAndWait<IsBookingAllowRequest, BooleanResult>(
                 new IsBookingAllowRequest(employeeId, roomType.ToString())
             );
             if (isBookingAllowed.GetValue().IsSuccess is false)
@@ -32,7 +32,7 @@ namespace BookingApiRest.core.BookingApp.booking.application
                 return Result<Booking>.Fail(new BookingIsNotAllowException());
             }
 
-            var HotelRooms = await _eventBus.PublishAndWait<GetHotelRoomsCapacityRequest, IntResult>(
+            Result<IntResult> HotelRooms = await _eventBus.PublishAndWait<GetHotelRoomsCapacityRequest, IntResult>(
                 new GetHotelRoomsCapacityRequest(hotelId, roomType.ToString())
             );
 

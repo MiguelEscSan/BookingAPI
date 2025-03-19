@@ -33,7 +33,8 @@ namespace BookingApiRest.core.BookingApp.hotel.application.handler
                 return new Result<object>("Invalid capacity", false);
                 
             }
-            return new Result<object>(roomsCapacity, true);
+
+            return new Result<object>(new IntResult(roomsCapacity), true);
         }
     }
 }

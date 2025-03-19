@@ -1,5 +1,6 @@
 ﻿using BookingApiRest.core.BookingApp.booking.application;
 using BookingApiRest.core.BookingApp.booking.controller.DTO;
+using BookingApiRest.core.BookingApp.booking.domain;
 using BookingApiRest.core.BookingApp.company.application;
 using BookingApiRest.core.BookingApp.hotel.application;
 using BookingApiRest.core.BookingApp.policy.application;
@@ -30,7 +31,7 @@ namespace BookingApiRest.core.BookingApp.booking.controller
             var CheckIn = DateTime.Parse(bookingDTO.CheckIn);
             var CheckOut = DateTime.Parse(bookingDTO.CheckOut);
 
-            var result = await _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
+            Result<Booking> result = await _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
 
             if (!result.IsSuccess)
             {
@@ -52,11 +53,5 @@ namespace BookingApiRest.core.BookingApp.booking.controller
 
             return Ok(bookingResponse);
         }
-
-        //private bool HasEnoughRoomsForBooking(int HotelRoomsCapacity, int BookingsAtTheSameTime)
-        //{
-        //    return HotelRoomsCapacity > BookingsAtTheSameTime;
-        //}
-
     }
 }
