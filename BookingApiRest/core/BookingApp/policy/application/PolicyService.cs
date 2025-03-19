@@ -36,29 +36,42 @@ public class PolicyService
         _policyRepository.Save(PolicyType.Employee, policy);
     }
 
-    public async Task<bool> IsBookingAllowed(string employeeId, RoomType roomType)
+    public async Task<Result<BooleanResult>> IsBookingAllowed(string employeeId, RoomType roomType)
     {
-        if(_policyRepository.EmployeePolicyExists(employeeId) is false)
+        if (!_policyRepository.EmployeePolicyExists(employeeId))
         {
-            throw new EmployeeNotFoundException($"Employee with id {employeeId} not found");
+            return Result<BooleanResult>.Fail(new EmployeeNotFoundException($"Employee with id {employeeId} not found"));
         }
 
-        if(_policyRepository.IsEmployeePolicyDefault(employeeId) is true)
+        if (_policyRepository.IsEmployeePolicyDefault(employeeId))
         {
-            //var companyId = _companyRepository.GetCompanyIdByEmployeeId(employeeId);
-            var companyIdResponse = await _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, string>(new GetCompanyIdByEmployeeIdRequest(employeeId));
+            var companyIdResponse = await _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, string>(
+                new GetCompanyIdByEmployeeIdRequest(employeeId)
+            );
 
             if (!companyIdResponse.IsSuccess)
             {
-                throw new CompanyNotFoundException($"Company not found for employee with id {employeeId}");
+                return Result<BooleanResult>.Fail(new CompanyNotFoundException($"Company not found for employee with id {employeeId}"));
             }
 
             var companyId = companyIdResponse.Value;
 
-            return _policyRepository.CheckCompanyPolicy(companyId, roomType);
+            var isCompanyPolicyAllowed = _policyRepository.CheckCompanyPolicy(companyId, roomType);
+            return Result<BooleanResult>.Success(new BooleanResult(isCompanyPolicyAllowed));
         }
-        return _policyRepository.CheckEmployeePolicy(employeeId, roomType);
+
+        var isEmployeePolicyAllowed = _policyRepository.CheckEmployeePolicy(employeeId, roomType);
+        return Result<BooleanResult>.Success(new BooleanResult(isEmployeePolicyAllowed));
     }
 }
 
+public class BooleanResult
+{
+    public bool IsSuccess { get; set; }
+
+    public BooleanResult(bool isSuccess)
+    {
+        IsSuccess = isSuccess;
+    }
+}
 

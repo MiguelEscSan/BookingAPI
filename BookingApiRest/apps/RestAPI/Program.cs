@@ -14,6 +14,7 @@ using BookingApiRest.core.BookingApp.booking.application.ports;
 using BookingApiRest.core.BookingApp.booking.infrastructure;
 using BookingApiRest.core.BookingApp.booking.application;
 using BookingApiRest.core.BookingApp.booking.application.handler;
+using BookingApiRest.core.BookingApp.company.application.handler;
 
 public class Program
 {
@@ -42,6 +43,7 @@ public class Program
         builder.Services.AddSingleton<IEventHandler, NewEmployeeHandler>();
         builder.Services.AddSingleton<IEventHandler, DeleteEmployeeHandler>();
         builder.Services.AddSingleton<IEventHandler, DeleteEmployeeBookingsHandler>();
+        builder.Services.AddSingleton<IEventHandler, GetCompanyIdByEmployeeIdHandler>();
 
         var app = builder.Build();
 

@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public class RequestDomainEvent<TResponse> : DomainEvent
+public class RequestDomainEvent<TResponse> : DomainEvent where TResponse: class
 {
+    public TResponse Response { get; set; }
+
     private TaskCompletionSource<TResponse> _tcs = new TaskCompletionSource<TResponse>();
 
     public RequestDomainEvent(string aggregateId, string eventId) : base(aggregateId, eventId)

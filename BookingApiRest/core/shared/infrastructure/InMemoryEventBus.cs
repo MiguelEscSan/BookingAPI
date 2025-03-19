@@ -1,5 +1,6 @@
 ﻿using BookingApiRest.core.shared.application;
 using BookingApiRest.core.shared.domain;
+using System;
 
 namespace BookingApiRest.core.shared.infrastructure
 {
@@ -21,11 +22,26 @@ namespace BookingApiRest.core.shared.infrastructure
             }
         }
 
-        public Task<Result<TResponse>> PublishAndWait<TRequest, TResponse>(TRequest request)
-            where TRequest : class
+        public async Task<Result<TResponse>> PublishAndWait<TRequest, TResponse>(TRequest request)
+            where TRequest : RequestDomainEvent<TResponse>
             where TResponse : class
         {
-            throw new NotImplementedException();
+
+            if (_handlers.TryGetValue(request.GetEventId(), out var eventHandlers))
+            {
+                foreach (var handler in eventHandlers)
+                {
+                    // Aseguramos que el handler sea del tipo adecuado
+                    if (handler is IEventHandler typedHandler)
+                    {
+                        // Invocar el método Handle de manera asincrónica
+                        var result = await typedHandler.Handle(request);
+                        return new Result<TResponse>(result.Value as TResponse, result.IsSuccess);
+                    }
+                }
+            }
+
+            return new Result<TResponse>(null, false); // Si no se encuentra un manejador adecuado
         }
 
 

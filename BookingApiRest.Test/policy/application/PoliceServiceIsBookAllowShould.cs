@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using BookingApiRest.core.shared.application;
 using NSubstitute;
 using Shouldly;
+using BookingApiRest.core.BookingApp.policy.application.requests;
 namespace BookingApiRest.Test.policy
 {
     class PoliceServiceIsBookAllowShould
@@ -50,7 +51,7 @@ namespace BookingApiRest.Test.policy
 
             var result = await _policyService.IsBookingAllowed(employeeId, roomType);
 
-            result.ShouldBeTrue();
+            result.GetValue().IsSuccess.ShouldBeTrue();
         }
 
         [Test]
@@ -62,7 +63,7 @@ namespace BookingApiRest.Test.policy
 
             var result = await _policyService.IsBookingAllowed(employeeId, roomType);
 
-            result.ShouldBeFalse();
+            result.GetValue().IsSuccess.ShouldBeFalse();
         }
 
         [Test]
@@ -70,34 +71,40 @@ namespace BookingApiRest.Test.policy
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(false);
 
-            Assert.Throws<EmployeeNotFoundException>(() => _policyService.IsBookingAllowed(employeeId, roomType));
+            var result = await _policyService.IsBookingAllowed(employeeId, roomType);
+
+            result.IsSuccess.ShouldBeFalse();
+            result.GetError().ShouldBeOfType<EmployeeNotFoundException>();
         }
+
 
         [Test]
         public async Task check_the_company_policy()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
             _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(true);
-
-            _companyRepository.GetCompanyIdByEmployeeId(employeeId).Returns(companyId);
+            _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, string>(Arg.Any<GetCompanyIdByEmployeeIdRequest>())
+                .Returns(Task.FromResult(new Result<string>(companyId, true)));
             _policyRepository.CheckCompanyPolicy(companyId, roomType).Returns(true);
 
             var result = await _policyService.IsBookingAllowed(employeeId, roomType);
 
-            result.ShouldBeTrue();
+            result.GetValue().IsSuccess.ShouldBeTrue();
         }
+
 
         [Test]
         public async Task not_allow_booking_if_company_has_a_different_policy()
         {
             _policyRepository.EmployeePolicyExists(employeeId).Returns(true);
             _policyRepository.IsEmployeePolicyDefault(employeeId).Returns(true);
-            _companyRepository.GetCompanyIdByEmployeeId(employeeId).Returns(companyId);
+            _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, string>(Arg.Any<GetCompanyIdByEmployeeIdRequest>())
+                .Returns(Task.FromResult(new Result<string>(companyId, true)));
             _policyRepository.CheckCompanyPolicy(companyId, roomType).Returns(false);
 
             var result = await _policyService.IsBookingAllowed(employeeId, roomType);
 
-            result.ShouldBeFalse();
+            result.GetValue().IsSuccess.ShouldBeFalse();
         }
     }
 }
