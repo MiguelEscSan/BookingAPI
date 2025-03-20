@@ -5,6 +5,7 @@ using BookingApiRest.core.BookingApp.company.domain;
 using BookingApiRest.core.BookingApp.policy.application;
 using BookingApiRest.core.BookingApp.policy.application.requests;
 using BookingApiRest.core.shared.application;
+using BookingApiRest.core.shared.application.results;
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.BookingApp.Hotel.Domain;
 using BookingApiRest.Core.Shared.Domain;

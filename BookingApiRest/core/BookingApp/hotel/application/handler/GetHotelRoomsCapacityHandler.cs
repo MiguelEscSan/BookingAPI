@@ -1,5 +1,6 @@
 ﻿using BookingApiRest.core.BookingApp.company.application.ports;
 using BookingApiRest.core.shared.application;
+using BookingApiRest.core.shared.application.results;
 using BookingApiRest.core.shared.domain;
 using BookingApiRest.Core.Shared.Domain;
 using BookingApp.Hotel.Application.Ports;

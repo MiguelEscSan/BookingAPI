@@ -17,12 +17,3 @@ namespace BookingApiRest.core.BookingApp.booking.application.requests
     }
 }
 
-public class IntResult
-{
-    public int Capacity { get; set; }
-
-    public IntResult(int capacity)
-    {
-        Capacity = capacity;
-    }
-}

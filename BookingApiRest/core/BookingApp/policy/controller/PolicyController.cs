@@ -1,5 +1,6 @@
 ﻿using BookingApiRest.core.BookingApp.policy.application;
 using BookingApiRest.core.BookingApp.policy.controller.DTO.request;
+using BookingApiRest.core.shared.application.results;
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.Shared.Domain;
 using Microsoft.AspNetCore.Mvc;

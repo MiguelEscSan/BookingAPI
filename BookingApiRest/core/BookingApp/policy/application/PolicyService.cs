@@ -3,6 +3,7 @@ using BookingApiRest.core.BookingApp.policy.application.DTO;
 using BookingApiRest.core.BookingApp.policy.application.requests;
 using BookingApiRest.core.BookingApp.policy.domain;
 using BookingApiRest.core.shared.application;
+using BookingApiRest.core.shared.application.results;
 using BookingApiRest.core.shared.exceptions;
 using BookingApiRest.Core.Shared.Domain;
 using System.Threading.Tasks;
@@ -60,16 +61,6 @@ public class PolicyService
 
         bool isEmployeePolicyAllowed = _policyRepository.CheckEmployeePolicy(employeeId, roomType);
         return Result<BooleanResult>.Success(new BooleanResult(isEmployeePolicyAllowed));
-    }
-}
-
-public class BooleanResult
-{
-    public bool IsSuccess { get; set; }
-
-    public BooleanResult(bool isSuccess)
-    {
-        IsSuccess = isSuccess;
     }
 }
 
