@@ -44,22 +44,16 @@ public class PolicyController : ControllerBase
     [HttpGet("booking/{createdEmployeeId}/{roomType}")]
     public async Task<IActionResult> IsBookingAllow(string createdEmployeeId, string roomType)
     {
-        try
+        RoomType RoomType = Enum.Parse<RoomType>(roomType);
+        Result<BooleanResult> result = await _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
+
+        if (!result.IsSuccess)
         {
-            RoomType RoomType = Enum.Parse<RoomType>(roomType);
-            Result<BooleanResult> result = await _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
-
-            if (!result.IsSuccess)
-            {
-                return NotFound(result.GetErrorMessage());
-            }
-
-            return Ok(result.GetValue().IsSuccess); 
+            return NotFound(result.GetErrorMessage());
         }
-        catch (EmployeeNotFoundException e)
-        { 
-            return NotFound(e.Message);
-        }
+
+        return Ok(result.GetValue().IsSuccess); 
+        
     }
 
 
