@@ -12,18 +12,30 @@ public class HotelService {
         _hotelRepository = hotelRepository;
     }
 
+    //public int GetHotelRoomCapacity(string hotelId, RoomType roomType)
+    //{
+    //    try
+    //    {
+    //        Hotel hotel = findHotelBy(hotelId);
+
+    //        return hotel.Rooms[roomType];
+    //    }
+    //    catch (HotelHasNotBeenFound error)
+    //    {
+    //        throw error;
+    //    } 
+    //}
     public int GetHotelRoomCapacity(string hotelId, RoomType roomType)
     {
-        try
-        {
-            Hotel hotel = findHotelBy(hotelId);
+        Result<Hotel> hotelResult = findHotelBy(hotelId);
 
-            return hotel.Rooms[roomType];
-        }
-        catch (HotelHasNotBeenFound error)
+        if (!hotelResult.IsSuccess)
         {
-            throw error;
-        } 
+            throw hotelResult.GetError();
+        }
+
+        Hotel hotel = hotelResult.GetValue();
+        return hotel.Rooms[roomType];
     }
 
     public void AddHotel(string HotelId, string HotelName) {
@@ -37,20 +49,42 @@ public class HotelService {
         _hotelRepository.Save(newHotel);
     }
 
-    public Hotel findHotelBy(string id)
+    //public Hotel findHotelBy(string id)
+    //{
+    //    Hotel hotel = _hotelRepository.GetById(id);
+    //    if (hotel == null)
+    //    {
+    //        throw new HotelHasNotBeenFound($"Hotel with id {id} not found");
+    //    }
+    //    return hotel;
+    //}
+    public Result<Hotel> findHotelBy(string id)
     {
         Hotel hotel = _hotelRepository.GetById(id);
         if (hotel == null)
         {
-            throw new HotelHasNotBeenFound($"Hotel with id {id} not found");
+            return Result<Hotel>.Fail(new HotelHasNotBeenFound());
         }
-        return hotel;
+        return Result<Hotel>.Success(hotel);
 
     }
 
+    //public void setRoom(string hotelId, int roomNumber, RoomType roomType)
+    //{
+    //    Hotel hotel = findHotelBy(hotelId);
+    //    hotel.SetRoom(roomNumber, roomType);
+    //    _hotelRepository.Update(hotel);
+    //}
     public void setRoom(string hotelId, int roomNumber, RoomType roomType)
     {
-        Hotel hotel = findHotelBy(hotelId);
+        Result<Hotel> hotelResult = findHotelBy(hotelId);
+
+        if (!hotelResult.IsSuccess)
+        {
+            throw hotelResult.GetError();
+        }
+
+        Hotel hotel = hotelResult.GetValue();
         hotel.SetRoom(roomNumber, roomType);
         _hotelRepository.Update(hotel);
     }

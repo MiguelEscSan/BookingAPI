@@ -31,21 +31,37 @@ public class HotelController : ControllerBase {
         }
     }
 
+    //[HttpGet("{id}")]
+    //public IActionResult GetHotel(string id)
+    //{
+    //    try
+    //    {
+    //        Hotel hotel = _hotelService.findHotelBy(id);
+    //        HotelDTO hotelDto = new HotelDTO(hotel.Id, hotel.Name, hotel.Rooms);
+
+    //        return Ok(hotelDto);
+    //    }
+    //    catch (HotelHasNotBeenFound e)
+    //    {
+    //        return NotFound(e.Message);
+
+    //    }
+    //}
     [HttpGet("{id}")]
     public IActionResult GetHotel(string id)
     {
-        try
-        {
-            Hotel hotel = _hotelService.findHotelBy(id);
-            HotelDTO hotelDto = new HotelDTO(hotel.Id, hotel.Name, hotel.Rooms);
-            
-            return Ok(hotelDto);
-        }
-        catch (HotelHasNotBeenFound e)
-        {
-            return NotFound(e.Message);
+        Result<Hotel> hotelResult = _hotelService.findHotelBy(id);
 
+        if(!hotelResult.IsSuccess)
+        {
+            return NotFound(hotelResult.Exception.Message);
         }
+
+        Hotel hotel = hotelResult.GetValue();
+        HotelDTO hotelDto = new HotelDTO(hotel.Id, hotel.Name, hotel.Rooms);
+
+        return Ok(hotelDto);
+
     }
 
     [HttpPut("{id}/rooms")]

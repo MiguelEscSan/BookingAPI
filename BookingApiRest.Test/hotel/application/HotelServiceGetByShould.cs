@@ -34,7 +34,7 @@ namespace BookingApiRest.Test.hotel
 
             var result = _hotelService.findHotelBy("1");
 
-            result.ShouldBe(hotel);
+            result.GetValue().ShouldBe(hotel);
         }
 
         [Test]
@@ -42,9 +42,11 @@ namespace BookingApiRest.Test.hotel
         {
             _hotelRepository.GetById("1").Returns((Hotel)null);
 
-            var exception = Should.Throw<HotelHasNotBeenFound>(() => _hotelService.findHotelBy("1"));
+            var result = _hotelService.findHotelBy("1");
 
-            exception.Message.ShouldBe("Hotel with id 1 not found");
+            result.IsSuccess.ShouldBeFalse(); 
+            result.GetError().ShouldBeOfType<HotelHasNotBeenFound>();
         }
+
     }
 }

@@ -45,7 +45,6 @@ namespace BookingApiRest.Test.hotel
             _hotelRepository.GetById("1").Returns((Hotel)null);
             var exception = Should.Throw<HotelHasNotBeenFound>(() => _hotelService.setRoom("1", 1, RoomType.Standard));
 
-            exception.Message.ShouldBe("Hotel with id 1 not found");
             _hotelRepository.DidNotReceive().Update(Arg.Any<Hotel>());
         }
 
