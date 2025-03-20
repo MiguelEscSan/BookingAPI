@@ -11,7 +11,7 @@ public class AggregateRoot : Entity
 
     public List<DomainEvent> PullDomainEvents()
     {
-        var events = new List<DomainEvent>(this._events);
+        List<DomainEvent> events = new List<DomainEvent>(this._events);
         this._events.Clear(); 
         return events;
     }

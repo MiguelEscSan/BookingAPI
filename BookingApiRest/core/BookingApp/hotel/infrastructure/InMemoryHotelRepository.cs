@@ -15,7 +15,7 @@ public class InMemoryHotelRepository : HotelRepository {
 
     public void Update(Hotel updatableHotel)
     {
-        var index = _hotels.FindIndex(hotel => hotel.Id == updatableHotel.Id);
+        int index = _hotels.FindIndex(hotel => hotel.Id == updatableHotel.Id);
         _hotels[index] = updatableHotel;
     }
 

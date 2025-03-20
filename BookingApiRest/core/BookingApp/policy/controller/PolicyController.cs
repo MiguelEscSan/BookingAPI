@@ -46,7 +46,7 @@ public class PolicyController : ControllerBase
         try
         {
             RoomType RoomType = Enum.Parse<RoomType>(roomType);
-            var result = await _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
+            Result<BooleanResult> result = await _policyService.IsBookingAllowed(createdEmployeeId, RoomType);
 
             if (!result.IsSuccess)
             {

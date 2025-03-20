@@ -16,18 +16,16 @@ public class NewEmployeeHandler : IEventHandler
     }
    public async Task<Result<object>> Handle(DomainEvent domainEvent)
    {
-        var employeeId = domainEvent.GetAggregateId();
-        var companyId = domainEvent.GetPayload()["companyId"];
+        string employeeId = domainEvent.GetAggregateId();
+        string companyId = domainEvent.GetPayload()["companyId"];
 
-        var employeePolicy = new Policy(employeeId, RoomType.All);
-        var companyPolicy = new Policy(companyId, RoomType.All);
+        Policy employeePolicy = new Policy(employeeId, RoomType.All);
+        Policy companyPolicy = new Policy(companyId, RoomType.All);
 
         this._policyRepository.Save(PolicyType.Employee, employeePolicy);
         this._policyRepository.Save(PolicyType.Company, companyPolicy);
 
-        var resultString = new Result<string>("Policies created successfully", true);
-
-        return new Result<object>(resultString.Value, resultString.IsSuccess);
+        return new Result<object>("Policies created successfully", true);
     }
 
     public string GetEventId()

@@ -23,12 +23,10 @@ namespace BookingApiRest.core.BookingApp.company.application.handler
 
         public async Task<Result<object>> Handle(DomainEvent domainEvent)
         {
-            var employeeId = domainEvent.GetAggregateId();
-            var companyId = _companyRepository.GetCompanyIdByEmployeeId(employeeId);
+            string employeeId = domainEvent.GetAggregateId();
+            string companyId = _companyRepository.GetCompanyIdByEmployeeId(employeeId);
 
-            var resultString = new Result<string>(companyId ?? "Company not found", companyId is not null);
-
-            return new Result<object>(resultString.Value, resultString.IsSuccess);
+            return new Result<object>(companyId ?? "Company not found", companyId is not null);
         }
     }
 }

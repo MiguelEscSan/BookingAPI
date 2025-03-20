@@ -37,7 +37,7 @@ public class HotelController : ControllerBase {
         try
         {
             Hotel hotel = _hotelService.findHotelBy(id);
-            var hotelDto = new HotelDTO(hotel.Id, hotel.Name, hotel.Rooms);
+            HotelDTO hotelDto = new HotelDTO(hotel.Id, hotel.Name, hotel.Rooms);
             
             return Ok(hotelDto);
         }

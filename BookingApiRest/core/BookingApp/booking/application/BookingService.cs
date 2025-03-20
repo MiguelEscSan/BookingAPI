@@ -36,21 +36,21 @@ namespace BookingApiRest.core.BookingApp.booking.application
                 new GetHotelRoomsCapacityRequest(hotelId, roomType.ToString())
             );
 
-            var BookingsAtTheSameTime = GetBookingsAtTheSameTime(hotelId, roomType, checkIn, checkOut);
+            int BookingsAtTheSameTime = GetBookingsAtTheSameTime(hotelId, roomType, checkIn, checkOut);
 
             if (HasEnoughRoomsForBooking(HotelRooms.GetValue().Capacity, BookingsAtTheSameTime) is false)
             {
                 return Result<Booking>.Fail(new RoomsFullyBookedException());
             }
 
-            var Booking = new Booking(employeeId, roomType, checkIn, checkOut);
+            Booking Booking = new Booking(employeeId, roomType, checkIn, checkOut);
             _bookingRepository.Save(hotelId, Booking);
             return Result<Booking>.Success(Booking);
         }
 
         public int GetBookingsAtTheSameTime(string hotelId, RoomType roomType, DateTime checkIn, DateTime checkOut)
         {
-            var bookings = _bookingRepository.GetBookings(hotelId, roomType);
+            List<Booking> bookings = _bookingRepository.GetBookings(hotelId, roomType);
             return bookings.Count(booking => booking.CheckIn < checkOut && booking.CheckOut > checkIn);
         }
 

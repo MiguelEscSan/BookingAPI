@@ -20,7 +20,7 @@ public class PolicyService
     }
     public void SetCompanyPolicy(string companyId, RoomType roomType)
     {
-        var policy = new Policy(companyId, roomType);
+        Policy policy = new Policy(companyId, roomType);
         _policyRepository.Save(PolicyType.Company, policy);
     }
 
@@ -30,7 +30,7 @@ public class PolicyService
         {
             throw new EmployeeNotFoundException($"Employee with id {employeeId} not found");
         }
-        var policy = new Policy(employeeId, roomType);
+        Policy policy = new Policy(employeeId, roomType);
         _policyRepository.Save(PolicyType.Employee, policy);
     }
 
@@ -43,7 +43,7 @@ public class PolicyService
 
         if (_policyRepository.IsEmployeePolicyDefault(employeeId))
         {
-            var companyIdResponse = await _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, string>(
+            Result<string> companyIdResponse = await _eventBus.PublishAndWait<GetCompanyIdByEmployeeIdRequest, string>(
                 new GetCompanyIdByEmployeeIdRequest(employeeId)
             );
 
@@ -52,13 +52,13 @@ public class PolicyService
                 return Result<BooleanResult>.Fail(new CompanyNotFoundException($"Company not found for employee with id {employeeId}"));
             }
 
-            var companyId = companyIdResponse.Value;
+            string companyId = companyIdResponse.GetValue();
 
-            var isCompanyPolicyAllowed = _policyRepository.CheckCompanyPolicy(companyId, roomType);
+            bool isCompanyPolicyAllowed = _policyRepository.CheckCompanyPolicy(companyId, roomType);
             return Result<BooleanResult>.Success(new BooleanResult(isCompanyPolicyAllowed));
         }
 
-        var isEmployeePolicyAllowed = _policyRepository.CheckEmployeePolicy(employeeId, roomType);
+        bool isEmployeePolicyAllowed = _policyRepository.CheckEmployeePolicy(employeeId, roomType);
         return Result<BooleanResult>.Success(new BooleanResult(isEmployeePolicyAllowed));
     }
 }

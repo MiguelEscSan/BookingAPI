@@ -22,11 +22,11 @@ namespace BookingApiRest.core.BookingApp.policy.application.handler
 
         public async Task<Result<object>> Handle(DomainEvent domainEvent)
         {
-            var employeeId = domainEvent.GetAggregateId();
-            var roomType = domainEvent.GetPayload()["roomType"];
-            var parsedRoomType = Enum.Parse<RoomType>(roomType);
+            string employeeId = domainEvent.GetAggregateId();
+            string roomType = domainEvent.GetPayload()["roomType"];
+            RoomType parsedRoomType = Enum.Parse<RoomType>(roomType);
 
-            var result = await _policyService.IsBookingAllowed(employeeId, parsedRoomType);
+            Result<BooleanResult> result = await _policyService.IsBookingAllowed(employeeId, parsedRoomType);
 
             if (!result.IsSuccess)
             {

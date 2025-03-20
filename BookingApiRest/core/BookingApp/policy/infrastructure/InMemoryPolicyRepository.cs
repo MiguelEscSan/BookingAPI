@@ -33,14 +33,14 @@ public class InMemoryPolicyRepository : PolicyRepository
 
     public bool CheckEmployeePolicy(string employeeId, RoomType roomType)
     {
-        var employeePolicyRoomType = _employeesPolicies[employeeId].RoomType;
+        RoomType employeePolicyRoomType = _employeesPolicies[employeeId].RoomType;
         return employeePolicyRoomType == roomType;
     }
 
     public bool CheckCompanyPolicy(string companyId, RoomType roomType)
     {
-        
-        var companyPolicyRoomType = _companiesPolices[companyId].RoomType;
+
+        RoomType companyPolicyRoomType = _companiesPolices[companyId].RoomType;
         return companyPolicyRoomType == roomType || companyPolicyRoomType == RoomType.All;
     }
 

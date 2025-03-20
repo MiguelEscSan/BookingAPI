@@ -22,11 +22,11 @@ namespace BookingApiRest.core.BookingApp.hotel.application.handler
 
         public async Task<Result<object>> Handle(DomainEvent domainEvent)
         {
-            var hotelId = domainEvent.GetAggregateId();
-            var roomType = domainEvent.GetPayload()["roomType"];
-            var parsedRoomType = Enum.Parse<RoomType>(roomType);
+            string hotelId = domainEvent.GetAggregateId();
+            string roomType = domainEvent.GetPayload()["roomType"];
+            RoomType parsedRoomType = Enum.Parse<RoomType>(roomType);
 
-            var roomsCapacity = _hotelService.GetHotelRoomCapacity(hotelId, parsedRoomType);
+            int roomsCapacity = _hotelService.GetHotelRoomCapacity(hotelId, parsedRoomType);
 
             if (roomsCapacity < 0)
             {

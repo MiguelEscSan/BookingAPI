@@ -27,9 +27,9 @@ namespace BookingApiRest.core.BookingApp.booking.controller
         [HttpPost("{hotelId}/{employeeId}")]
         public async Task<IActionResult> BookRoom(string hotelId, string employeeId, [FromBody] CreateBookingDTO bookingDTO)
         {
-            var roomType = Enum.Parse<RoomType>(bookingDTO.RoomType);
-            var CheckIn = DateTime.Parse(bookingDTO.CheckIn);
-            var CheckOut = DateTime.Parse(bookingDTO.CheckOut);
+            RoomType roomType = Enum.Parse<RoomType>(bookingDTO.RoomType);
+            DateTime CheckIn = DateTime.Parse(bookingDTO.CheckIn);
+            DateTime CheckOut = DateTime.Parse(bookingDTO.CheckOut);
 
             Result<Booking> result = await _bookingService.BookRoom(hotelId, employeeId, roomType, CheckIn, CheckOut);
 
@@ -43,7 +43,7 @@ namespace BookingApiRest.core.BookingApp.booking.controller
                 return BadRequest();
             }
 
-            var bookingResponse = new BookingDTO
+            BookingDTO bookingResponse = new BookingDTO
             {
                 EmployeeId = result.GetValue().EmployeeId,
                 RoomType = result.GetValue().RoomType.ToString(),
