@@ -20,9 +20,7 @@ namespace BookingApiRest.core.BookingApp.booking.application.handler
 
             this._bookingRepository.Delete(employeeId);
 
-            Result<string> resultString = new Result<string>("Employee bookings deleted successfully", true);
-
-            return new Result<object>(resultString.Value, resultString.IsSuccess);
+            return new Result<object>("Employee bookings deleted successfully", true);
         }
 
         public string GetEventId()
